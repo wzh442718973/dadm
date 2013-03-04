@@ -1,330 +1,324 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".MainActivity" 
->
-<!-- centro -->
-<Button
-	android:id="@+id/pos4_4"
-	android:layout_width="@dimen/width_button"
-	android:layout_height="@dimen/height_button"
-	android:layout_centerInParent="true"
-	android:onClick="selectPosition"              
-/>
-
-<Button
-	android:id="@+id/pos1_4"
-	android:layout_width="@dimen/width_button"
-	android:layout_height="@dimen/height_button"
-	android:layout_toLeftOf="@+id/pos2_4"   
-	android:layout_alignBaseline="@id/pos4_4"
-	android:text="@string/piece_text" 
-	android:onClick="selectPosition"   />           
-
-
-<Button
-	android:id="@+id/pos2_4"
-	android:layout_width="@dimen/width_button"
-	android:layout_height="@dimen/height_button"
-	android:layout_toLeftOf="@+id/pos3_4"   
-	android:layout_alignBaseline="@id/pos4_4"
-	android:text="@string/piece_text" />  
-
-
-<Button
-android:id="@+id/pos3_4"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"	
-android:layout_toLeftOf="@+id/pos4_4"   
-android:layout_alignBaseline="@id/pos4_4"
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos5_4"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-
-android:layout_toRightOf="@+id/pos4_4"   
-android:layout_alignBaseline="@id/pos4_4"
-
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos6_4"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-
-android:layout_alignBaseline="@id/pos5_4"
-android:layout_toRightOf="@+id/pos5_4"   
-android:layout_alignWithParentIfMissing="true"
-
-android:text="@string/piece_text" /> 
-
-<Button
-android:id="@+id/pos7_4"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-
-android:layout_alignBaseline="@id/pos6_4"
-android:layout_toRightOf="@+id/pos6_4"   
-android:layout_alignWithParentIfMissing="true"
-
-android:text="@string/piece_text" />         
-
-<!-- centro -->
-
-
-
-<Button
-android:id="@+id/pos4_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_above="@+id/pos4_4"   
-android:text="@string/piece_text" /> 
-
-<Button
-android:id="@+id/pos3_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos4_5"/>
-
-<Button
-android:id="@+id/pos2_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos3_5"/>
-
-<Button
-android:id="@+id/pos1_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos2_5"/>
-
-<Button
-android:id="@+id/pos5_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos4_5"/>
-
-<Button
-android:id="@+id/pos6_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos5_5"/>				
-
-<Button
-android:id="@+id/pos7_5"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos6_5"/>	        
-<!--  -->
-<Button
-android:id="@+id/pos4_6"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_above="@+id/pos4_5"   
-
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos3_6"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_5"   
-
-android:layout_toLeftOf="@id/pos4_6"/>	  
-<Button
-android:id="@+id/pos5_6"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_5"   
-
-android:layout_toRightOf="@id/pos4_6"/>	  
-
-<!--  -->
-
-<Button
-android:id="@+id/pos4_7"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_above="@+id/pos4_6"   
-
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos3_7"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_6"   
-
-android:layout_toLeftOf="@id/pos4_7"/>	  
-<Button
-android:id="@+id/pos5_7"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_above="@+id/pos4_6"   
-
-android:layout_toRightOf="@id/pos4_7"/>	
-
-
-
-<!-- linea debajo del medio -->
-
-
-<Button
-android:id="@+id/pos4_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_below="@+id/pos4_4"   
-android:text="@string/piece_text" /> 
-
-<Button
-android:id="@+id/pos3_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos4_3"/>
-
-<Button
-android:id="@+id/pos2_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos3_5"/>
-
-<Button
-android:id="@+id/pos1_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toLeftOf="@id/pos2_5"/>
-
-<Button
-android:id="@+id/pos5_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos4_3"/>
-
-<Button
-android:id="@+id/pos6_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos5_3"/>				
-
-<Button
-android:id="@+id/pos7_3"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_4"   
-
-android:layout_toRightOf="@id/pos6_3"/>	        
-<!--  -->
-
-<!--  -->
-<Button
-android:id="@+id/pos4_2"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_below="@+id/pos4_3"   
-
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos3_2"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_3"   
-
-android:layout_toLeftOf="@id/pos4_6"/>	  
-<Button
-android:id="@+id/pos5_2"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_3"   
-
-android:layout_toRightOf="@id/pos4_6"/>	  
-
-<!--  -->
-<Button
-android:id="@+id/pos4_1"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:layout_centerInParent="true"
-android:layout_below="@+id/pos4_2"   
-
-android:text="@string/piece_text" />
-
-<Button
-android:id="@+id/pos3_1"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_2"   
-
-android:layout_toLeftOf="@id/pos4_1"/>	  
-<Button
-android:id="@+id/pos5_1"
-android:layout_width="@dimen/width_button"
-android:layout_height="@dimen/height_button"
-android:text="@string/piece_text" 
-android:layout_below="@+id/pos4_2"   
-
-android:layout_toRightOf="@id/pos4_1"/>	  
-
-<!--  -->
-
-<TextView
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_above="@+id/pos4_7"
-android:layout_centerHorizontal="true"
-android:layout_marginBottom="28dp"
-android:background="@drawable/color_verde"
-android:text="@string/hello_world" />
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@raw/bg"
+    tools:context=".MainActivity" >
+
+    <!-- centro -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_centerInParent="true"
+        android:onClick="selectPosition" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos1_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos4_4"
+        android:layout_toLeftOf="@+id/pos2_4"
+        android:onClick="selectPosition"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos2_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos4_4"
+        android:layout_toLeftOf="@+id/pos3_4"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos4_4"
+        android:layout_toLeftOf="@+id/pos4_4"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos4_4"
+        android:layout_toRightOf="@+id/pos4_4"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos6_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos5_4"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@+id/pos5_4"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos7_4"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_alignBaseline="@id/pos6_4"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@+id/pos6_4"
+        android:text="@string/piece_text" />
+
+    <!-- centro -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos4_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos2_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos3_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos1_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos2_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos4_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos6_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos5_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos7_5"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos6_5"
+        android:text="@string/piece_text" />
+    <!--  -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_6"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_5"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_6"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_5"
+        android:layout_toLeftOf="@id/pos4_6"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos2_6"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_5"
+        android:layout_toLeftOf="@id/pos3_6"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_6"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_5"
+        android:layout_toRightOf="@id/pos4_6"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos6_6"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_5"
+        android:layout_toRightOf="@id/pos5_6"
+        android:text="@string/piece_text" />
+    <!--  -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_7"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_6"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_7"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_6"
+        android:layout_toLeftOf="@id/pos4_7"
+        android:text="@string/piece_text"
+        android:antialias="false" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_7"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_above="@+id/pos4_6"
+        android:layout_toRightOf="@id/pos4_7"
+        android:text="@string/piece_text" />
+
+    <!-- linea debajo del medio -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos4_3"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos2_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos3_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos1_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toLeftOf="@id/pos2_5"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos4_3"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos6_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos5_3"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos7_3"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_4"
+        android:layout_toRightOf="@id/pos6_3"
+        android:text="@string/piece_text" />
+    <!--  -->
+
+
+    <!--  -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_2"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_3"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_2"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_3"
+        android:layout_toLeftOf="@id/pos4_6"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos2_2"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_3"
+        android:layout_toLeftOf="@id/pos3_2"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_2"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_3"
+        android:layout_toRightOf="@id/pos4_6"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos6_2"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_3"
+        android:layout_toRightOf="@id/pos5_2"
+        android:text="@string/piece_text" />
+
+    <!--  -->
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos4_1"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_2"
+        android:layout_centerInParent="true"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos3_1"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_2"
+        android:layout_toLeftOf="@id/pos4_1"
+        android:text="@string/piece_text" />
+
+    <com.es.uam.eps.dadm.mario_pantoja.PegSolitaireButton
+        android:id="@+id/pos5_1"
+        android:layout_width="@dimen/width_button"
+        android:layout_height="@dimen/height_button"
+        android:layout_below="@+id/pos4_2"
+        android:layout_toRightOf="@id/pos4_1"
+        android:text="@string/piece_text" />
+
+    <!--  -->
 
 </RelativeLayout>
