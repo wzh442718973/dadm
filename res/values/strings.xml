@@ -4,9 +4,10 @@
     <string name="app_name">DADM</string>
     <string name="hello_world">RelativeLayout</string>
     <string name="menu_settings">Settings</string>
-    <string name="piece_text">*</string>
+    <string name="piece_text"> </string>
     <string name="on">o</string>
     <string name="off"></string>
+    <string name="tittle_num_pegs">Pegs:</string>
     
     
 </resources>

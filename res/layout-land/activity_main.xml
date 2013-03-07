@@ -318,5 +318,25 @@
         android:text="@string/piece_text" />
 
     <!--  -->
+      <TextView
+        android:id="@+id/text_view_num_pegs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignLeft="@+id/pos2_2"
+        android:layout_alignRight="@+id/pos3_1"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_toLeftOf="@+id/text_view_num_pegs"
+        android:text="@string/tittle_num_pegs"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
 
 </RelativeLayout>

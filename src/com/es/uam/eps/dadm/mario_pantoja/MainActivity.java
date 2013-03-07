@@ -6,13 +6,20 @@ import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-
+/**
+ * @author marioandrei
+ * CONTROLLER
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
-	Board board;
+	Game game;
+	private int[] currentBoardState=new int[49];
 	
 	private void log(String text) {
 		Log.d("LifeCycleTest", text);
@@ -36,13 +43,21 @@ public class MainActivity extends Activity implements OnClickListener {
 	private int column6[] = { 0, R.id.pos6_2, R.id.pos6_3, R.id.pos6_4,	R.id.pos6_5, R.id.pos6_6, 0 };
 	private int column7[] = { 0, 0, R.id.pos7_3, R.id.pos7_4, R.id.pos7_5, 0, 0 };
 
-	int[][] tablero = new int[7][7];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/*  
+		 * 	cargar un menu donde elegir:
+		 * 		tipo de tablero
+		 * 		nombre jugador
+		 * 		abrir partida guardada.
+		 * */
+		
+		
 		setContentView(R.layout.activity_main);
-		board = new Board();
+		game = new Game(Game.FRANCES);
 
 		/*Link Buttons to listener*/
 		registerListeners();
@@ -50,26 +65,42 @@ public class MainActivity extends Activity implements OnClickListener {
 		/*Create buttons from int[][] matrix values*/
 		setStartFigure();
 		
-		/*Redundant*/
+		/*initializate board with values from game*/
 		setCurrentBoard();
 		log("CREATED");
 	}
 
 	public void onSaveInstanceState(Bundle outState) {
-		//outState.putIntArray("ESTADO", estado);
+		//outState.putIntArray("ESTADO", game);
+		this.matrixToArray(game.getGame());
+		outState.putIntArray("CURRENT_STATE", currentBoardState);
 		super.onSaveInstanceState(outState);
 	}
+	public  void arrayToMatrix(int[] array) {
+	    for (int i = 0; i < array.length; i++) 
+	    	//this.game.getGame()[i/7][i%7] = array[i];
+	    	this.game.setGameValue(i/7, i%7, array[i]);
+	}
+	
+	public  void matrixToArray(int[][] matrix) {
+	    int k=0;
+		for (int i = 0; i < 7; i++)
+	    	for (int j = 0; j < 7; j++) {
+	    		currentBoardState[k]=matrix[i][j];
+				k++;
+			}
 
+	}
+	
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		//estado = savedInstanceState.getIntArray("ESTADO");
-		Button button;
+		currentBoardState = savedInstanceState.getIntArray("CURRENT_STATE");
+		arrayToMatrix(currentBoardState);
+		//Button button;
 
-		for (int i = 0; i < ids.length; i++) {
-			button = (Button) findViewById(ids[i]);
-			if (button != null)
-				button.setText(R.string.on);
-		}
+		//TODO save number of pegs left.
+		
+		setCurrentBoard();
 	}
 
 	public void onStart() {
@@ -123,13 +154,16 @@ public class MainActivity extends Activity implements OnClickListener {
 			
 			button = (PegSolitaireButton) findViewById(ids[i]);
 			if ((button != null)){
-					button.setText(Integer.toString(board.getBoard()[x][y]));
+					//button.setText(Integer.toString(game.getGame()[x][y]));
 					button.drawOn();
+					//TODO
+					Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.alpha); 
+					button.startAnimation(animation);
 			}
 
 
 		}
-		if (board.getType()==Board.INGLES) {
+		if (game.getType()==Game.INGLES) {
 			button = (PegSolitaireButton) findViewById(R.id.pos2_6);
 			button.setVisibility(Button.INVISIBLE);
 			button = (PegSolitaireButton) findViewById(R.id.pos2_2);
@@ -140,7 +174,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			button.setVisibility(Button.INVISIBLE);
 
 		}
-
+		TextView number_pegs=(TextView) findViewById(R.id.text_view_num_pegs);
+		number_pegs.setText(Integer.toString(game.getPeg_count()));
 	}
 	private void setCurrentBoard() {
 		PegSolitaireButton button;
@@ -148,8 +183,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			for (int j = 0; j < 7; j++) {
 				button = (PegSolitaireButton) findViewById(fromPositionToId(i, j));
 				if ((button != null)){
-					button.setText(Integer.toString(board.getBoard()[i][j]));
-					if(board.getBoard()[i][j]==0){
+					//button.setText(Integer.toString(game.getGame()[i][j]));
+					if(game.getGame()[i][j]==0){
 						button.drawOff();
 					}
 					else
@@ -163,130 +198,139 @@ public class MainActivity extends Activity implements OnClickListener {
 		PegSolitaireButton button = (PegSolitaireButton) v;
 		int x,y;
 		
-		if (!board.isActive()) {
+		setCurrentBoard();
+		if (!game.isActive()) {
 			return;
 		}
-		
-		if(board.getSelectionMode()==-1){
+		/* IF NO BUTTON SELECTED */
+		if(game.getSelectionMode()==-1){
 			// get the x and y from the ID of the button
 			x=fromIdtoPositionX(v.getId());
 			y=fromIdtoPositionY(v.getId());
 			
 			// if the possition is different from blank==0 state
-			if(board.getBoard()[x][y]!=0){
-			//v.setBackgroundColor(Color.RED);
-			button.drawSelected();
-				Toast.makeText(this, "Origen: x , y = "+Integer.toString(x)+" , "+Integer.toString(y), Toast.LENGTH_SHORT).show();
-				//modo seleccion=idPosicion
-				board.setSelectionMode(v.getId());
+			if(game.getGame()[x][y]!=0){
+			
+				button.drawSelected();
+				//Toast.makeText(this, "Origen: x , y = "+Integer.toString(x)+" , "+Integer.toString(y), Toast.LENGTH_SHORT).show();
+				//Selection Mode off==-1 on==idPosicion
+				game.setSelectionMode(v.getId());
+
 			}
 			else
 				Toast.makeText(this,"Vacia", Toast.LENGTH_SHORT).show();
-
-			
 			//estaria bien generar un algoritmo que marque las posibles movidas
-			//board.showPossiblePositions();
+			//game.showPossiblePositions();
 		}
+		/* IF BUTTON SELECTED */
 		else
-		{	// A button is selected!
-			// if the new click is on the same button, leave as it was
-			if(v.getId()==board.getSelectionMode()){
-				v.setBackgroundColor(Color.LTGRAY);
-				board.setSelectionMode(-1);
+		{	// if the new click is on the same button, leave as it was
+			if(v.getId()==game.getSelectionMode()){
+				game.setSelectionMode(-1);
 				button.drawOn();
-
+				//Toast.makeText(this,"UNSELECTED", Toast.LENGTH_SHORT).show();
 			}
 			else{	
 				// the click is on a different button
 				// get the x and y from the previous button and the destination button
-				int origenX=fromIdtoPositionX(board.getSelectionMode());
-				int origenY=fromIdtoPositionY(board.getSelectionMode());
+				int origenX=fromIdtoPositionX(game.getSelectionMode());
+				int origenY=fromIdtoPositionY(game.getSelectionMode());
+				
 				int destinoX=fromIdtoPositionX(v.getId());
 				int destinoY=fromIdtoPositionY(v.getId());
 				
-				// is the position free?
-				if(board.getBoard()[destinoX][destinoY]==0){
-
+				button.drawOn();
+				
+				
+				// the position is free and it's a valid move
+				if(game.getGame()[destinoX][destinoY]==0 && validMove(origenX, origenY, destinoX, destinoY)){
 					PegSolitaireButton btn;
+					if (origenX==destinoX){ // same column
+						//if (validMove(origenX, origenY, destinoX, destinoY)) {
+						//	Toast.makeText(this, "Destino: x , y = "+Integer.toString(destinoX)+" , "+Integer.toString(destinoY)+" VALIDO", Toast.LENGTH_SHORT).show();
 
-				
-					Toast.makeText(this, "Destino: x , y = "+Integer.toString(destinoX)+" , "+Integer.toString(destinoY), Toast.LENGTH_SHORT).show();
-
-				
-					if (origenX==destinoX){
-						//mark the board[x][y]= 1
-						//button OFF
-
-						//button.drawOff();
-						board.setSelectionMode(-1);
-						//board.setBoardValue(destinoX, destinoY, 1);
+						//}
+						game.setSelectionMode(-1);
+						//game.setGameValue(destinoX, destinoY, 1);
 		
-						if (origenY<destinoY) {// el destino esta debajo
-							for (int i = origenY; i <= destinoY; i++) {
-								btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, i));
-								
-								board.setBoardValue(origenX,i, 0);
+						if (origenY<destinoY) {// el destino esta arriba
+							for (int i = origenY; i < destinoY; i++) {
+								//TODO
+								//btn = (PegSolitaireButton) findViewById(fromPositionToId(destinoX, i));
+								game.setGameValue(origenX,i, 0);
+								Toast.makeText(this, "Destino: x , y = "+Integer.toString(destinoX)+" , "+Integer.toString(i)+" es "+Integer.toString(game.getGame()[origenX][i]), Toast.LENGTH_SHORT).show();
+								//btn.drawOff();
 							}
 							btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, origenY));
-							board.setBoardValue(origenX,origenY, 0);
-							board.setBoardValue(destinoX,destinoY, 1);
-						}else // el destino esta arriba
+							//btn.drawOff();
+							game.setGameValue(origenX,origenY, 0);
+							game.setGameValue(destinoX,destinoY, 1);
+							
+						}else if (origenY>destinoY)// el destino esta abajo
 						{
-							for (int i = destinoY; i <= origenY; i++) {
-								btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, i));
-								
-								board.setBoardValue(origenX,i, 0);
+							for (int i = origenY; i > destinoY; i--) {
+								//btn = (PegSolitaireButton) findViewById(fromPositionToId(destinoX, i));
+								game.setGameValue(origenX,i, 0);
+							//	btn.drawOff();
+								//Toast.makeText(this, "Destino: x , y = "+Integer.toString(destinoX)+" , "+Integer.toString(i)+" a 0", Toast.LENGTH_SHORT).show();
+
 							}
 							btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, origenY));
-							board.setBoardValue(origenX,origenY, 0);
-							board.setBoardValue(destinoX,destinoY, 1);	
+							//btn.drawOff();
+							game.setGameValue(origenX,origenY, 0);
+							game.setGameValue(destinoX,destinoY, 1);
+
 						}
-
-
-					}
+					} // different column same row
 					else if (origenX!=destinoX && origenY==destinoY){
-						//mark the board[x][y]= 1
-						board.setSelectionMode(-1);
-						//board.setBoardValue(destinoX, destinoY, 1);
-						if (origenX<destinoX) {// el destino esta debajo
+						game.setSelectionMode(-1);
+						button.drawOn();
+
+						if (origenX<destinoX) { // destino esta a la derecha
 							for (int i = origenX; i <= destinoX; i++) {
 								btn = (PegSolitaireButton) findViewById(fromPositionToId(i, origenY));
-								board.setBoardValue(i,origenY, 0);	
+								game.setGameValue(i,origenY, 0);
+								//btn.drawOff();
 	
 							}
 							btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, origenY));
-							//btn.drawOn();
-							board.setBoardValue(origenX,origenY, 0);
-							board.setBoardValue(destinoX,destinoY, 1);
+							//btn.drawOff();
+							game.setGameValue(origenX,origenY, 0);
+							game.setGameValue(destinoX,destinoY, 1);
+
 						}
-						else{
-							for (int i = destinoX; i <= origenX; i++) {
+						else if (origenX>destinoX){ // destino  esta a la izquierda
+							for (int i = origenX; i >= destinoX; i--) {
 								btn = (PegSolitaireButton) findViewById(fromPositionToId(i, origenY));
-								board.setBoardValue(i,origenY, 0);	
-	
+								game.setGameValue(i,origenY, 0);
 							}
 							btn = (PegSolitaireButton) findViewById(fromPositionToId(origenX, origenY));
-							//btn.drawOn();
-							board.setBoardValue(origenX,origenY, 0);
-							board.setBoardValue(destinoX,destinoY, 1);
+							//btn.drawOff();
+							game.setGameValue(origenX,origenY, 0);
+							game.setGameValue(destinoX,destinoY, 1);
 						}
-
-					}
+					}//end if same row
 					else{
-
 							Toast.makeText(this,"En diagonal no se puede", Toast.LENGTH_SHORT).show();
-
-							
-							
+							game.setSelectionMode(-1);					
 					}
 
 				}
-				else Toast.makeText(this,"Vacia", Toast.LENGTH_SHORT).show();
-
-					
-		
-			}
+				else {
+					Toast.makeText(this,"Movimiento No Valido", Toast.LENGTH_SHORT).show();
+					game.setSelectionMode(-1);
+					button.drawOn();
+				}
+				game.setSelectionMode(-1);					
+			}// END IF - DESTIONATION CLICKED
+			
+			/*UPDATE BOARD FROM GAME MATRIX */
+			game.updatePegCount();
 			setCurrentBoard();
+			
+			/*UPDATE PEG COUNT */
+			TextView number_pegs=(TextView) findViewById(R.id.text_view_num_pegs);
+			number_pegs.setText(Integer.toString(game.getPeg_count()));
 
 		}// end else selectionMode
 	
@@ -297,37 +341,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		//button.setClickable(false);
 		currentPlayer = currentPlayer == 0 ? 1 : 0;
-		/*
-		 * Seleccionar posicion y entrar modo salto
-		 * 
-		 * 
-		 * calcular las posibles direcciones de salto
-		 * 
-		 * posiciones libres del tablero y ver si estan en la misma columna o
-		 * fila del id de la posicion seleccionada
-		 * 
-		 * 
-		 * si se presiona de nuevo, se deselecciona
-		 * 
-		 * si se presiona una posicion valida saltar eliminar
-		 */
-		
-		
-//		if (button.getId() == R.id.pos4_6) {
-//			Button button_aux = (Button) findViewById(R.id.pos4_4);
-//			button_aux.setText(R.string.on);
-//			button_aux = (Button) findViewById(R.id.pos4_5);
-//			button_aux.setText(R.string.off);
-//	
-//
-//		}
 
-
-		// lo suyo seria definir:
-		// clase posicion
-		// clase ficha
-		// clase jugador
-		// clase accion
 
 	}
 
@@ -386,24 +400,58 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		return -1;
 	}
-	//TODO
+
 	public Boolean validMove(int x0, int y0, int x, int y) {
 		if(x0==x){
 			if (y0<y) {
 				boolean flag = true;
+				/*destination must be 1 position further*/
+				if (y==y0+1) {
+					return false;
+				}
+				for(int i = y0; i < y && flag; i++)
+				{
+				  if (game.getGame()[x][i] != 1) 
+					  flag = false;
+				}
+
+				return flag;
+			}else{
+				boolean flag = true;
+				if (y0==y+1) {
+					return false;
+				}
+				for(int i = y0; i > y && flag; i--)
+				{
+				  if (game.getGame()[x][i] != 1) 
+					  flag = false;
+				}
+				return flag;
+			}
+	
+			
+		}else if(y0==y){
+			if (x0<x) {
+				boolean flag = true;
+				if (x==x0+1) {
+					return false;
+				}
 				int first = 1;
 				for(int i = x0; i < x && flag; i++)
 				{
-				  if (board.getBoard()[x][i] != first) flag = false;
+				  if (game.getGame()[i][y] != first) flag = false;
 				}
 				return flag;
 			}else{
 				boolean flag = true;
-				int first = 1;
-				for(int i = x; i < x0 && flag; i++)
-				{
-				  if (board.getBoard()[x][i] != first) flag = false;
+				if (x0==x+1) {
+					return false;
 				}
+				for(int i = x0; i > x && flag; i--)
+				{
+				  if (game.getGame()[i][y] != 1) flag = false;
+				}
+
 				return flag;
 			}
 			

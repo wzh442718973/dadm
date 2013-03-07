@@ -1,56 +1,38 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
-import java.util.Date;
+import java.util.Calendar;
+
 
 public class Movement {
-	private int origin[][]=new int[1][1];
-	private int destination[][]= new int[1][1];;
+	private int origin[]=new int[2];
+	private int destination[]= new int[2];
 	private int player;
-	/**
-	 * @return the origin
-	 */
-	public int[][] getOrigin() {
-		return origin;
-	}
-	/**
-	 * @return the destination
-	 */
-	public int[][] getDestination() {
-		return destination;
-	}
+	final Calendar c ;
+	
+
+	public Movement( int x0, int y0, int x, int y, int player) {
+		this.origin[0]=x0;
+		this.origin[1]=y0;
+		
+		this.destination[0]=x0;
+		this.destination[1]=y0;
+		setPlayer(player);
+        c= Calendar.getInstance();
+}
+
+
 	/**
 	 * @return the player
 	 */
 	public int getPlayer() {
 		return player;
 	}
-	/**
-	 * @param origin the origin to set
-	 */
-	public void setOrigin(int[][] origin) {
-		this.origin = origin;
-	}
-	/**
-	 * @param destination the destination to set
-	 */
-	public void setDestination(int[][] destination) {
-		this.destination = destination;
-	}
+
+
 	/**
 	 * @param player the player to set
 	 */
 	public void setPlayer(int player) {
 		this.player = player;
-	}
-	/**
-	 * @param origin
-	 * @param destination
-	 * @param player
-	 */
-	public Movement(int[][] origin, int[][] destination, int player) {
-		this.origin = origin;
-		this.destination = destination;
-		this.player = player;
-	}
-	
+	}	
 }
