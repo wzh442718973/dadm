@@ -37,6 +37,10 @@ public class Position {
 	public Position() {
 		this.setEstado(OFF);
 	}
+	
+	public void setON() {
+		this.setEstado(ON);
+	}
 }
 
 

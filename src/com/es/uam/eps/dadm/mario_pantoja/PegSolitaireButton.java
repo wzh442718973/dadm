@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.util.AttributeSet;
 import android.widget.Button;
 
@@ -52,39 +51,41 @@ public class PegSolitaireButton extends Button	{
 		currentId=idSelected;
 	}
 	
-	//TODO
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 	    
 		float width = getWidth();
 	    float height = getHeight();
 	    
-	    float padding = 10;
-	         
-//		int color=getResources().getColor(R.color.background_color);
-//		paint.setColor(color);
-//		paint.setStrokeWidth(3);
-//		canvas.drawRect(30, 10,90,100, paint);
-//		paint.setStrokeWidth(0);
-//		paint.setColor(color);
-//		canvas.drawCircle(10, 10,30, paint);
-		
-		
+	
+	    
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), currentId);
+		paint.setColor(Color.BLACK);
         canvas.drawBitmap(bitmap, 0, 0, paint);
+        
+        
+		int color=getResources().getColor(R.color.background_color);
+		//paint.setColor(color);
+		//paint.setStrokeWidth(3);
+		//	canvas.drawRect(30, 10,90,100, paint);
 		
-//		Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//		backgroundPaint.setColor(color);
-//		canvas.drawRect(padding, padding, width-padding, height-padding,
-//		                         backgroundPaint);
-//	    float x = 0.5f * width;
-//	    float y = 0.5f * height;
-//	    //Paint paint = new Paint();
-//	    paint.setColor(getResources().getColor(R.color.textColor));
-//	    paint.setStrokeWidth(2);
-//	    paint.setTextAlign(Align.CENTER);
-//	    paint.setTextSize(20);
-//	    canvas.drawText("* ", x, y, paint);
+		paint.setStrokeWidth(0);
+		paint.setColor(color);
+		canvas.drawCircle(10, 10,30, paint);
+		
+	
+		
+		Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		//ackgroundPaint.setColor(color);
+		//canvas.drawRect(padding, padding, width-padding, height-padding, backgroundPaint);
+	    float x = 0.5f * width;
+	    float y = 0.5f * height;
+	    //Paint paint = new Paint();
+	    paint.setColor(getResources().getColor(R.color.textColor));
+	    //paint.setStrokeWidth(2);
+	    //paint.setTextAlign(Align.CENTER);
+	    //paint.setTextSize(20);
+	    canvas.drawText("* ", x, y, paint);
 		
 	}
 }
