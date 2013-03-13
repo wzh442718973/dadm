@@ -8,6 +8,8 @@
     <string name="on">o</string>
     <string name="off"></string>
     <string name="tittle_num_pegs">Pegs:</string>
+    <string name="newgamestr">New Game</string>
+    <string name="aboutstr">About</string>
     
     
 </resources>

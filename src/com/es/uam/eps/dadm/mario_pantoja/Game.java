@@ -20,8 +20,6 @@ public class Game {
 	public static final int SELECTED = 2;
 
 
-
-	
 	private enum STATE {Inactive, Active, Won, Drawn};
 
 	private STATE gameState=STATE.Inactive;
@@ -269,7 +267,7 @@ public class Game {
 	
 	public void select(int x, int y) {
 		//set the position as selected
-        grid[x][y]=2;
+        grid[x][y]=SELECTED;
         checkGameState();
 	}
 	
