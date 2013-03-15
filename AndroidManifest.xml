@@ -30,6 +30,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+         <activity
+            android:name=".Paint"
+            android:label="" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.PAINT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

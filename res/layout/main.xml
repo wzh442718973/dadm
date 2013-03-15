@@ -17,8 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/aboutstr" />
+    <Button
+        android:id="@+id/paintbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/paintstr" />
+    
 
 
-
-</LinearLayout
-    >
+</LinearLayout>

@@ -32,7 +32,7 @@ public class ScoreBoard extends View {
 		setFocusableInTouchMode(true);
 
 		/* you can set the type of boar here, ENGLISH OR EUROPEAN*/
-		game = new Game(Game.ENGLISH);
+		game = new Game(context,Game.ENGLISH);
 
 	}
 	

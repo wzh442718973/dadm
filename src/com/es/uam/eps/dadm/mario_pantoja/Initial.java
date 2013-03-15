@@ -20,6 +20,9 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.about);
 		button.setOnClickListener( this);
+		
+		button = (Button) findViewById(R.id.paintbtn);
+		button.setOnClickListener( this);
 	}
 	
 	/*public boolean onTouchEvent(MotionEvent event) {
@@ -32,13 +35,14 @@ public class Initial extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if (v.getId()==R.id.newgamebtn) {
-
 			startActivity(new Intent("com.es.uam.eps.dadm.mario_pantoja.SESSION"));
-
 		}
 		else if (v.getId()==R.id.about) {
 			Intent intent= new Intent(android.content.Intent.ACTION_VIEW,Uri.parse("http://www.marioandrei.com"));
 			startActivity(intent);
+		}
+		else if (v.getId()==R.id.paintbtn) {
+			startActivity(new Intent("com.es.uam.eps.dadm.mario_pantoja.PAINT"));
 		}
 	}
 	

@@ -1,5 +1,9 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
+import java.util.Arrays;
+
+import android.content.Context;
+
 
 
 
@@ -10,7 +14,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
  */
 public class Game {
 	
-
+private Context context;
 	public static final int EUROPEAN = 33;
 	public static final int ENGLISH = 37;
 
@@ -27,14 +31,42 @@ public class Game {
 	
 	private boolean selectionModeOn=false;
 	private int []pivot = new int[]{-1,-1};
+	private int []destination = new int[]{-1,-1};
 
 	//	private Position[][] grid; 
 	private int[][] grid; 
+	private int[] currentBoardStateArray=new int[49];
+
 
 	private int currentPlayer;
 	private int pegCount;
 	private int moveCount;
+	
+	
+	//DB
+	GameSQLiteHelper db;
 
+	
+
+	public int [] getDestination() {
+		return destination;
+	}
+	public void setDestination(int [] destination) {
+		this.destination = destination;
+	}
+	/**
+	 * @return the currentBoardStateArray
+	 */
+	public int[] getCurrentBoardStateArray() {
+		return currentBoardStateArray;
+	}
+	/**
+	 * @param currentBoardStateArray the currentBoardStateArray to set
+	 */
+	public void setCurrentBoardStateArray(int[] currentBoardState) {
+		this.currentBoardStateArray = currentBoardState;
+	}
+	
 	/**
 	 * @return the moveCount
 	 */
@@ -121,7 +153,7 @@ public class Game {
 	 * 
 	 * If no type on the arguments, EUROPEAN board
 	 */
-	public Game() {
+	public Game( Context context) {
 		//initialize grid 7x7 by default FRENCH
 		this.setGame(new int[7][7]);
 		for (int i = 0; i < 7; i++) {
@@ -151,11 +183,15 @@ public class Game {
 		this.gameState=STATE.Active;
 		this.pegCount=EUROPEAN;
 		this.currentPlayer=0;
+
+		
+		GameSQLiteHelper db = new GameSQLiteHelper(context);
 	}
 	
-	public Game(int tipo){
+	public Game(Context context, int tipo){
 		if (tipo==EUROPEAN){
 			this.type=EUROPEAN;
+			this.context=context;
 			this.setGame(new int[7][7]);
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
@@ -224,8 +260,13 @@ public class Game {
 		this.gameState=STATE.Active;
 		this.currentPlayer=0;
 	}
-	
-	
+	/**
+	 * TODO
+	 * 
+	 */
+	public void saveGrid(){
+		
+	}
 	public void updatePegCount(){
 		int pegs=0;
 		for (int i = 0; i < 7; i++) {
@@ -259,10 +300,18 @@ public class Game {
 			else
 				grid[x+1][y]=OFF;
 		}
+		
+		//substract pegCount
+		pegCount--;
+		
 		//check if the number of pegs is 1
-		pegCount=pegCount-2;
-		updatePegCount();
 		checkGameState();
+		
+		saveGridOnArray();
+	  //  db.addGame(arrayToString(getCurrentBoardStateArray()));
+		
+		/* update number of moves */
+		moveCount++;
 	}
 	
 	public void select(int x, int y) {
@@ -304,6 +353,7 @@ public class Game {
 		this.type = type;
 	}
 	
+	//TODO
 	public boolean validMove(int x0, int y0, int x, int y) {
 		/*
 		 *  0 * *   
@@ -311,6 +361,9 @@ public class Game {
 		 *  * * 0
 		 * 
 		 * */
+		if (grid[x][y]==ON) {
+			return false;
+		}
 		if(x0==x){
 			if (y0<y) {
 				/*destination must be 1 position further*/
@@ -342,11 +395,35 @@ public class Game {
 				return true;
 			}
 			
-		}
+		}//TODO diagonal
 		else
 			return false;
 	} // end validMove
 	
 
+
+	
+	public  void updateGridFromCurrentBoardStateArray() {
+	    for (int i = 0; i < currentBoardStateArray.length; i++) 
+	    	//this.game.getGame()[i/7][i%7] = array[i];
+	    	this.setGameValue(i/7, i%7, currentBoardStateArray[i]);
+	}
+	
+	/**
+	 * update the currentBoardStateArray
+	 */
+	public  void saveGridOnArray() {
+	    int k=0;
+		for (int i = 0; i < 7; i++)
+	    	for (int j = 0; j < 7; j++) {
+	    		currentBoardStateArray[k]=grid[i][j];
+				k++;
+			}
+	}
+	/* from Int[] to String */
+	public String arrayToString(int[] array) {
+		String res = Arrays.toString(array);
+		return res;
+	}
 	
 }

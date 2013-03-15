@@ -10,6 +10,7 @@
     <string name="tittle_num_pegs">Pegs:</string>
     <string name="newgamestr">New Game</string>
     <string name="aboutstr">About</string>
+    <string name="paintstr">Paint</string>
     
     
 </resources>
