@@ -1,5 +1,6 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.content.Context;
@@ -154,30 +155,30 @@ private Context context;
 	 * If no type on the arguments, EUROPEAN board
 	 */
 	public Game( Context context) {
-		//initialize grid 7x7 by default FRENCH
+		//initialize grid 7x7 by default EUROPEAN
 		this.setGame(new int[7][7]);
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 7; j++) {
-				grid[i][j]=1;
+				grid[i][j]=ON;
 			}
 		}
-		getGrid()[0][0]=-1;
-		getGrid()[0][1]=-1;
-		getGrid()[1][0]=-1;
+		getGrid()[0][0]=INVISIBLE;
+		getGrid()[0][1]=INVISIBLE;
+		getGrid()[1][0]=INVISIBLE;
 		
-		getGrid()[0][5]=-1;
-		getGrid()[1][6]=-1;
-		getGrid()[0][6]=-1;
+		getGrid()[0][5]=INVISIBLE;
+		getGrid()[1][6]=INVISIBLE;
+		getGrid()[0][6]=INVISIBLE;
 		
-		getGrid()[5][0]=-1;
-		getGrid()[6][0]=-1;
-		getGrid()[6][1]=-1;
+		getGrid()[5][0]=INVISIBLE;
+		getGrid()[6][0]=INVISIBLE;
+		getGrid()[6][1]=INVISIBLE;
 		
-		getGrid()[5][6]=-1;
-		getGrid()[6][5]=-1;
-		getGrid()[6][6]=-1;
+		getGrid()[5][6]=INVISIBLE;
+		getGrid()[6][5]=INVISIBLE;
+		getGrid()[6][6]=INVISIBLE;
 		
-		getGrid()[3][3]=0;
+		getGrid()[3][3]=OFF;
 		
 		
 		this.gameState=STATE.Active;
@@ -185,7 +186,7 @@ private Context context;
 		this.currentPlayer=0;
 
 		
-		GameSQLiteHelper db = new GameSQLiteHelper(context);
+		//GameSQLiteHelper db = new GameSQLiteHelper(context);
 	}
 	
 	public Game(Context context, int tipo){
@@ -195,28 +196,27 @@ private Context context;
 			this.setGame(new int[7][7]);
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
-					getGrid()[i][j]=1;
+					getGrid()[i][j]=ON;
 				}
 			}
+			getGrid()[0][0]=INVISIBLE;
+			getGrid()[0][1]=INVISIBLE;
+			getGrid()[1][0]=INVISIBLE;
 			
-			getGrid()[0][0]=-1;
-			getGrid()[0][1]=-1;
-			getGrid()[1][0]=-1;
+			getGrid()[0][5]=INVISIBLE;
+			getGrid()[1][6]=INVISIBLE;
+			getGrid()[0][6]=INVISIBLE;
 			
-			getGrid()[0][5]=-1;
-			getGrid()[1][6]=-1;
-			getGrid()[0][6]=-1;
+			getGrid()[5][0]=INVISIBLE;
+			getGrid()[6][0]=INVISIBLE;
+			getGrid()[6][1]=INVISIBLE;
 			
-			getGrid()[5][0]=-1;
-			getGrid()[6][0]=-1;
-			getGrid()[6][1]=-1;
-			
-			getGrid()[5][6]=-1;
-			getGrid()[6][5]=-1;
-			getGrid()[6][6]=-1;
+			getGrid()[5][6]=INVISIBLE;
+			getGrid()[6][5]=INVISIBLE;
+			getGrid()[6][6]=INVISIBLE;
 			
 			
-			getGrid()[3][3]=0;
+			getGrid()[3][3]=OFF;
 
 		}
 		else if(tipo==ENGLISH){
@@ -225,33 +225,33 @@ private Context context;
 			this.setGame(new int[7][7]);
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
-					getGrid()[i][j]=1;
+					getGrid()[i][j]=ON;
 				}
 			}
 			
-			getGrid()[0][0]=-1;
-			getGrid()[0][1]=-1;
-			getGrid()[1][0]=-1;
+			getGrid()[0][0]=INVISIBLE;
+			getGrid()[0][1]=INVISIBLE;
+			getGrid()[1][0]=INVISIBLE;
 			
-			getGrid()[0][5]=-1;
-			getGrid()[1][6]=-1;
-			getGrid()[0][6]=-1;
+			getGrid()[0][5]=INVISIBLE;
+			getGrid()[1][6]=INVISIBLE;
+			getGrid()[0][6]=INVISIBLE;
 			
-			getGrid()[5][0]=-1;
-			getGrid()[6][0]=-1;
-			getGrid()[6][1]=-1;
+			getGrid()[5][0]=INVISIBLE;
+			getGrid()[6][0]=INVISIBLE;
+			getGrid()[6][1]=INVISIBLE;
 			
-			getGrid()[5][6]=-1;
-			getGrid()[6][5]=-1;
-			getGrid()[6][6]=-1;
+			getGrid()[5][6]=INVISIBLE;
+			getGrid()[6][5]=INVISIBLE;
+			getGrid()[6][6]=INVISIBLE;
 			
 			
-			getGrid()[1][5]=-1;
-			getGrid()[5][1]=-1;
-			getGrid()[1][1]=-1;
-			getGrid()[5][5]=-1;
+			getGrid()[1][5]=INVISIBLE;
+			getGrid()[5][1]=INVISIBLE;
+			getGrid()[1][1]=INVISIBLE;
+			getGrid()[5][5]=INVISIBLE;
 
-			getGrid()[3][3]=0;
+			getGrid()[3][3]=OFF;
 
 		}
 		
@@ -267,6 +267,311 @@ private Context context;
 	public void saveGrid(){
 		
 	}
+	public String posibilities(ArrayList<int[]> posibleDestinations) {
+		String string= "x,y = ";
+		for (int[] is : posibleDestinations) {
+			string=string+" "+Integer.toString(is[0])+","+Integer.toString(is[1]);
+		}
+		return string;
+	}
+	public ArrayList<int[]> posibleDestinations(int x, int y){
+		int northX, southX, westX, eastX,nwX,neX,seX,swX;
+		int northY, southY, westY, eastY,nwY,neY,seY,swY;
+		northX=x;
+		northY=y-1;
+		southX=x;
+		southY=y+1;
+		westX=x+1;
+		westY=y;
+		eastX=x-1;
+		eastY=y;
+		ArrayList<int[]> destinations=new ArrayList<int[]>();
+		/* from grid 2,2 to grid 4 4*/
+		if ( (x>1) && (y>1)&&(x<5)&&(y<5) ) {
+			
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+		/* for the  row 1 */
+		}else if (y==1 && x<=5 && x>=1) {
+			
+			if (x==1) {
+				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=southX;
+					aux[1]=southY+1;
+					destinations.add(aux);
+				}
+				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=westX+1;
+					aux[1]=westY;
+					destinations.add(aux);
+				}
+			}
+			else if (x==5) {
+				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=southX;
+					aux[1]=southY+1;
+					destinations.add(aux);
+				}
+				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=eastX-1;
+					aux[1]=eastY;
+					destinations.add(aux);
+				}
+			}
+			else if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+		/*for the row 5 */	
+		}else if (y==5 && x<=5 && x>=1) {
+			
+			if (x==1) {
+				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+				}
+				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=westX+1;
+					aux[1]=westY;
+					destinations.add(aux);
+				}
+			}
+			else if (x==5) {
+				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+				}
+				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=eastX-1;
+					aux[1]=eastY;
+					destinations.add(aux);
+				}
+			}
+			else if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+		/* column 1 */	
+		}else if (x==1 && y<5 && y>1) {
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+		/* column 5*/	
+		}else if (x==5 && y<5 && y>1) {
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+			
+		}
+		
+		else if (x==0) {
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+		}else if (x==6) {
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+		}
+		else if (y==0) {
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+			}
+		}else if (y==6) {
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+			}
+		}
+		
+		
+		return destinations;
+	}
 	public void updatePegCount(){
 		int pegs=0;
 		for (int i = 0; i < 7; i++) {
@@ -281,7 +586,7 @@ private Context context;
 	public void play(int x0, int y0, int x, int y) {
 		/* play occurs only if is a valid Move */
 		
-		// mark the old postion as OFF
+		// mark the old position as OFF
 		grid[x0][y0]=OFF;
 		//mark the new position as ON
 		grid[x][y]=ON;
@@ -352,7 +657,11 @@ private Context context;
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+	public ArrayList<Position> PossibleDestinations(int x, int y) {
+		
+		return null;
+		
+	}
 	//TODO
 	public boolean validMove(int x0, int y0, int x, int y) {
 		/*

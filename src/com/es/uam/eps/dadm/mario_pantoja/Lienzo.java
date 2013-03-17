@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -32,6 +33,7 @@ public class Lienzo extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		PointF current = new PointF(event.getX(), event.getY());
+		pline.setColor(Color.WHITE);
 		if (!current.equals(last)) {
 			points.add(current);
 			presiones.add(event.getPressure());
