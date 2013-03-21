@@ -2,6 +2,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 
@@ -14,8 +15,9 @@ import android.content.Context;
  * MODEL
  */
 public class Game {
-	
-private Context context;
+
+	private Context context;
+
 	public static final int EUROPEAN = 33;
 	public static final int ENGLISH = 37;
 
@@ -24,20 +26,20 @@ private Context context;
 	public static final int INVISIBLE = -1;
 	public static final int SELECTED = 2;
 
+	private enum STATE {
+		Inactive, Active, Won, Drawn
+	};
 
-	private enum STATE {Inactive, Active, Won, Drawn};
+	private STATE gameState = STATE.Inactive;
+	private int type = ENGLISH;
 
-	private STATE gameState=STATE.Inactive;
-	private int type=ENGLISH;
-	
-	private boolean selectionModeOn=false;
-	private int []pivot = new int[]{-1,-1};
-	private int []destination = new int[]{-1,-1};
+	private boolean selectionModeOn = false;
+	private int[] pivot = new int[] { -1, -1 };
+	private int[] destination = new int[] { -1, -1 };
 
-	//	private Position[][] grid; 
-	private int[][] grid; 
-	private int[] currentBoardStateArray=new int[49];
-
+	// private Position[][] grid;
+	private int[][] grid;
+	private int[] currentBoardStateArray = new int[49];
 
 	private int currentPlayer;
 	private int pegCount;
@@ -47,8 +49,24 @@ private Context context;
 	//DB
 	GameSQLiteHelper db;
 
+	/**
+	 * Set and Get
+	 */
 	
+	/**
+	 * @return the context
+	 */
+	public Context getContext() {
+		return context;
+	}
 
+	public void setContext(Context context) {
+		this.context = context;
+	}
+	/**
+	 * @param context the context to set
+	 */
+	
 	public int [] getDestination() {
 		return destination;
 	}
@@ -146,6 +164,23 @@ private Context context;
 	public void setPegCount(int peg_count) {
 		this.pegCount = peg_count;
 	}
+	
+	public int[][] getGrid() {
+		return grid;
+	}
+	public void setGame(int[][] game) {
+		this.grid = game;
+	}
+	public void setGameValue(int x,int y,int value){
+		this.grid[x][y]=value;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	
 	/**
 	 * @param gameState
 	 * @param tablero
@@ -156,43 +191,398 @@ private Context context;
 	 */
 	public Game( Context context) {
 		//initialize grid 7x7 by default EUROPEAN
-		this.setGame(new int[7][7]);
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 7; j++) {
-				grid[i][j]=ON;
-			}
-		}
-		getGrid()[0][0]=INVISIBLE;
-		getGrid()[0][1]=INVISIBLE;
-		getGrid()[1][0]=INVISIBLE;
-		
-		getGrid()[0][5]=INVISIBLE;
-		getGrid()[1][6]=INVISIBLE;
-		getGrid()[0][6]=INVISIBLE;
-		
-		getGrid()[5][0]=INVISIBLE;
-		getGrid()[6][0]=INVISIBLE;
-		getGrid()[6][1]=INVISIBLE;
-		
-		getGrid()[5][6]=INVISIBLE;
-		getGrid()[6][5]=INVISIBLE;
-		getGrid()[6][6]=INVISIBLE;
-		
-		getGrid()[3][3]=OFF;
-		
+		initializeGrid(EUROPEAN);
+		setContext(context);
 		
 		this.gameState=STATE.Active;
 		this.pegCount=EUROPEAN;
 		this.currentPlayer=0;
-
 		
-		//GameSQLiteHelper db = new GameSQLiteHelper(context);
+		db = new GameSQLiteHelper(context);
 	}
 	
-	public Game(Context context, int tipo){
-		if (tipo==EUROPEAN){
+	public Game(Context context, int type){
+		setContext(context);
+		initializeGrid(type);
+		this.updatePegCount();
+
+		this.gameState=STATE.Active;
+		this.currentPlayer=0;
+		
+
+		db = new GameSQLiteHelper(context);
+
+	}
+	//TODO db new game from where to get the game status			
+	public Game(int id, String gameInString, int pegCount) {
+
+		for (int i = 0; i < currentBoardStateArray.length; i++) {
+			List<String> items = Arrays.asList(gameInString.split("\\s*,\\s*"));
+			currentBoardStateArray[i] = Integer.parseInt(items.get(i));
+		}
+		this.updateGridFromCurrentBoardStateArray();
+	}
+
+	public String posibilities(ArrayList<int[]> posibleDestinations) {
+		String string= "x,y = ";
+		for (int[] is : posibleDestinations) {
+			string=string+" "+Integer.toString(is[0])+","+Integer.toString(is[1]);
+		}
+		return string;
+	}
+	public ArrayList<int[]> posibleDestinations(int x, int y){
+		int northX, southX, westX, eastX;
+		int northY, southY, westY, eastY;
+		northX=x;
+		northY=y-1;
+		southX=x;
+		southY=y+1;
+		westX=x+1;
+		westY=y;
+		eastX=x-1;
+		eastY=y;
+		ArrayList<int[]> destinations=new ArrayList<int[]>();
+		/* from grid 2,2 to grid 4 4*/
+		if ( (x>1) && (y>1)&&(x<5)&&(y<5) ) {
+			
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+					//destinations.addAll(posibleDestinationsAux(aux[0], aux[1], x, y));
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+		/* for the  row 1 */
+		}else if (y==1 && x<=5 && x>=1) {
+			
+			if (x==1) {
+				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=southX;
+					aux[1]=southY+1;
+					destinations.add(aux);
+
+				}
+				if (y!=1) {
+				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=westX+1;
+					aux[1]=westY;
+					destinations.add(aux);
+
+				}}
+			}
+			else if (x==5) {
+				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=southX;
+					aux[1]=southY+1;
+					destinations.add(aux);
+
+				}
+				if (y!=1 && y!=5) {
+				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=eastX-1;
+					aux[1]=eastY;
+					destinations.add(aux);
+
+				}
+				}
+			}
+			else if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+		/*for the row 5 */	
+		}else if (y==5 && x<=5 && x>=1) {
+			
+			if (x==1) {
+				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+
+				}
+				if (x!=1) {
+
+				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=westX+1;
+					aux[1]=westY;
+					destinations.add(aux);
+
+				}
+				}
+			}
+			else if (x==5) {
+				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=northX;
+					aux[1]=northY-1;
+					destinations.add(aux);
+
+				}
+				if (x!=5) {
+
+				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+					int[] aux=new int[2];
+
+					aux[0]=eastX-1;
+					aux[1]=eastY;
+					destinations.add(aux);
+
+				}
+				}
+			}
+			else if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+		/* column 1 */	
+		}else if (x==1 && y<5 && y>1) {
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+		/* column 5*/	
+		}else if (x==5 && y<5 && y>1) {
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+			
+		}
+		
+		else if (x==0) {
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+		}else if (x==6) {
+			if (y!=1 && y!=5) {
+				
+			
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+		}
+		else if (y==0) {
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+			if (y!=1 && y!=5) {
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+			}
+			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=southX;
+				aux[1]=southY+1;
+				destinations.add(aux);
+
+			}
+		}else if (y==6) {
+			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=eastX-1;
+				aux[1]=eastY;
+				destinations.add(aux);
+
+			}
+			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=northX;
+				aux[1]=northY-1;
+				destinations.add(aux);
+
+			}
+			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
+				int[] aux=new int[2];
+
+				aux[0]=westX+1;
+				aux[1]=westY;
+				destinations.add(aux);
+
+			}
+		}
+		
+		
+		return destinations;
+	}
+	
+	public void initializeGrid(int type){
+		if (type==EUROPEAN){
 			this.type=EUROPEAN;
-			this.context=context;
 			this.setGame(new int[7][7]);
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
@@ -219,7 +609,7 @@ private Context context;
 			getGrid()[3][3]=OFF;
 
 		}
-		else if(tipo==ENGLISH){
+		else if(type==ENGLISH){
 			this.type=ENGLISH;
 
 			this.setGame(new int[7][7]);
@@ -254,324 +644,8 @@ private Context context;
 			getGrid()[3][3]=OFF;
 
 		}
-		
-		this.updatePegCount();
-
-		this.gameState=STATE.Active;
-		this.currentPlayer=0;
 	}
-	/**
-	 * TODO
-	 * 
-	 */
-	public void saveGrid(){
-		
-	}
-	public String posibilities(ArrayList<int[]> posibleDestinations) {
-		String string= "x,y = ";
-		for (int[] is : posibleDestinations) {
-			string=string+" "+Integer.toString(is[0])+","+Integer.toString(is[1]);
-		}
-		return string;
-	}
-	public ArrayList<int[]> posibleDestinations(int x, int y){
-		int northX, southX, westX, eastX,nwX,neX,seX,swX;
-		int northY, southY, westY, eastY,nwY,neY,seY,swY;
-		northX=x;
-		northY=y-1;
-		southX=x;
-		southY=y+1;
-		westX=x+1;
-		westY=y;
-		eastX=x-1;
-		eastY=y;
-		ArrayList<int[]> destinations=new ArrayList<int[]>();
-		/* from grid 2,2 to grid 4 4*/
-		if ( (x>1) && (y>1)&&(x<5)&&(y<5) ) {
-			
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
 
-					aux[0]=northX;
-					aux[1]=northY-1;
-					destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-		/* for the  row 1 */
-		}else if (y==1 && x<=5 && x>=1) {
-			
-			if (x==1) {
-				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=southX;
-					aux[1]=southY+1;
-					destinations.add(aux);
-				}
-				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=westX+1;
-					aux[1]=westY;
-					destinations.add(aux);
-				}
-			}
-			else if (x==5) {
-				if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=southX;
-					aux[1]=southY+1;
-					destinations.add(aux);
-				}
-				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=eastX-1;
-					aux[1]=eastY;
-					destinations.add(aux);
-				}
-			}
-			else if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-		/*for the row 5 */	
-		}else if (y==5 && x<=5 && x>=1) {
-			
-			if (x==1) {
-				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=northX;
-					aux[1]=northY-1;
-					destinations.add(aux);
-				}
-				if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=westX+1;
-					aux[1]=westY;
-					destinations.add(aux);
-				}
-			}
-			else if (x==5) {
-				if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=northX;
-					aux[1]=northY-1;
-					destinations.add(aux);
-				}
-				if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-					int[] aux=new int[2];
-
-					aux[0]=eastX-1;
-					aux[1]=eastY;
-					destinations.add(aux);
-				}
-			}
-			else if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-		/* column 1 */	
-		}else if (x==1 && y<5 && y>1) {
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-		/* column 5*/	
-		}else if (x==5 && y<5 && y>1) {
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-			
-		}
-		
-		else if (x==0) {
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-		}else if (x==6) {
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-		}
-		else if (y==0) {
-			if((grid[westX][westY]==ON) && (grid[westX+1][westY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=westX+1;
-				aux[1]=westY;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-			if((grid[southX][southY]==ON) && (grid[southX][southY+1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=southX;
-				aux[1]=southY+1;
-				destinations.add(aux);
-			}
-		}else if (y==6) {
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-			if((grid[northX][northY]==ON) && (grid[northX][northY-1]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=northX;
-				aux[1]=northY-1;
-				destinations.add(aux);
-			}
-			if((grid[eastX][eastY]==ON) && (grid[eastX-1][eastY]==OFF)){
-				int[] aux=new int[2];
-
-				aux[0]=eastX-1;
-				aux[1]=eastY;
-				destinations.add(aux);
-			}
-		}
-		
-		
-		return destinations;
-	}
 	public void updatePegCount(){
 		int pegs=0;
 		for (int i = 0; i < 7; i++) {
@@ -612,11 +686,17 @@ private Context context;
 		//check if the number of pegs is 1
 		checkGameState();
 		
+		/*create array from grid so it can be saved on DB */
 		saveGridOnArray();
-	  //  db.addGame(arrayToString(getCurrentBoardStateArray()));
+	    //TODO
+		//db.addGame(this);
 		
 		/* update number of moves */
 		moveCount++;
+	}
+	public void resetPivot() {
+		grid[getPivotX()][getPivotY()]=1; 
+
 	}
 	
 	public void select(int x, int y) {
@@ -628,6 +708,10 @@ private Context context;
 	private void checkGameState (){
 		if (pegCount==1)
 			gameState = STATE.Won;
+		/*
+		 * if (movesLeft==TRUE)
+		 * 	set STATE LOST
+		 * */
 		//gameState = STATE.Drawn;
 	}
 	
@@ -642,27 +726,13 @@ private Context context;
 	public Boolean isWon() {
 		return this.getGameState()==STATE.Won;
 	}
-	public int[][] getGrid() {
-		return grid;
-	}
-	public void setGame(int[][] game) {
-		this.grid = game;
-	}
-	public void setGameValue(int x,int y,int value){
-		this.grid[x][y]=value;
-	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	public ArrayList<Position> PossibleDestinations(int x, int y) {
-		
-		return null;
-		
-	}
 	//TODO
+	public boolean movesLeft() {
+		boolean bool=true;
+		
+		return bool;
+	}
+	//TODO diagonal
 	public boolean validMove(int x0, int y0, int x, int y) {
 		/*
 		 *  0 * *   
@@ -711,7 +781,9 @@ private Context context;
 	
 
 
-	
+	/**
+	 * after retrieving the grid from DB, update the grid
+	 */
 	public  void updateGridFromCurrentBoardStateArray() {
 	    for (int i = 0; i < currentBoardStateArray.length; i++) 
 	    	//this.game.getGame()[i/7][i%7] = array[i];
@@ -719,7 +791,7 @@ private Context context;
 	}
 	
 	/**
-	 * update the currentBoardStateArray
+	 * update the currentBoardStateArray before putting it into the database
 	 */
 	public  void saveGridOnArray() {
 	    int k=0;
@@ -729,7 +801,10 @@ private Context context;
 				k++;
 			}
 	}
-	/* from Int[] to String */
+	/**
+	 *  from Int[] to String 
+	 *  
+	 */
 	public String arrayToString(int[] array) {
 		String res = Arrays.toString(array);
 		return res;

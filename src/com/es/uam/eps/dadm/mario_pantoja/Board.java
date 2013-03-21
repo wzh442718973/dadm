@@ -3,9 +3,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 import java.util.ArrayList;
 
-import org.apache.http.client.CircularRedirectException;
 
-import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -49,7 +47,7 @@ public class Board extends View {
 		setFocusableInTouchMode(true);
 
 		/* you can set the type of board here, ENGLISH OR EUROPEAN*/
-		game = new Game(context, Game.EUROPEAN);
+		game = new Game(context, Game.ENGLISH);
 		this.context=context;
 
 	}
@@ -103,6 +101,8 @@ public class Board extends View {
 			//Toast.makeText(this.getContext(), "cadena "+game.posibilities(game.posibleDestinations(game.getPivotX(), game.getPivotY())) , Toast.LENGTH_LONG).show();
 
 			paintPossibleDestinations(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
+			paintPossibleDestinationsDeep(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
+			invalidate();
 		}
 	}
 	
@@ -150,8 +150,8 @@ public class Board extends View {
 		for (int[] pos : destinations) {
 			int x=(int) (pos[0] * width_of_position)+2;
 			int y=(int) (pos[1] * width_of_position)+3;
-			int x1=(int) ((pos[0] +1)* width_of_position);
-			int y1=(int) ((pos[1] +1)* width_of_position);
+			//int x1=(int) ((pos[0] +1)* width_of_position);
+			//int y1=(int) ((pos[1] +1)* width_of_position);
 
 	        /* paint a cyan circle inside */
 		    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -171,6 +171,42 @@ public class Board extends View {
              paint.setStrokeWidth((float) (width_of_position*0.06));
              paint.setStyle(Style.STROKE);
              canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+		}
+	}
+	private void paintPossibleDestinationsDeep(ArrayList<int[]> destinations, Canvas canvas){
+
+		for (int[] position : destinations) {
+			int x0=position[0];
+			int y0=position[1];
+			
+						
+			for (int[] pos : game.posibleDestinations(x0, y0)) {
+				int x=(int) (pos[0] * width_of_position)+2;
+				int y=(int) (pos[1] * width_of_position)+3;
+
+	
+		        /* paint a cyan circle inside */
+			    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setColor(Color.YELLOW);
+				paint.setAlpha(125);
+				// Rect rect = new Rect(x,y,x1,y1);
+				//canvas.drawRect(rect, paint);
+	            
+				canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+	
+				
+				/*PAINT A RED DASHED CIRCLE*/
+				 paint.setColor(Color.RED);
+	             DashPathEffect dashPath = new DashPathEffect(new float[]{5,5}, (float)1.0);
+	
+	             paint.setPathEffect(dashPath);
+	             paint.setStrokeWidth((float) (width_of_position*0.06));
+	             paint.setStyle(Style.STROKE);
+	             canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+	             
+	             
+	 			
+			}
 		}
 	}
 	private void drawPegCount (Canvas canvas){
@@ -228,34 +264,42 @@ public class Board extends View {
 					//Toast.makeText(this.getContext(), "x,y="+Integer.toString(game.getPivotX())+" "+Integer.toString(game.getPivotY()) , Toast.LENGTH_LONG).show();
 
 					//invalidatePosition(xIndex, yIndex);
-					invalidatePosition(game.getPivotX(), game.getPivotY());
-					
-					//TODO redraw the 5x5 grid around the selection
-					Rect position = new Rect(0, 0, (int) (width_of_position*SIZE), (int) (width_of_position*SIZE));
-					invalidate(position);
-
+					//invalidatePosition(game.getPivotX(), game.getPivotY());
+					invalidatePosibilities(game.getPivotX(), game.getPivotY());
 
 				}// if we select a peg and another is already selected
-				else if (game.getSelectionModeOn()!=false){
+				else if (game.getSelectionModeOn()==true){
 					
 					//select the same peg resets
 					if (game.getGrid()[xIndex][yIndex]==2){
 						game.setGameValue(xIndex, yIndex, 1);
 						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
-						invalidatePosition(game.getPivotX(), game.getPivotY());
 						game.setSelectionModeOn(false);
-						//TODO redraw the 5x5 grid around the selection
-						Rect position = new Rect(0, 0, (int) (width_of_position*SIZE), (int) (width_of_position*SIZE));
-						invalidate(position);
+						//invalidatePosition(game.getPivotX(), game.getPivotY());
+						invalidatePosibilities(game.getPivotX(), game.getPivotY());
+
 						
 						return super.onTouchEvent(event);
 
-					}
+					}//if outside the positions reset
 					else if (game.getGrid()[xIndex][yIndex]==-1){
 						game.setSelectionModeOn(false);
 						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
 						invalidatePosition(game.getPivotX(), game.getPivotY());
+						game.setSelectionModeOn(false);
+
 						return super.onTouchEvent(event);
+					//if selects another peg , change pivot and refresh	
+					}else if (game.getGrid()[xIndex][yIndex]==1) {
+						game.setSelectionModeOn(true);
+						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
+						game.setPivot(xIndex, yIndex);
+						game.select(xIndex, yIndex);
+						invalidatePosibilities(game.getPivotX(), game.getPivotY());
+						invalidatePosition(xIndex, yIndex);
+						return super.onTouchEvent(event);
+
+
 					}
 
 					//game.setPivot(-1,-1);
@@ -271,35 +315,59 @@ public class Board extends View {
 						
 						
 						/*invalidate original position of the peg, the new position and the number of pegs*/
-						invalidatePosition(game.getPivotX(), game.getPivotY());
+						//invalidatePosition(game.getPivotX(), game.getPivotY());
+
+						game.setSelectionModeOn(false);
+						//game.setPivot(-1, -1);
+						
+
+						
+						if (!game.posibleDestinations(xIndex, yIndex).isEmpty()) {
+							
+							game.setSelectionModeOn(true);
+							
+							game.setPivot(xIndex, yIndex);
+							game.select(xIndex, yIndex);
+							
+							/*Toast.makeText(this.getContext(),
+									"Player " + game.posibleDestinations(xIndex, yIndex).toString(),
+									Toast.LENGTH_LONG).show();
+							
+							invalidatePosibilities(game.getPivotX(), game.getPivotY());
+
+							invalidatePosition(xIndex, yIndex);
+							invalidatePegCount();*/
+							
+							//game.select(xIndex, yIndex);
+							//game.setSelectionModeOn(true);
+							//game.setPivot(xIndex,yIndex);
+							
+							//invalidatePosition(xIndex, yIndex);
+							//invalidatePosition(game.getPivotX(), game.getPivotY());
+							
+							
+						}
+						invalidatePosibilities(game.getPivotX(), game.getPivotY());
+
 						invalidatePosition(xIndex, yIndex);
 						invalidatePegCount();
-						
-						game.setSelectionModeOn(false);
-						game.setPivot(-1, -1);
-
 
 					}
 					else{
 						//Toast.makeText(this.getContext(), "NOT VALID" , Toast.LENGTH_LONG).show();
 						
+						/* SHAKE  if not valid ! */
 						Animation animation=AnimationUtils.loadAnimation(context,R.anim.shake);
-						this.startAnimation(animation);
-						invalidatePosition(game.getPivotX(), game.getPivotY());
-						
+						this.startAnimation(animation);						
 						Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 						// Vibrate for 300 milliseconds
 						v.vibrate(300);
 
-
-						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
+						game.resetPivot(); 
 						game.setSelectionModeOn(false);
+						invalidatePosition(game.getPivotX(), game.getPivotY());
 
-
-
-
-					}
-					game.setSelectionModeOn(false);
+					}//else if not VALID MOVE
 					
 					if (game.isWon())
 						Toast.makeText(this.getContext(),
@@ -318,6 +386,17 @@ public class Board extends View {
 	}
 	
 	
+	private void invalidatePosibilities(int xIndex, int yIndex) {
+		int left = (int) ((xIndex-2)*width_of_position);
+		int top = (int) ((yIndex-2)*height_of_position);
+		int right = (int) ((xIndex+2)*width_of_position+width_of_position ); 
+		int bottom = (int) ((yIndex+2)*height_of_position+height_of_position );
+
+		Rect position = new Rect(left, top, right, bottom);
+		invalidate(position);
+		// TODO Auto-generated method stub
+		
+	}
 	private void invalidatePosition(int xIndex, int yIndex) {
 		int left = (int) (xIndex*width_of_position);
 		int top = (int) (yIndex*height_of_position);
