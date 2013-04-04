@@ -3,8 +3,9 @@
     package="com.es.uam.eps.dadm.mario_pantoja"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -13,32 +14,76 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar" 
-        >
-        
+        android:screenOrientation="portrait" >
         <activity
-            android:name=".Initial"
-            android:label="@string/app_name" >
+            android:name=".SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+         <activity
+            android:name=".Initial"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--
+        android:screenOrientation="portrait" 
+        android:theme="@android:style/Theme.NoTitleBar"
+        -->
+
         <activity
             android:name=".Session"
+            android:exported="false"
             android:label=""
-             android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.es.uam.eps.dadm.mario_pantoja.SESSION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-         <activity
-            android:name=".Paint"
-            android:label="" >
+        <activity
+            android:name=".About"
+            android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.PAINT" />
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.ABOUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Preferences"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.PREFERENCES" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.LOGIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Account"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.ACCCOUNT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

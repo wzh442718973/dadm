@@ -1,25 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_land"
-    android:gravity="center_vertical"
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/newgamebtn"
-        android:layout_width="260dp"
+        android:id="@+id/sitebtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/newgamestr" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Site" />
+
+    <Button
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/sitebtn"
+        android:text="@string/camerastr" />
 
     <Button
         android:id="@+id/about"
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/camera"
         android:text="@string/aboutstr" />
-  <Button
-        android:id="@+id/paintbtn"
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
-        android:text="@string/paintstr" />
-</LinearLayout>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/loginbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/about"
+        android:text="Login" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/username"
+        android:adjustViewBounds="true"
+        android:maxHeight="120dip"
+        android:maxWidth="100dip"
+        android:onClick="onLaunchCamera"
+        android:scaleType="fitXY"
+        android:src="@drawable/selected" android:contentDescription="profile pic"/>
+
+    <Button
+        android:id="@+id/newgamebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/username"
+        android:layout_below="@+id/imageButton"
+        android:layout_marginRight="16dp"
+        android:text="@string/newgamestr" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/newgamebtn"
+        android:layout_below="@+id/newgamebtn" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/european_str"
+            android:textColor="@color/textColor" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/english_str"
+            android:textColor="@color/textColor" />
+    </RadioGroup>
+
+</RelativeLayout>

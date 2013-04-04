@@ -97,6 +97,7 @@ public class GameSQLiteHelper extends SQLiteOpenHelper {
 		
 		
 		   List<Game> contactList = new ArrayList<Game>();
+		   
 	        // Select All Query
 	        String selectQuery = "SELECT  * FROM " + TABLE_GAMES;
 	 

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 
 
@@ -17,6 +19,7 @@ import android.content.Context;
 public class Game {
 
 	private Context context;
+	private DatabaseAdapter db;
 
 	public static final int EUROPEAN = 33;
 	public static final int ENGLISH = 37;
@@ -29,7 +32,31 @@ public class Game {
 	private enum STATE {
 		Inactive, Active, Won, Drawn
 	};
-
+	
+	private String board;
+	
+	private static final String board_english_basic =		"-1,-1,1,1,1,-1,-1,"+
+															"-1,-1,1,1,1,-1,-1,"+
+															"1,1,1,1,1,1,1,"+
+															"1,1,1,0,1,1,1,"+
+															"1,1,1,1,1,1,1,"+
+															"-1,-1,1,1,1,-1,-1,"+
+															"-1,-1,1,1,1,-1,-1";
+	
+	private static final String board_european_basic =		"-1,-1,1,1,1,-1,-1,"+
+															"-1,1,1,1,1,1,-1,"+
+															"1,1,1,1,1,1,1,"+
+															"1,1,1,0,1,1,1,"+
+															"1,1,1,1,1,1,1,"+
+															"-1,1,1,1,1,1,-1,"+
+															"-1,-1,1,1,1,-1,-1";	
+	private static final String board_1 =		"-1,-1,1,1,1,-1,-1,"+
+												"-1,-1,1,1,1,-1,-1,"+
+												"-1,-1,1,1,1,-1,-1,"+
+												"-1,-1,1,0,1,-1,-1,"+
+												"-1,-1,1,1,1,-1,-1,"+
+												"-1,-1,1,1,1,-1,-1,"+
+												"-1,-1,1,1,1,-1,-1";
 	private STATE gameState = STATE.Inactive;
 	private int type = ENGLISH;
 
@@ -44,10 +71,10 @@ public class Game {
 	private int currentPlayer;
 	private int pegCount;
 	private int moveCount;
-	
+	private int seconds;
 	
 	//DB
-	GameSQLiteHelper db;
+	//GameSQLiteHelper db;
 
 	/**
 	 * Set and Get
@@ -165,11 +192,27 @@ public class Game {
 		this.pegCount = peg_count;
 	}
 	
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}
+
+	public String getBoard() {
+		return board;
+	}
+
+	public void setBoard(String board) {
+		this.board = board;
+	}
+
 	public int[][] getGrid() {
 		return grid;
 	}
-	public void setGame(int[][] game) {
-		this.grid = game;
+	public void setGrid(int[][] grid) {
+		this.grid = grid;
 	}
 	public void setGameValue(int x,int y,int value){
 		this.grid[x][y]=value;
@@ -189,28 +232,39 @@ public class Game {
 	 * 
 	 * If no type on the arguments, EUROPEAN board
 	 */
-	public Game( Context context) {
+	public Game(Context context) {
+		
+		
+
+		
 		//initialize grid 7x7 by default EUROPEAN
-		initializeGrid(EUROPEAN);
+		//initializeGrid(EUROPEAN);
+		initializeGrid();
+		setSeconds(0);
+		setBoard(board_english_basic);
 		setContext(context);
 		
 		this.gameState=STATE.Active;
 		this.pegCount=EUROPEAN;
-		this.currentPlayer=0;
 		
-		db = new GameSQLiteHelper(context);
+		//db = new GameSQLiteHelper(context);
 	}
 	
 	public Game(Context context, int type){
 		setContext(context);
 		initializeGrid(type);
-		this.updatePegCount();
+		setSeconds(0);
+		if(type==ENGLISH)
+			setBoard(board_english_basic);
+		else
+			setBoard(board_european_basic);
 
+
+		this.updatePegCount();
 		this.gameState=STATE.Active;
-		this.currentPlayer=0;
 		
 
-		db = new GameSQLiteHelper(context);
+		//db = new GameSQLiteHelper(context);
 
 	}
 	//TODO db new game from where to get the game status			
@@ -582,70 +636,60 @@ public class Game {
 	
 	public void initializeGrid(int type){
 		if (type==EUROPEAN){
+
 			this.type=EUROPEAN;
-			this.setGame(new int[7][7]);
+			
+			
+			this.setGrid(new int[7][7]);
+			
+			setCurrentBoardStateArray(stringToArray(board_european_basic));
+			int k=0;
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
-					getGrid()[i][j]=ON;
+					getGrid()[j][i]=currentBoardStateArray[k];
+					k++;
 				}
 			}
-			getGrid()[0][0]=INVISIBLE;
-			getGrid()[0][1]=INVISIBLE;
-			getGrid()[1][0]=INVISIBLE;
-			
-			getGrid()[0][5]=INVISIBLE;
-			getGrid()[1][6]=INVISIBLE;
-			getGrid()[0][6]=INVISIBLE;
-			
-			getGrid()[5][0]=INVISIBLE;
-			getGrid()[6][0]=INVISIBLE;
-			getGrid()[6][1]=INVISIBLE;
-			
-			getGrid()[5][6]=INVISIBLE;
-			getGrid()[6][5]=INVISIBLE;
-			getGrid()[6][6]=INVISIBLE;
-			
-			
-			getGrid()[3][3]=OFF;
 
 		}
 		else if(type==ENGLISH){
 			this.type=ENGLISH;
 
-			this.setGame(new int[7][7]);
+			this.setGrid(new int[7][7]);
+			
+			setCurrentBoardStateArray(stringToArray(board_english_basic));
+			int k=0;
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
-					getGrid()[i][j]=ON;
+					getGrid()[j][i]=currentBoardStateArray[k];
+					k++;
 				}
 			}
-			
-			getGrid()[0][0]=INVISIBLE;
-			getGrid()[0][1]=INVISIBLE;
-			getGrid()[1][0]=INVISIBLE;
-			
-			getGrid()[0][5]=INVISIBLE;
-			getGrid()[1][6]=INVISIBLE;
-			getGrid()[0][6]=INVISIBLE;
-			
-			getGrid()[5][0]=INVISIBLE;
-			getGrid()[6][0]=INVISIBLE;
-			getGrid()[6][1]=INVISIBLE;
-			
-			getGrid()[5][6]=INVISIBLE;
-			getGrid()[6][5]=INVISIBLE;
-			getGrid()[6][6]=INVISIBLE;
-			
-			
-			getGrid()[1][5]=INVISIBLE;
-			getGrid()[5][1]=INVISIBLE;
-			getGrid()[1][1]=INVISIBLE;
-			getGrid()[5][5]=INVISIBLE;
-
-			getGrid()[3][3]=OFF;
 
 		}
 	}
 
+	
+	public void initializeGrid(){
+		
+			this.type=ENGLISH;
+			
+			
+			this.setGrid(new int[7][7]);
+			
+			setCurrentBoardStateArray(stringToArray(board_english_basic));
+			
+			int k=0;
+			for (int i = 0; i < 7; i++) {
+				for (int j = 0; j < 7; j++) {
+					getGrid()[j][i]=currentBoardStateArray[k];
+					k++;
+				}
+			}
+
+
+	
+	}
 	public void updatePegCount(){
 		int pegs=0;
 		for (int i = 0; i < 7; i++) {
@@ -702,17 +746,19 @@ public class Game {
 	public void select(int x, int y) {
 		//set the position as selected
         grid[x][y]=SELECTED;
-        checkGameState();
 	}
 	
 	private void checkGameState (){
-		if (pegCount==1)
+		if (pegCount==1){
 			gameState = STATE.Won;
-		/*
-		 * if (movesLeft==TRUE)
-		 * 	set STATE LOST
-		 * */
-		//gameState = STATE.Drawn;
+			newGameEntry();
+		}
+		/**/
+		else if (movesLeft()==false){
+			gameState=STATE.Drawn;
+			newGameEntry();
+
+		}
 	}
 	
 	public Boolean isActive() {
@@ -726,9 +772,17 @@ public class Game {
 	public Boolean isWon() {
 		return this.getGameState()==STATE.Won;
 	}
-	//TODO
 	public boolean movesLeft() {
-		boolean bool=true;
+		boolean bool=false;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
+				if(grid[i][j]==1){
+					if (!posibleDestinations(i, j).isEmpty()) {
+						return true;
+					}
+				}
+			}
+		}
 		
 		return bool;
 	}
@@ -803,11 +857,48 @@ public class Game {
 	}
 	/**
 	 *  from Int[] to String 
-	 *  
+	 *  (used to save a current state to a string )
 	 */
 	public String arrayToString(int[] array) {
 		String res = Arrays.toString(array);
+		Iterable<int[]> iterable= Arrays.asList(array);
+
+		res= TextUtils.join(",",  iterable);
 		return res;
+	}
+	
+	/**
+	 * from a String (previously loaded from the database of boards into board)
+	 * to an int array with -1, 1 and 0 (to initialize the grid)
+	 * @param string
+	 * @return
+	 */
+	public int[] stringToArray(String string) {
+		int[] array=new int[string.length()];
+		
+		String delims = ",";
+		String[] tokens = string.split(delims);
+		int i=0;
+		for (String string2 : tokens) {
+			array[i]=Integer.parseInt(string2);
+			i++;
+		}
+		return array;
+		
+	}
+	
+	private void newGameEntry(){
+
+		
+			db= new DatabaseAdapter(context);
+			db.open();
+			db.insertGame(this, "user1");
+			db.close();
+			
+			Toast.makeText(context,
+					"New game added to the database",Toast.LENGTH_SHORT).show();		
+		
+
 	}
 	
 }

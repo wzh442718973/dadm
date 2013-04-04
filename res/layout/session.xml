@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg" >
+    android:background="@drawable/bg"
+    android:layout_gravity="center_horizontal" >
 
     
     <com.es.uam.eps.dadm.mario_pantoja.Board
             android:id="@+id/board"
             android:layout_width="match_parent"
-            android:layout_height="320dip"
-            android:layout_marginTop="80dip" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dip" 
+            />
 
 
 

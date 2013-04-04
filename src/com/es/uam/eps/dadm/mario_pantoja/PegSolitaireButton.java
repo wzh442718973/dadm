@@ -15,6 +15,7 @@ import android.widget.Button;
 
 /**
  * @author marioandrei
+ * @deprecated
  * VIEW
  */
 public class PegSolitaireButton extends Button	{

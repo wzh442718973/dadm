@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import android.view.View;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,6 +36,8 @@ public class Board extends View {
     private float height_of_position;
     private float width_of_position;
     private Bitmap bitmapON,bitmapOFF,bitmapSEL;
+	private Session session;
+	private int type = Game.EUROPEAN;
 
     Context context;
     /**
@@ -46,9 +50,18 @@ public class Board extends View {
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 
-		/* you can set the type of board here, ENGLISH OR EUROPEAN*/
-		game = new Game(context, Game.ENGLISH);
+		
+		
+		/* you can set the type of board here, ENGLISH OR EUROPEAN*/		
+		SharedPreferences sharedPreferences = context.getSharedPreferences("type", Context.MODE_PRIVATE);
+		int type = sharedPreferences.getInt("type", Game.ENGLISH);
+		session = (Session) context;
+		game = new Game(context,type);
 		this.context=context;
+		
+		bitmapON = BitmapFactory.decodeResource(getResources(), R.drawable.on);
+		bitmapSEL = BitmapFactory.decodeResource(getResources(), R.drawable.selected);
+		bitmapOFF = BitmapFactory.decodeResource(getResources(), R.drawable.off);
 
 	}
 	/**
@@ -66,14 +79,14 @@ public class Board extends View {
 		this.width_of_position=width/7f;
 		this.height_of_position=height/7f;
 		
-		bitmapON = BitmapFactory.decodeResource(getResources(), R.drawable.on);
-		bitmapSEL = BitmapFactory.decodeResource(getResources(), R.drawable.selected);
-		bitmapOFF = BitmapFactory.decodeResource(getResources(), R.drawable.off);
-		
+	
 		super.onSizeChanged(width, height, oldWidth, oldHeight);
 		
 	}
-	
+	public Game getGame() {
+		return this.game;
+	}
+
 	//TODO optimize
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -100,9 +113,8 @@ public class Board extends View {
 		if (game.getSelectionModeOn()==true) {
 			//Toast.makeText(this.getContext(), "cadena "+game.posibilities(game.posibleDestinations(game.getPivotX(), game.getPivotY())) , Toast.LENGTH_LONG).show();
 
-			paintPossibleDestinations(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
-			paintPossibleDestinationsDeep(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
-			invalidate();
+			drawPossibleDestinations(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
+			drawPossibleDestinationsDeep(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
 		}
 	}
 	
@@ -134,7 +146,7 @@ public class Board extends View {
 			}
 			
 		/*else
-			{ 	
+			{ 	// for debbugin the redrawn section of the board
 				//get invalidate RECT. just redraw the dirty are from the grid
 		        Rect rect = canvas.getClipBounds();
 				int left = (int) (rect.left/width_of_position)+1;
@@ -145,7 +157,7 @@ public class Board extends View {
 			}*/
 
 	}
-	private void paintPossibleDestinations(ArrayList<int[]> destinations, Canvas canvas){
+	private void drawPossibleDestinations(ArrayList<int[]> destinations, Canvas canvas){
 
 		for (int[] pos : destinations) {
 			int x=(int) (pos[0] * width_of_position)+2;
@@ -173,7 +185,7 @@ public class Board extends View {
              canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
 		}
 	}
-	private void paintPossibleDestinationsDeep(ArrayList<int[]> destinations, Canvas canvas){
+	private void drawPossibleDestinationsDeep(ArrayList<int[]> destinations, Canvas canvas){
 
 		for (int[] position : destinations) {
 			int x0=position[0];
@@ -208,6 +220,7 @@ public class Board extends View {
 	 			
 			}
 		}
+		invalidate();
 	}
 	private void drawPegCount (Canvas canvas){
 		
@@ -241,16 +254,16 @@ public class Board extends View {
 				
 				xIndex=(int) (x/width_of_position);
 				yIndex=(int) (y/height_of_position);
-				if (xIndex>6 || yIndex>6) {
+				if (xIndex>(SIZE-1) || yIndex>6) {
 					return super.onTouchEvent(event);
 
 				}
 				
 				//if tries to select an empty position and no previous peg selected
-				if (game.getGrid()[xIndex][yIndex]==0 && game.getSelectionModeOn()==false) {
-					Toast.makeText(this.getContext(), "EMPTY" , Toast.LENGTH_LONG).show();
+				if (game.getGrid()[xIndex][yIndex]==Game.OFF && game.getSelectionModeOn()==false) {
+					//Toast.makeText(this.getContext(), "EMPTY" , Toast.LENGTH_LONG).show();
 				// if tries to click on the invisible positions of the grid (-1)
-				}else if (game.getGrid()[xIndex][yIndex]==-1) {
+				}else if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE) {
 					return super.onTouchEvent(event);
 				}// if we select a peg and is no other is selected
 				else if (game.getSelectionModeOn()==false) {
@@ -259,7 +272,7 @@ public class Board extends View {
 					game.setSelectionModeOn(true);
 					game.setPivot(xIndex,yIndex);
 						
-					if (game.getGrid()[xIndex][yIndex]==-1)
+					if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE)
 						return super.onTouchEvent(event);
 					//Toast.makeText(this.getContext(), "x,y="+Integer.toString(game.getPivotX())+" "+Integer.toString(game.getPivotY()) , Toast.LENGTH_LONG).show();
 
@@ -271,9 +284,9 @@ public class Board extends View {
 				else if (game.getSelectionModeOn()==true){
 					
 					//select the same peg resets
-					if (game.getGrid()[xIndex][yIndex]==2){
+					if (game.getGrid()[xIndex][yIndex]==Game.SELECTED){
 						game.setGameValue(xIndex, yIndex, 1);
-						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
+						game.getGrid()[game.getPivotX()][game.getPivotY()]=Game.ON; 
 						game.setSelectionModeOn(false);
 						//invalidatePosition(game.getPivotX(), game.getPivotY());
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
@@ -282,17 +295,17 @@ public class Board extends View {
 						return super.onTouchEvent(event);
 
 					}//if outside the positions reset
-					else if (game.getGrid()[xIndex][yIndex]==-1){
+					else if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE){
 						game.setSelectionModeOn(false);
-						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
+						game.getGrid()[game.getPivotX()][game.getPivotY()]=Game.ON; 
 						invalidatePosition(game.getPivotX(), game.getPivotY());
 						game.setSelectionModeOn(false);
 
 						return super.onTouchEvent(event);
 					//if selects another peg , change pivot and refresh	
-					}else if (game.getGrid()[xIndex][yIndex]==1) {
+					}else if (game.getGrid()[xIndex][yIndex]==Game.ON) {
 						game.setSelectionModeOn(true);
-						game.getGrid()[game.getPivotX()][game.getPivotY()]=1; 
+						game.getGrid()[game.getPivotX()][game.getPivotY()]=Game.ON; 
 						game.setPivot(xIndex, yIndex);
 						game.select(xIndex, yIndex);
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
@@ -307,15 +320,6 @@ public class Board extends View {
 					else if (game.validMove(game.getPivotX(),game.getPivotY(),xIndex ,yIndex)) {
 
 						game.play(game.getPivotX(),game.getPivotY(),xIndex ,yIndex);
-						//int[] destination=new int[2];
-						//destination[0]=xIndex;
-						//destination[1]=yIndex;
-						//game.setDestination(destination);
-						//game.getGrid()[game.getPivotX()][game.getPivotY()]=0;
-						
-						
-						/*invalidate original position of the peg, the new position and the number of pegs*/
-						//invalidatePosition(game.getPivotX(), game.getPivotY());
 
 						game.setSelectionModeOn(false);
 						//game.setPivot(-1, -1);
@@ -329,21 +333,7 @@ public class Board extends View {
 							game.setPivot(xIndex, yIndex);
 							game.select(xIndex, yIndex);
 							
-							/*Toast.makeText(this.getContext(),
-									"Player " + game.posibleDestinations(xIndex, yIndex).toString(),
-									Toast.LENGTH_LONG).show();
-							
-							invalidatePosibilities(game.getPivotX(), game.getPivotY());
 
-							invalidatePosition(xIndex, yIndex);
-							invalidatePegCount();*/
-							
-							//game.select(xIndex, yIndex);
-							//game.setSelectionModeOn(true);
-							//game.setPivot(xIndex,yIndex);
-							
-							//invalidatePosition(xIndex, yIndex);
-							//invalidatePosition(game.getPivotX(), game.getPivotY());
 							
 							
 						}
@@ -371,10 +361,10 @@ public class Board extends View {
 					
 					if (game.isWon())
 						Toast.makeText(this.getContext(),
-								"Player " + game.getCurrentPlayer() + " is the winner",
+								"You WON",
 								Toast.LENGTH_LONG).show();
 					else if (game.isDrawn())
-						Toast.makeText(this.getContext(), "Game on draw", Toast.LENGTH_LONG)
+						Toast.makeText(this.getContext(), "GAME OVER - Game on draw", Toast.LENGTH_LONG)
 								.show();
 					//game.switchCurrentPlayer();
 					
@@ -394,7 +384,6 @@ public class Board extends View {
 
 		Rect position = new Rect(left, top, right, bottom);
 		invalidate(position);
-		// TODO Auto-generated method stub
 		
 	}
 	private void invalidatePosition(int xIndex, int yIndex) {
@@ -416,6 +405,8 @@ public class Board extends View {
 		Rect position = new Rect(left, top, right, bottom);
 		invalidate(position);
 		}
+	
+	
 
 	
 }

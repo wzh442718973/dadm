@@ -1,28 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical" 
-    android:background="@drawable/splash">
+    android:background="@drawable/initial"
+    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/newgamebtn"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/newgamestr" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/about"
-        android:layout_width="match_parent"
+        <Button
+            android:id="@+id/newgamebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="@string/newgamestr"
+            android:textColor="@color/textColor"
+            android:width="@dimen/widthRedBtn" />
+
+        <Button
+            android:id="@+id/loginbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="Login"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="@string/aboutstr"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/sitebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="Site"
+            android:textColor="@color/textColor" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/aboutstr" />
-    <Button
-        android:id="@+id/paintbtn"
-        android:layout_width="match_parent"
+        android:layout_above="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:maxHeight="120dip"
+        android:maxWidth="100dip"
+        android:onClick="onLaunchCamera"
+        android:scaleType="fitXY"
+        android:src="@drawable/off" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/paintstr" />
-    
+        android:layout_above="@+id/imageButton"
+        android:layout_marginBottom="17dp"
+        android:layout_toRightOf="@+id/imageButton" >
 
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/european_str"
+            android:textColor="@color/textColor" />
 
-</LinearLayout>
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/english_str"
+            android:textColor="@color/textColor" />
+    </RadioGroup>
+
+</RelativeLayout>
