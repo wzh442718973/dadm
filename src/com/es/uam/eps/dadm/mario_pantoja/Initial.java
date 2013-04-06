@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.util.Log;
 import android.view.View.OnClickListener;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +17,13 @@ import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images.Media;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 
 public class Initial extends Activity implements OnClickListener{
@@ -45,8 +48,21 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.sitebtn);
 		button.setOnClickListener( this);
-
+		button = (Button) findViewById(R.id.statisticsbtn);
+		button.setOnClickListener( this);
 		
+		
+		/* get from preferences current type of board */
+		SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
+		int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
+		
+		if (type_from_preferences==Game.ENGLISH) {
+			RadioButton br = (RadioButton) findViewById(R.id.radio0);
+			br.setChecked(true);
+		}else{
+			RadioButton br = (RadioButton) findViewById(R.id.radio1);
+			br.setChecked(true);
+		}
 		
 		/* Profile Pic */
 		ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -62,46 +78,42 @@ public class Initial extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId()==R.id.newgamebtn) {
-		
-			
+		RadioGroup g = (RadioGroup) findViewById(R.id.radioGroup1);
+		SharedPreferences sharedPreferences = getSharedPreferences("type",MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+
+		switch (g.getCheckedRadioButtonId()) {
+		case R.id.radio0:
+			editor.putInt("type", Game.EUROPEAN);
+			break;
+		case R.id.radio1:
+			editor.putInt("type", Game.ENGLISH);
+			break;
+		}
+
+		editor.commit();
+
+		if (v.getId() == R.id.newgamebtn) {
+
 			Intent myIntent = new Intent(this, Session.class);
-			myIntent.putExtra("type",Game.EUROPEAN);
-
-			/* retrieve type of board */
-			RadioGroup g = (RadioGroup) findViewById(R.id.radioGroup1);
-			
-			SharedPreferences sharedPreferences = getSharedPreferences("type", MODE_PRIVATE);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			 
-			switch (g.getCheckedRadioButtonId()) {
-				case R.id.radio0:
-					editor.putInt("type", Game.EUROPEAN);
-					break;
-		
-				case R.id.radio1:
-					editor.putInt("type", Game.ENGLISH);
-					break;
-			}
-			
-			 editor.commit();
-
-			startActivity(myIntent);
-			//startActivityForResult(myIntent, Session.REQUEST_CODE);
-			//startActivity(new Intent("com.es.uam.eps.dadm.mario_pantoja.SESSION"));
-		}
-		else if (v.getId()==R.id.sitebtn) {
-			Intent intent= new Intent(android.content.Intent.ACTION_VIEW,Uri.parse("http://www.marioandrei.com"));
+			// myIntent.putExtra("type",Game.EUROPEAN);
+			//startActivity(myIntent);
+			startActivityForResult(myIntent, Session.REQUEST_CODE);
+			// startActivity(new
+			// Intent("com.es.uam.eps.dadm.mario_pantoja.SESSION"));
+		} else if (v.getId() == R.id.sitebtn) {
+			Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+					Uri.parse("http://www.marioandrei.com"));
 			startActivity(intent);
-			//startActivityForResult(intent, Session.REQUEST_CODE);
+			// startActivityForResult(intent, Session.REQUEST_CODE);
 		}
-		
+
 		else if (v.getId()==R.id.camera) {
 			onLaunchCamera( v);
 		}
 		
 		else if (v.getId()==R.id.loginbtn) {
-			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.LOGIN"); 
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.LOGIN");
 			startActivityForResult(intent, Login.REQUEST_CODE);
 		}
 		
@@ -109,17 +121,20 @@ public class Initial extends Activity implements OnClickListener{
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.ABOUT"); 
 			startActivity(intent);
 		}
+		else if (v.getId()==R.id.statisticsbtn) {
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.STATISTICS"); 
+			startActivity(intent);
+		}
 	}
 	
 
 	
-
-	//TODO captura la informacion devuelta por otras actividades
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode==Session.REQUEST_CODE) {
 			if (resultCode==RESULT_OK) {
-				String type= intent.getData().toString();	
-				Toast.makeText(this, type, Toast.LENGTH_SHORT).show();
+				/* RELAUNCH NEW GAME*/				
+				Intent myIntent = new Intent(this, Session.class);
+				startActivityForResult(myIntent, Session.REQUEST_CODE);
 			}
 		}
 		switch (requestCode) {
@@ -213,5 +228,44 @@ public class Initial extends Activity implements OnClickListener{
 	    })
 	    .setNegativeButton("No", null)
 	    .show();
+	}
+	
+	/* menu */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_preferences:
+			startActivity(new Intent(this, Preferences.class));
+			return true;
+		case R.id.menu_about:
+			startActivity(new Intent(this, About.class));
+			return true;
+		case R.id.menu_exit:
+			quitGame();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	private void quitGame(){
+		new AlertDialog.Builder(this)
+		.setTitle("Exit")
+		.setMessage("Leave this game?")
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){
+				finish();
+			}
+		})
+		.setNegativeButton("No",new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){}
+		})
+		.show();
+	}
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_session, menu);
+		return true;
 	}
 }

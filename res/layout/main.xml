@@ -46,28 +46,38 @@
             android:background="@layout/button_style"
             android:text="Site"
             android:textColor="@color/textColor" />
+        
+                <Button
+            android:id="@+id/statisticsbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="Statistics"
+            android:textColor="@color/textColor" />
+                
     </LinearLayout>
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:maxHeight="120dip"
         android:maxWidth="100dip"
         android:onClick="onLaunchCamera"
         android:scaleType="fitXY"
-        android:src="@drawable/off" />
+        android:src="@drawable/pic" />
 
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageButton"
-        android:layout_marginBottom="17dp"
-        android:layout_toRightOf="@+id/imageButton" >
+        android:layout_above="@+id/linearLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginRight="18dp" >
 
         <RadioButton
             android:id="@+id/radio0"

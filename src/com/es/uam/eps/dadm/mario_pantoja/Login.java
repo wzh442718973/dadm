@@ -5,18 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener; 
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class Login extends Activity implements OnClickListener {
 	public static final int REQUEST_CODE = 1;
-	
+
 	
 	private DatabaseAdapter db;
 	private EditText usernameEditText;
@@ -58,14 +56,11 @@ public class Login extends Activity implements OnClickListener {
 		});*/
 	}
 	
-	
-	
-	
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.loginButton:
 			poblateBoards();
-			check();
+			check();			
 			break;
 			
 		case R.id.cancelButton:
@@ -78,14 +73,11 @@ public class Login extends Activity implements OnClickListener {
 		}
 	}
 
-
 	private void poblateBoards(){
 		db= new DatabaseAdapter(this);
 		db.open();
 		db.insertBoards();
 		db.close();
-	
-
 	}
 
 	private void check() {

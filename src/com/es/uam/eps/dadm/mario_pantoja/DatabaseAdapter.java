@@ -164,10 +164,16 @@ public class DatabaseAdapter {
 		public long insertGame(Game game, String username) {
 			ContentValues values = new ContentValues();
 			values.put(NAME, username);
-			values.put(BOARD, game.getBoard());
+			if (game.getType()==Game.ENGLISH) {
+				values.put(BOARD, "English Board");
+
+			}else
+				values.put(BOARD, "European Board");
+
+			//values.put(BOARD, game.getBoard());
 			values.put(SECONDS, game.getSeconds());
 			values.put(PEGCOUNT, game.getPegCount());
-			values.put(DATE, "date");
+			values.put(DATE, game.getDate());
 			return db.insert(TABLE_NAME_GAMES, null, values);
 		}
 		
@@ -191,6 +197,19 @@ public class DatabaseAdapter {
 			}
 			return in;
 		}
+		public Cursor gamesRecent() {
+
+			return db.query(TABLE_NAME_GAMES, new String [] {ID,NAME,BOARD,SECONDS,PEGCOUNT,DATE}, 
+									null,
+									null, null, null, ID+ " ASC","3");
+			}
+		
+		public Cursor gamesTopTen() {
+
+			return db.query(TABLE_NAME_GAMES, new String [] {NAME,BOARD,SECONDS,DATE}, 
+									PEGCOUNT + " = '1' ",
+									null, null, null, SECONDS+ " ASC ","10");
+			}
 	public Context getContext() {
 		return context;
 	}

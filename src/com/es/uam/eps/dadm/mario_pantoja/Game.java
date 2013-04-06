@@ -1,12 +1,12 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 
 
@@ -30,7 +30,7 @@ public class Game {
 	public static final int SELECTED = 2;
 
 	private enum STATE {
-		Inactive, Active, Won, Drawn
+		Inactive, Active, Won, Lost
 	};
 	
 	private String board;
@@ -50,13 +50,13 @@ public class Game {
 															"1,1,1,1,1,1,1,"+
 															"-1,1,1,1,1,1,-1,"+
 															"-1,-1,1,1,1,-1,-1";	
-	private static final String board_1 =		"-1,-1,1,1,1,-1,-1,"+
+	/* private static final String board_1 =		"-1,-1,1,1,1,-1,-1,"+
 												"-1,-1,1,1,1,-1,-1,"+
 												"-1,-1,1,1,1,-1,-1,"+
 												"-1,-1,1,0,1,-1,-1,"+
 												"-1,-1,1,1,1,-1,-1,"+
 												"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1";
+												"-1,-1,1,1,1,-1,-1"; */
 	private STATE gameState = STATE.Inactive;
 	private int type = ENGLISH;
 
@@ -68,13 +68,39 @@ public class Game {
 	private int[][] grid;
 	private int[] currentBoardStateArray = new int[49];
 
-	private int currentPlayer;
+	private String currentPlayer="Player 1";
 	private int pegCount;
 	private int moveCount;
+	
+	
+	/* time */
 	private int seconds;
 	
-	//DB
-	//GameSQLiteHelper db;
+	String date = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+	
+	/**
+	 * Constructor
+	 * @param context
+	 * @param type
+	 */
+	
+	public Game(Context context, int type){
+		setContext(context);
+		initializeGrid(type);
+		setSeconds(0);
+		if(type==ENGLISH)
+			setBoard(board_english_basic);
+		else
+			setBoard(board_european_basic);
+
+		//getPlayerNameFromPreferences();
+		this.updatePegCount();
+		this.gameState=STATE.Active;
+		
+
+	}
+	
 
 	/**
 	 * Set and Get
@@ -170,13 +196,13 @@ public class Game {
 	/**
 	 * @return the currentPlayer
 	 */
-	public int getCurrentPlayer() {
+	public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 	/**
 	 * @param currentPlayer the currentPlayer to set
 	 */
-	public void setCurrentPlayer(int currentPlayer) {
+	public void setCurrentPlayer(String currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 	/**
@@ -230,52 +256,9 @@ public class Game {
 	 * @param currentPlayer
 	 * @param pegCount
 	 * 
-	 * If no type on the arguments, EUROPEAN board
 	 */
-	public Game(Context context) {
-		
 		
 
-		
-		//initialize grid 7x7 by default EUROPEAN
-		//initializeGrid(EUROPEAN);
-		initializeGrid();
-		setSeconds(0);
-		setBoard(board_english_basic);
-		setContext(context);
-		
-		this.gameState=STATE.Active;
-		this.pegCount=EUROPEAN;
-		
-		//db = new GameSQLiteHelper(context);
-	}
-	
-	public Game(Context context, int type){
-		setContext(context);
-		initializeGrid(type);
-		setSeconds(0);
-		if(type==ENGLISH)
-			setBoard(board_english_basic);
-		else
-			setBoard(board_european_basic);
-
-
-		this.updatePegCount();
-		this.gameState=STATE.Active;
-		
-
-		//db = new GameSQLiteHelper(context);
-
-	}
-	//TODO db new game from where to get the game status			
-	public Game(int id, String gameInString, int pegCount) {
-
-		for (int i = 0; i < currentBoardStateArray.length; i++) {
-			List<String> items = Arrays.asList(gameInString.split("\\s*,\\s*"));
-			currentBoardStateArray[i] = Integer.parseInt(items.get(i));
-		}
-		this.updateGridFromCurrentBoardStateArray();
-	}
 
 	public String posibilities(ArrayList<int[]> posibleDestinations) {
 		String string= "x,y = ";
@@ -724,7 +707,7 @@ public class Game {
 				grid[x+1][y]=OFF;
 		}
 		
-		//substract pegCount
+		//Subtract pegCount
 		pegCount--;
 		
 		//check if the number of pegs is 1
@@ -732,8 +715,7 @@ public class Game {
 		
 		/*create array from grid so it can be saved on DB */
 		saveGridOnArray();
-	    //TODO
-		//db.addGame(this);
+
 		
 		/* update number of moves */
 		moveCount++;
@@ -751,12 +733,12 @@ public class Game {
 	private void checkGameState (){
 		if (pegCount==1){
 			gameState = STATE.Won;
-			newGameEntry();
+			//newGameEntry();
 		}
 		/**/
 		else if (movesLeft()==false){
-			gameState=STATE.Drawn;
-			newGameEntry();
+			gameState=STATE.Lost;
+			//newGameEntry();
 
 		}
 	}
@@ -765,8 +747,8 @@ public class Game {
 		return this.getGameState()==STATE.Active;
 	}
 	
-	public Boolean isDrawn() {
-		return gameState==STATE.Drawn;
+	public Boolean isLost() {
+		return gameState==STATE.Lost;
 	}
 	
 	public Boolean isWon() {
@@ -887,18 +869,30 @@ public class Game {
 		
 	}
 	
-	private void newGameEntry(){
+	public void newGameEntry(){
 
-		
 			db= new DatabaseAdapter(context);
 			db.open();
-			db.insertGame(this, "user1");
+			db.insertGame(this, currentPlayer);
 			db.close();
 			
-			Toast.makeText(context,
-					"New game added to the database",Toast.LENGTH_SHORT).show();		
+			//Toast.makeText(context,"New game added to the database",Toast.LENGTH_SHORT).show();		
 		
 
+	}
+	
+
+	/**
+	 * @return the date
+	 */
+	public String getDate() {
+		return date;
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 }

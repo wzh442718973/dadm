@@ -3,12 +3,10 @@ package com.es.uam.eps.dadm.mario_pantoja;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.os.SystemClock;
+import android.widget.Chronometer;
+import android.widget.Chronometer.OnChronometerTickListener;
 
 /**
  * 
@@ -18,7 +16,7 @@ import android.widget.Toast;
  */
 public class Session extends Activity {
 	
-	public static final int REQUEST_CODE = 0;
+	public static final int REQUEST_CODE = 1;
 	
 	private int type;
 	
@@ -26,9 +24,12 @@ public class Session extends Activity {
 	
 	private Game game=null;
 	
-	private String playerName;
+	private String playerName="Unknown Player";
 	
-
+	private boolean musicOn=false;
+	
+	long startTime;
+    long countUp;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,13 +39,38 @@ public class Session extends Activity {
 		// SharedPreferences sharedPreferences = getSharedPreferences("type", MODE_PRIVATE);
 		 //sharedPreferences.getInt("type",this.type);
 		    
-	/*	getPlayerNameFromPreferences();
+		//getPlayerNameFromPreferences();
 		getTypeFromPreferences();
-*/
-		play();		
+		musicOn();
+		
+		play();	
+
+        Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
+        startTime = SystemClock.elapsedRealtime();
+
+        //textGoesHere = (TextView) findViewById(R.id.textGoesHere);
+        stopWatch.setOnChronometerTickListener(new OnChronometerTickListener(){
+            @Override
+            public void onChronometerTick(Chronometer arg0) {
+                countUp = (SystemClock.elapsedRealtime() - arg0.getBase()) / 1000;
+                //String asText = (countUp / 60) + ":" + (countUp % 60); 
+               // textGoesHere.setText(asText);
+                game.setSeconds((int)countUp);
+                setPlayerNameFromsetUPreferences();
+                game.setCurrentPlayer(playerName);
+            }
+        });
+        
+        stopWatch.start();
+
+        
+
+		
 
 	}
 	
+
+
 	public Game getGame() {
 		return game;
 	}
@@ -72,7 +98,7 @@ public class Session extends Activity {
 	
 	
 	private void getTypeFromPreferences() {
-			if	(Preferences.getType(this).equalsIgnoreCase("eu")){
+			if	(Preferences.getType(this)==Game.EUROPEAN){
 				setType(Game.EUROPEAN);
 			}
 			else
@@ -82,41 +108,40 @@ public class Session extends Activity {
 
 	private void play(){ 
 		
-		//pass to board the type of board
 		setContentView(R.layout.session);
 		
 		board = (Board) findViewById(R.id.board); 
 		
+		//retrieve the game from the created board
 		setGame(board.getGame());
+
 	}
 	
 	
-	private void getPlayerNameFromPreferences(){
+	private void setPlayerNameFromsetUPreferences(){
+		
+		
 		setPlayerName(Preferences.getPlayerName(this)); 
 	}
 	
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_preferences:
-			startActivity(new Intent(this, Preferences.class));
-			return true;
-		case R.id.menu_about:
-			startActivity(new Intent(this, About.class));
-			return true;
-		case R.id.menu_exit:
-			quitGame();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	
+	private void musicOn(){
+		
+		
+		musicOn=Preferences.playMusic(this); 
 	}
 	
-	private void quitGame(){
+
+	
+	public void quitGame(){
 		new AlertDialog.Builder(this)
 		.setTitle("Exit")
 		.setMessage("Leave this game?")
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
 			public void onClick(DialogInterface dialog, int which){
+	            game.setSeconds((int) countUp);
+	            game.newGameEntry();
 				finish();
 			}
 		})
@@ -124,13 +149,69 @@ public class Session extends Activity {
 			public void onClick(DialogInterface dialog, int which){}
 		})
 		.show();
+        
 	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_session, menu);
-		return true;
+	
+	
+	public void restartGame(){
+		new AlertDialog.Builder(this)
+		.setTitle("You won")
+		.setMessage("New game?")
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){
+	            //update the amount of seconds it took to finish the game
+	            game.setSeconds((int) countUp);
+	            //add to db
+	            game.newGameEntry();
+	            //send RESULT OK to initial in order to launch a new session
+				setResult(RESULT_OK);
+				finish();
+			}
+		})
+		.setNegativeButton("No",new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){
+				
+	            game.setSeconds((int) countUp);
+	            game.newGameEntry();
+				finish();
+				
+				
+
+			}
+		})
+		.show();
 	}
+	
+	public void restartGameLoser(){
+		new AlertDialog.Builder(this)
+		.setTitle("You Lost")
+		.setMessage("New game?")
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){
+	            game.setSeconds((int) countUp);
+	            game.newGameEntry();
+	            //TODO
+				setResult(RESULT_OK);
+				finish();
+			}
+		})
+		.setNegativeButton("No",new DialogInterface.OnClickListener() { 
+			public void onClick(DialogInterface dialog, int which){
+				
+	            game.setSeconds((int) countUp);
+	            game.newGameEntry();
+				finish();
+				
+				
+
+			}
+		})
+		.show();
+	}
+	
+
 	
 	
 	@Override
@@ -143,14 +224,54 @@ public class Session extends Activity {
 	    {
 	        @Override
 	        public void onClick(DialogInterface dialog, int which) {
-	            finish();    
+
+
+	        	finish();  
+	            
 	        }
 
 	    })
 	    .setNegativeButton("No", null)
 	    .show();
+
 	}
 	
+	public void onStart() {
+		super.onStart();
+
+	}
+
+	protected void onResume() {
+		super.onResume();
+		
+
+		if (musicOn==true) {
+			Music.play(this, R.raw.moog);
+
+		}
+	}
+
+	protected void onPause() {
+		super.onPause();
+		Music.stop(this);
+
+	}
+
+	protected void onStop() {
+		super.onStop();
+
+	}
+
+	protected void onRestart() {
+		super.onRestart();
+
+	}
+
+	protected void onDestroy() {
+		super.onDestroy();
+
+	}
+
 
 
 

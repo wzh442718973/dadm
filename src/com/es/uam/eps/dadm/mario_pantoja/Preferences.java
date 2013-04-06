@@ -7,14 +7,12 @@ import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity {
 	private final static String TYPE_KEY = "type";
-
-	private final static String TYPE_DEFAULT = "English";
+	private final static int TYPE_DEFAULT = Game.ENGLISH ;
 
 	private final static String PLAY_MUSIC_KEY = "music";
+	private final static boolean PLAY_MUSIC_DEFAULT = false;
 
-	private final static boolean PLAY_MUSIC_DEFAULT = true;
-
-	private final static String PLAYER_KEY = "playername";
+	private final static String PLAYER_KEY = "username";
 	private final static String PLAYER_DEFAULT = "First player";
 
 
@@ -25,9 +23,9 @@ public class Preferences extends PreferenceActivity {
 
 	}
 
-	public static String getType(Context context) {
+	public static int getType(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getString(TYPE_KEY, TYPE_DEFAULT);
+				.getInt(TYPE_KEY, TYPE_DEFAULT);
 	}
 
 	public static boolean playMusic(Context context) {

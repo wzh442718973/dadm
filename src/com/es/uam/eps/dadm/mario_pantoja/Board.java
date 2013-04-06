@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import android.view.View;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +20,6 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 import android.view.animation.Animation;
 
 /**
@@ -37,9 +35,9 @@ public class Board extends View {
     private float width_of_position;
     private Bitmap bitmapON,bitmapOFF,bitmapSEL;
 	private Session session;
-	private int type = Game.EUROPEAN;
-
-    Context context;
+	private int type = Game.ENGLISH;
+    private Context context;
+    
     /**
      * Constructor
      * @param context
@@ -55,8 +53,13 @@ public class Board extends View {
 		/* you can set the type of board here, ENGLISH OR EUROPEAN*/		
 		SharedPreferences sharedPreferences = context.getSharedPreferences("type", Context.MODE_PRIVATE);
 		int type = sharedPreferences.getInt("type", Game.ENGLISH);
-		session = (Session) context;
+		setSession((Session) context);
 		game = new Game(context,type);
+		
+		
+		sharedPreferences = context.getSharedPreferences("username", Context.MODE_PRIVATE);
+		String username = sharedPreferences.getString("username", " desde Board");
+		game.setCurrentPlayer(username);
 		this.context=context;
 		
 		bitmapON = BitmapFactory.decodeResource(getResources(), R.drawable.on);
@@ -320,32 +323,22 @@ public class Board extends View {
 					else if (game.validMove(game.getPivotX(),game.getPivotY(),xIndex ,yIndex)) {
 
 						game.play(game.getPivotX(),game.getPivotY(),xIndex ,yIndex);
-
 						game.setSelectionModeOn(false);
 						//game.setPivot(-1, -1);
 						
-
-						
 						if (!game.posibleDestinations(xIndex, yIndex).isEmpty()) {
-							
 							game.setSelectionModeOn(true);
-							
 							game.setPivot(xIndex, yIndex);
 							game.select(xIndex, yIndex);
-							
-
-							
-							
 						}
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
-
 						invalidatePosition(xIndex, yIndex);
 						invalidatePegCount();
 
 					}
 					else{
 						//Toast.makeText(this.getContext(), "NOT VALID" , Toast.LENGTH_LONG).show();
-						
+			
 						/* SHAKE  if not valid ! */
 						Animation animation=AnimationUtils.loadAnimation(context,R.anim.shake);
 						this.startAnimation(animation);						
@@ -359,14 +352,14 @@ public class Board extends View {
 
 					}//else if not VALID MOVE
 					
-					if (game.isWon())
-						Toast.makeText(this.getContext(),
-								"You WON",
-								Toast.LENGTH_LONG).show();
-					else if (game.isDrawn())
-						Toast.makeText(this.getContext(), "GAME OVER - Game on draw", Toast.LENGTH_LONG)
-								.show();
-					//game.switchCurrentPlayer();
+					if (game.isWon()){
+						//Toast.makeText(this.getContext(),"You WON",Toast.LENGTH_LONG).show();
+						session.restartGame();
+					}
+					else if (game.isLost()){
+						//Toast.makeText(this.getContext(), "GAME OVER - No moves Left", Toast.LENGTH_LONG).show();
+						session.restartGameLoser();		
+					}
 					
 				}
 				break;
@@ -405,6 +398,30 @@ public class Board extends View {
 		Rect position = new Rect(left, top, right, bottom);
 		invalidate(position);
 		}
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
+	/**
+	 * @return the session
+	 */
+	public Session getSession() {
+		return session;
+	}
+	/**
+	 * @param session the session to set
+	 */
+	public void setSession(Session session) {
+		this.session = session;
+	}
 	
 	
 
