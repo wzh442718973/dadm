@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 public class Initial extends Activity implements OnClickListener{
@@ -53,10 +54,10 @@ public class Initial extends Activity implements OnClickListener{
 		
 		
 		/* get from preferences current type of board */
-		SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
-		int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
+		//SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
+		//int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
 		
-		if (type_from_preferences==Game.ENGLISH) {
+		if (Preferences.getType(this)==Game.ENGLISH) {
 			RadioButton br = (RadioButton) findViewById(R.id.radio0);
 			br.setChecked(true);
 		}else{
@@ -70,6 +71,10 @@ public class Initial extends Activity implements OnClickListener{
 		Uri uri = Uri.parse(str);
 		imageButton.setImageURI(uri);
 		setLongListener();
+		
+		
+
+
 	
 
 	}
@@ -157,9 +162,10 @@ public class Initial extends Activity implements OnClickListener{
 						Bitmap pic = Media.getBitmap(getContentResolver(), uri);
 						saveImage(pic);
 					} catch (FileNotFoundException e) { // block
-														// e.printStackTrace();
+														 e.printStackTrace();
 					} catch (IOException e) {
-						// catch block e.printStackTrace();
+						// catch block
+						e.printStackTrace();
 					}
 				}
 			}
@@ -261,6 +267,26 @@ public class Initial extends Activity implements OnClickListener{
 		.show();
 	}
 	
+	protected void onResume() {
+		super.onResume();
+		/* get from preferences current type of board */
+		
+		//weird bug http://code.google.com/p/android/issues/detail?id=2096#makechanges
+		//http://stackoverflow.com/questions/5227478/getting-integer-or-index-values-from-a-list-preference
+		SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
+		int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
+		//Toast.makeText(this,"TYPO ="+type_from_preferences,Toast.LENGTH_SHORT).show();		
+
+		if (type_from_preferences==37) {
+			RadioButton br = (RadioButton) findViewById(R.id.radio0);
+			br.setChecked(true);
+		}else{
+			RadioButton br = (RadioButton) findViewById(R.id.radio1);
+			br.setChecked(true);
+		}
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

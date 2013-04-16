@@ -1,49 +1,72 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 
-import java.util.ArrayList;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class AllGames extends ListActivity {
-	DatabaseAdapter db;
+public class AllGames extends Activity {
+	private DatabaseAdapter db;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.table_games);
 
 		
-		
+		//TODO tablelayout not working
 		db = new DatabaseAdapter(this);
 		db.open();
 		Cursor mCursor = db.getAllGames();
 		
 		
-		ArrayList<String> games = new ArrayList<String>();
+		
+		
 
-		String gameString="";
+		TableLayout tl = (TableLayout) findViewById(R.id.table_allgames);
 
+	
+		TableRow tr1 = new TableRow(this);
+		tr1.setLayoutParams(new LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
+	
+
+        for(int i=0; i<mCursor.getColumnCount(); i++){      
+			TextView text = new TextView(this);
+           	text.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+
+           	text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
+           	text.setText(mCursor.getColumnName(i)+" ");
+			tr1.addView(text);
+			
+        }
+		tl.addView(tr1, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
+
+		
+		
 		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
 				.moveToNext()) {
 			// The Cursor is now set to the right position
-			gameString="";
-            for(int i=0; i<mCursor.getColumnCount(); i++)
-            {                   
-              gameString+=" "+mCursor.getColumnName(i)+": "+mCursor.getString(i)+"\n";
+			TableRow tr = new TableRow(this);
+			tr.setLayoutParams(new LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
+		
+            for(int i=0; i<mCursor.getColumnCount(); i++){      
+    			TextView text = new TextView(this);
+               	text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
+               	text.setText(mCursor.getString(i)+" ");
+    			tr.addView(text);
             }
-            games.add(gameString);
-            
-			//board_type_list.add(mCursor.getString(mCursor.getColumnIndex(DatabaseAdapter.BOARD)));
-			//id_list.add(mCursor.getInt(mCursor.getColumnIndex(DatabaseAdapter.ID)));
-			//seconds.add(Integer.toString(mCursor.getInt(mCursor.getColumnIndex(DatabaseAdapter.SECONDS))));
 
+			tl.addView(tr, new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
 		}
 		db.close();
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,  games);
-		setListAdapter(adapter);
+
 	}
 
 }

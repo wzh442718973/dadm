@@ -14,7 +14,10 @@ public class Preferences extends PreferenceActivity {
 
 	private final static String PLAYER_KEY = "username";
 	private final static String PLAYER_DEFAULT = "First player";
-
+	
+	private final static String FIGURE_KEY = "figure_pref";
+	private final static String FIGURE_DEFAULT = "basic";
+	
 
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,11 @@ public class Preferences extends PreferenceActivity {
 
 	}
 
+	public static String getFigure(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString(FIGURE_KEY, FIGURE_DEFAULT);
+	}
+	
 	public static int getType(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getInt(TYPE_KEY, TYPE_DEFAULT);
@@ -37,6 +45,7 @@ public class Preferences extends PreferenceActivity {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString(PLAYER_KEY, PLAYER_DEFAULT);
 	}
+	
 
 
 }

@@ -160,7 +160,6 @@ public class DatabaseAdapter {
 	}
 
 	
-	//TODO
 		public long insertGame(Game game, String username) {
 			ContentValues values = new ContentValues();
 			values.put(NAME, username);

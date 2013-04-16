@@ -20,6 +20,7 @@ public class Statistics extends ListActivity{
 	    setListAdapter(adapter);
 	  }
 
+
 	  @Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 	    String item = (String) getListAdapter().getItem(position);

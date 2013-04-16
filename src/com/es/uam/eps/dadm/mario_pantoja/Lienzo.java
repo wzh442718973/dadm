@@ -27,7 +27,6 @@ public class Lienzo extends View {
 
 	public Lienzo(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

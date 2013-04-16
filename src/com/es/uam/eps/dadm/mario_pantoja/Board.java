@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation;
+import android.widget.Toast;
 
 /**
  * @author marioandrei
@@ -49,17 +50,22 @@ public class Board extends View {
 		setFocusableInTouchMode(true);
 
 		
-		
+
 		/* you can set the type of board here, ENGLISH OR EUROPEAN*/		
 		SharedPreferences sharedPreferences = context.getSharedPreferences("type", Context.MODE_PRIVATE);
 		int type = sharedPreferences.getInt("type", Game.ENGLISH);
 		setSession((Session) context);
-		game = new Game(context,type);
+		
+		//set the desired figure from preferences
+				
+
+		game = new Game(context,type,Preferences.getFigure(context));
 		
 		
 		sharedPreferences = context.getSharedPreferences("username", Context.MODE_PRIVATE);
 		String username = sharedPreferences.getString("username", " desde Board");
 		game.setCurrentPlayer(username);
+		
 		this.context=context;
 		
 		bitmapON = BitmapFactory.decodeResource(getResources(), R.drawable.on);

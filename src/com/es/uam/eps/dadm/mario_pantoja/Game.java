@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 
 
@@ -34,7 +36,7 @@ public class Game {
 	};
 	
 	private String board;
-	
+
 	private static final String board_english_basic =		"-1,-1,1,1,1,-1,-1,"+
 															"-1,-1,1,1,1,-1,-1,"+
 															"1,1,1,1,1,1,1,"+
@@ -43,6 +45,30 @@ public class Game {
 															"-1,-1,1,1,1,-1,-1,"+
 															"-1,-1,1,1,1,-1,-1";
 	
+	
+
+	private static final String board_english_diamond =		"-1,-1,0,0,0,-1,-1,"+
+															"-1,-1,0,1,0,-1,-1,"+
+															"0,0,1,1,1,0,0,"+
+															"0,1,1,0,1,1,0,"+
+															"0,0,1,1,1,0,0,"+
+															"-1,-1,0,1,0,-1,-1,"+
+															"-1,-1,0,0,0,-1,-1";
+	
+	
+
+	private static final String board_english_special =		"-1,-1,1,1,1,-1,-1,"+
+															"-1,-1,1,1,1,-1,-1,"+
+															"1,1,1,1,1,1,1,"+
+															"1,1,1,0,1,1,1,"+
+															"1,1,0,0,0,1,1,"+
+															"-1,-1,1,1,1,-1,-1,"+
+															"-1,-1,1,1,1,-1,-1";
+	
+	
+	
+	
+	
 	private static final String board_european_basic =		"-1,-1,1,1,1,-1,-1,"+
 															"-1,1,1,1,1,1,-1,"+
 															"1,1,1,1,1,1,1,"+
@@ -50,13 +76,25 @@ public class Game {
 															"1,1,1,1,1,1,1,"+
 															"-1,1,1,1,1,1,-1,"+
 															"-1,-1,1,1,1,-1,-1";	
-	/* private static final String board_1 =		"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,0,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1,"+
-												"-1,-1,1,1,1,-1,-1"; */
+	 private static final String board_european_diamond =		"-1,-1,0,1,0,-1,-1,"+
+																"-1,-1,1,1,1,-1,-1,"+
+																"0,1,1,0,1,1,0,"+
+																"1,1,0,0,0,1,1,"+
+																"0,1,1,0,1,1,0,"+
+																"-1,-1,1,1,1,-1,-1,"+
+																"-1,-1,0,1,0,-1,-1"; 
+	 private static final String board_european_special =		"-1,-1,1,1,1,-1,-1,"+
+																"-1,1,1,0,1,0,-1,"+
+																"1,0,1,1,1,1,1,"+
+																"1,1,1,0,1,0,1,"+
+																"1,0,1,1,0,1,1,"+
+																"-1,0,0,1,1,1,-1,"+
+																"-1,-1,0,1,1,-1,-1";
+													 
+
+	
+	
+	private String figure;
 	private STATE gameState = STATE.Inactive;
 	private int type = ENGLISH;
 
@@ -85,14 +123,17 @@ public class Game {
 	 * @param type
 	 */
 	
-	public Game(Context context, int type){
+	public Game(Context context, int type, String figure){
 		setContext(context);
+		this.figure=figure;
+		
 		initializeGrid(type);
 		setSeconds(0);
 		if(type==ENGLISH)
 			setBoard(board_english_basic);
 		else
 			setBoard(board_european_basic);
+		
 
 		//getPlayerNameFromPreferences();
 		this.updatePegCount();
@@ -102,16 +143,18 @@ public class Game {
 	}
 	
 
-	/**
-	 * Set and Get
-	 */
 	
+	
+
 	/**
 	 * @return the context
 	 */
 	public Context getContext() {
 		return context;
 	}
+
+
+
 
 	public void setContext(Context context) {
 		this.context = context;
@@ -625,7 +668,19 @@ public class Game {
 			
 			this.setGrid(new int[7][7]);
 			
-			setCurrentBoardStateArray(stringToArray(board_european_basic));
+			if (figure.equals("basic")){
+				setCurrentBoardStateArray(stringToArray(board_european_basic));
+
+			}else if (figure.equals("diamond")){
+				setCurrentBoardStateArray(stringToArray(board_european_diamond));
+
+			}
+			else if (figure.equals("special")){
+				setCurrentBoardStateArray(stringToArray(board_european_special));
+
+			}
+			
+
 			int k=0;
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
@@ -640,7 +695,21 @@ public class Game {
 
 			this.setGrid(new int[7][7]);
 			
-			setCurrentBoardStateArray(stringToArray(board_english_basic));
+			//setCurrentBoardStateArray(stringToArray(board_english_basic));
+			
+			if (figure.equals("basic")){
+				setCurrentBoardStateArray(stringToArray(board_english_basic));
+
+			}else if (figure.equals("diamond")){
+				setCurrentBoardStateArray(stringToArray(board_english_diamond));
+				Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
+
+			}
+			else if (figure.equals("special")){
+				setCurrentBoardStateArray(stringToArray(board_english_special));
+				Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
+
+			}
 			int k=0;
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
@@ -650,7 +719,13 @@ public class Game {
 			}
 
 		}
+		
+		
+		
+		
+		
 	}
+	
 
 	
 	public void initializeGrid(){
@@ -893,6 +968,28 @@ public class Game {
 	 */
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+
+
+
+
+	/**
+	 * @return the figure
+	 */
+	public String getFigure() {
+		return figure;
+	}
+
+
+
+
+
+	/**
+	 * @param figure the figure to set
+	 */
+	public void setFigure(String figure) {
+		this.figure = figure;
 	}
 	
 }

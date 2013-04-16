@@ -1,11 +1,15 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.Chronometer;
+import android.widget.Toast;
 import android.widget.Chronometer.OnChronometerTickListener;
 
 /**
@@ -19,6 +23,8 @@ public class Session extends Activity {
 	public static final int REQUEST_CODE = 1;
 	
 	private int type;
+	
+	private String figure;
 	
 	private Board board;
 	
@@ -34,16 +40,23 @@ public class Session extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//TODO    
+		//TODO    Debes anadir iconos a la barra de acci—n y ligarlos a las acciones del menu inicial.
 
-		// SharedPreferences sharedPreferences = getSharedPreferences("type", MODE_PRIVATE);
-		 //sharedPreferences.getInt("type",this.type);
-		    
-		//getPlayerNameFromPreferences();
+		//SharedPreferences sharedPreferences = getSharedPreferences("figure_pref", MODE_PRIVATE);
+		//Toast.makeText(this,"SESSION FIGURE number="+sharedPreferences.getString("figure_pref","DESDE SESSION"),Toast.LENGTH_SHORT).show();				    
+		//Toast.makeText(this,"FIGURE ="+Preferences.getFigure(this),Toast.LENGTH_SHORT).show();		
+		
+	
+		getFigureFromPreferences();
 		getTypeFromPreferences();
 		musicOn();
+		//getFigureFromPreferences();
 		
 		play();	
+		
+		
+	//	ActionBar actionbar=getActionBar(); SDK 11 Needed!
+		
 
         Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
         startTime = SystemClock.elapsedRealtime();
@@ -97,6 +110,24 @@ public class Session extends Activity {
 	
 	
 	
+	/**
+	 * @return the figure
+	 */
+	public String getFigure() {
+		return figure;
+	}
+
+
+
+	/**
+	 * @param figure the figure to set
+	 */
+	public void setFigure(String figure) {
+		this.figure = figure;
+	}
+
+
+
 	private void getTypeFromPreferences() {
 			if	(Preferences.getType(this)==Game.EUROPEAN){
 				setType(Game.EUROPEAN);
@@ -131,7 +162,11 @@ public class Session extends Activity {
 		musicOn=Preferences.playMusic(this); 
 	}
 	
-
+	private void getFigureFromPreferences(){
+		
+		
+		setFigure(Preferences.getFigure(this)); 
+	}
 	
 	public void quitGame(){
 		new AlertDialog.Builder(this)
@@ -192,7 +227,6 @@ public class Session extends Activity {
 			public void onClick(DialogInterface dialog, int which){
 	            game.setSeconds((int) countUp);
 	            game.newGameEntry();
-	            //TODO
 				setResult(RESULT_OK);
 				finish();
 			}

@@ -46,7 +46,6 @@ public class MainActivity extends Activity {
 		//arrayToMatrix(currentBoardState);
 		//Button button;
 
-		//TODO save number of pegs left.
 		
 	}
 

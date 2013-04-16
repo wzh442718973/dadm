@@ -9,6 +9,15 @@
         android:summary="Click to pop up a list to choose from"
         android:title="Choose Type" />
 
+    
+    <ListPreference
+        android:dialogTitle="Choose a figure for the board"
+        android:entries="@array/figure_pref"
+        android:entryValues="@array/figure_pref_codes"
+        android:key="figure_pref"
+        android:summary="Click to show possible figures"
+        android:title="Choose Figure" />
+    
     <CheckBoxPreference
         android:key="music"
         android:title="Play music" />
