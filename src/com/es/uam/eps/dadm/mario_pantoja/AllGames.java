@@ -17,10 +17,9 @@ public class AllGames extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.table_games);
+		setContentView(R.layout.table);
 
 		
-		//TODO tablelayout not working
 		db = new DatabaseAdapter(this);
 		db.open();
 		Cursor mCursor = db.getAllGames();
@@ -29,7 +28,7 @@ public class AllGames extends Activity {
 		
 		
 
-		TableLayout tl = (TableLayout) findViewById(R.id.table_allgames);
+		TableLayout tl = (TableLayout) findViewById(R.id.TableLayoutGeneric);
 
 	
 		TableRow tr1 = new TableRow(this);

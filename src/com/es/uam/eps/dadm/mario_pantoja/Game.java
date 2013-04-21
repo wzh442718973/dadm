@@ -4,11 +4,10 @@ package com.es.uam.eps.dadm.mario_pantoja;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 
 
@@ -77,11 +76,11 @@ public class Game {
 															"-1,1,1,1,1,1,-1,"+
 															"-1,-1,1,1,1,-1,-1";	
 	 private static final String board_european_diamond =		"-1,-1,0,1,0,-1,-1,"+
-																"-1,-1,1,1,1,-1,-1,"+
+																"-1,0,1,1,1,0,-1,"+
 																"0,1,1,0,1,1,0,"+
 																"1,1,0,0,0,1,1,"+
 																"0,1,1,0,1,1,0,"+
-																"-1,-1,1,1,1,-1,-1,"+
+																"-1,0,1,1,1,0,-1,"+
 																"-1,-1,0,1,0,-1,-1"; 
 	 private static final String board_european_special =		"-1,-1,1,1,1,-1,-1,"+
 																"-1,1,1,0,1,0,-1,"+
@@ -90,13 +89,13 @@ public class Game {
 																"1,0,1,1,0,1,1,"+
 																"-1,0,0,1,1,1,-1,"+
 																"-1,-1,0,1,1,-1,-1";
-													 
-
+	//TODO get from INitial the figure that the user selected from the web												 
+	private HashMap<String, String> figures;
 	
 	
 	private String figure;
 	private STATE gameState = STATE.Inactive;
-	private int type = ENGLISH;
+	private int type;
 
 	private boolean selectionModeOn = false;
 	private int[] pivot = new int[] { -1, -1 };
@@ -668,6 +667,8 @@ public class Game {
 			
 			this.setGrid(new int[7][7]);
 			
+			
+			//TODO get figures from the Internet if a connection is available 
 			if (figure.equals("basic")){
 				setCurrentBoardStateArray(stringToArray(board_european_basic));
 
@@ -679,6 +680,7 @@ public class Game {
 				setCurrentBoardStateArray(stringToArray(board_european_special));
 
 			}
+			//else get figures from Map figures
 			
 
 			int k=0;
@@ -702,12 +704,12 @@ public class Game {
 
 			}else if (figure.equals("diamond")){
 				setCurrentBoardStateArray(stringToArray(board_english_diamond));
-				Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
+				//Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
 
 			}
 			else if (figure.equals("special")){
 				setCurrentBoardStateArray(stringToArray(board_english_special));
-				Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
+				//Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
 
 			}
 			int k=0;
@@ -843,7 +845,6 @@ public class Game {
 		
 		return bool;
 	}
-	//TODO diagonal
 	public boolean validMove(int x0, int y0, int x, int y) {
 		/*
 		 *  0 * *   

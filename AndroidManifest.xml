@@ -5,7 +5,9 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.VIBRATE" />
-
+    <uses-permission android:name="android.permission.INTERNET" /> 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -46,7 +48,7 @@
         <activity
             android:name=".Session"
             android:exported="false"
-            android:label=""
+            android:label="PegSolitaire"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -57,6 +59,8 @@
         </activity>
         <activity
             android:name=".About"
+            android:theme="@android:style/Theme.Dialog"
+             android:label="About Peg Solitaire" 
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.es.uam.eps.dadm.mario_pantoja.ABOUT" />
@@ -139,6 +143,39 @@
             </intent-filter>
 
         </activity>
+        
+        <activity
+            android:name=".TopScores"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPSCORES" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        
+        <activity
+            android:name=".Figures"
+            android:theme="@android:style/Theme.Dialog"
+             android:label="Choose your Figures" 
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.FIGURES" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <service android:name=".SimpleService" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SimpleService" />
+            </intent-filter>
+￼
+        </service>
+        <service android:name=".TopScoresDownloaderTask" >
+￼
+        </service>
     </application>
 
 </manifest>

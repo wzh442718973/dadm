@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -280,14 +281,14 @@ public class Session extends Activity {
 		
 
 		if (musicOn==true) {
-			Music.play(this, R.raw.moog);
+			startService(new Intent(getBaseContext(), SimpleService.class));
 
 		}
 	}
 
 	protected void onPause() {
 		super.onPause();
-		Music.stop(this);
+		
 
 	}
 
@@ -303,6 +304,9 @@ public class Session extends Activity {
 
 	protected void onDestroy() {
 		super.onDestroy();
+		//stops music
+		stopService(new Intent(getBaseContext(), SimpleService.class));
+
 
 	}
 

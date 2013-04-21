@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images.Media;
@@ -37,8 +39,50 @@ public class Initial extends Activity implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-	    
+
 		setContentView(R.layout.main);
+		
+		/* get tje type from preferences */
+		SharedPreferences sharedPreferences = getSharedPreferences("type",MODE_PRIVATE);
+
+		//int type_from_preferences = sharedPreferences.getInt("type", -2);
+		int type_from_preferences=Preferences.getType(this);
+		//Toast.makeText(this,"TYPE ="+type_from_preferences,Toast.LENGTH_SHORT).show();	
+		if (type_from_preferences!=-2) {
+			if (type_from_preferences==Game.ENGLISH) {
+				RadioButton br = (RadioButton) findViewById(R.id.radio0);
+				br.setChecked(true);
+			}else{
+				RadioButton br = (RadioButton) findViewById(R.id.radio1);
+				br.setChecked(true);
+			}
+		}	
+		
+		boolean wifiConnected = false;
+		
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		boolean isWifiConn = networkInfo.isConnected();
+		if (networkInfo != null && networkInfo.isConnected()) {
+			wifiConnected = true;
+		} else {
+			wifiConnected = false;
+		}
+		
+		
+		//Preferences.setConnection(this, wifiConnected);
+		SharedPreferences settings = getSharedPreferences("wifi", MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("wifi", wifiConnected);
+		editor.commit();
+				
+		networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		
+		boolean isMobileConn = networkInfo.isConnected();
+		
+		Log.d(DEBUG_TAG, "Wifi connected: " + isWifiConn);
+		Log.d(DEBUG_TAG, "Mobile connected: " + isMobileConn);
+		
 		
 		/* Assign listeners */
 		Button button = (Button) findViewById(R.id.newgamebtn);
@@ -51,42 +95,47 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.statisticsbtn);
 		button.setOnClickListener( this);
+		button = (Button) findViewById(R.id.figures);
+		button.setOnClickListener( this);
+		button = (Button) findViewById(R.id.preferences);
+		button.setOnClickListener( this);	
 		
+
 		
-		/* get from preferences current type of board */
-		//SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
-		//int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
-		
-		if (Preferences.getType(this)==Game.ENGLISH) {
-			RadioButton br = (RadioButton) findViewById(R.id.radio0);
-			br.setChecked(true);
-		}else{
-			RadioButton br = (RadioButton) findViewById(R.id.radio1);
-			br.setChecked(true);
-		}
-		
-		/* Profile Pic */
+		/* Set Profile Pic long listener 
 		ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
 		String str = "android.resource://com.es.uam.eps.dadm.mario_pantoja/drawable/pic";
 		Uri uri = Uri.parse(str);
 		imageButton.setImageURI(uri);
-		setLongListener();
-		
-		
-
-
+		setLongListener();*/
 	
 
 	}
 	
 
-
 	@Override
 	public void onClick(View v) {
+			
+		
 		RadioGroup g = (RadioGroup) findViewById(R.id.radioGroup1);
 		SharedPreferences sharedPreferences = getSharedPreferences("type",MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 
+		/*int type_from_preferences = sharedPreferences.getInt("type", -2);
+		Toast.makeText(this,"TYPE ="+type_from_preferences,Toast.LENGTH_SHORT).show();	
+
+		//if there are preferences, get the value from them
+		if (type_from_preferences!=-2) {
+			if (type_from_preferences==Game.ENGLISH) {
+				RadioButton br = (RadioButton) findViewById(R.id.radio0);
+				br.setChecked(true);
+			}else{
+				RadioButton br = (RadioButton) findViewById(R.id.radio1);
+				br.setChecked(true);
+			}
+			v.invalidate();
+		}*/
+		
 		switch (g.getCheckedRadioButtonId()) {
 		case R.id.radio0:
 			editor.putInt("type", Game.EUROPEAN);
@@ -95,10 +144,17 @@ public class Initial extends Activity implements OnClickListener{
 			editor.putInt("type", Game.ENGLISH);
 			break;
 		}
-
 		editor.commit();
 
+		
+
+
 		if (v.getId() == R.id.newgamebtn) {
+			
+			
+			//TODO if logged put text to LOG OUT and
+			if (Preferences.isUserLogged(this)==true) {
+	
 
 			Intent myIntent = new Intent(this, Session.class);
 			// myIntent.putExtra("type",Game.EUROPEAN);
@@ -106,9 +162,13 @@ public class Initial extends Activity implements OnClickListener{
 			startActivityForResult(myIntent, Session.REQUEST_CODE);
 			// startActivity(new
 			// Intent("com.es.uam.eps.dadm.mario_pantoja.SESSION"));
+			}
+			else
+				Toast.makeText(this,"Login First",Toast.LENGTH_SHORT).show();	
+
 		} else if (v.getId() == R.id.sitebtn) {
 			Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-					Uri.parse("http://www.marioandrei.com"));
+					Uri.parse("http://en.wikipedia.org/wiki/Peg_solitaire"));
 			startActivity(intent);
 			// startActivityForResult(intent, Session.REQUEST_CODE);
 		}
@@ -128,6 +188,14 @@ public class Initial extends Activity implements OnClickListener{
 		}
 		else if (v.getId()==R.id.statisticsbtn) {
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.STATISTICS"); 
+			startActivity(intent);
+		}
+		else if (v.getId()==R.id.figures) {
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.FIGURES"); 
+			startActivity(intent);
+		}
+		else if (v.getId()==R.id.preferences) {
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.PREFERENCES"); 
 			startActivity(intent);
 		}
 	}
@@ -268,24 +336,37 @@ public class Initial extends Activity implements OnClickListener{
 	}
 	
 	protected void onResume() {
-		super.onResume();
-		/* get from preferences current type of board */
+		/* get from preferences current type of board 
 		
 		//weird bug http://code.google.com/p/android/issues/detail?id=2096#makechanges
 		//http://stackoverflow.com/questions/5227478/getting-integer-or-index-values-from-a-list-preference
-		SharedPreferences sharedPreferences = getSharedPreferences("type", Context.MODE_PRIVATE);
-		int type_from_preferences = sharedPreferences.getInt("type", Game.ENGLISH);
-		//Toast.makeText(this,"TYPO ="+type_from_preferences,Toast.LENGTH_SHORT).show();		
+		SharedPreferences sharedPreferences = getSharedPreferences("type",MODE_PRIVATE);
 
-		if (type_from_preferences==37) {
-			RadioButton br = (RadioButton) findViewById(R.id.radio0);
-			br.setChecked(true);
-		}else{
-			RadioButton br = (RadioButton) findViewById(R.id.radio1);
-			br.setChecked(true);
-		}
+		int type_from_preferences = sharedPreferences.getInt("type", -2);
+		Toast.makeText(this,"TYPE ="+type_from_preferences,Toast.LENGTH_SHORT).show();	
+
+		
+		if (type_from_preferences!=-2) {
+			if (type_from_preferences==Game.ENGLISH) {
+				RadioButton br = (RadioButton) findViewById(R.id.radio0);
+				br.setChecked(true);
+						br.invalidate();
+
+			}else{
+				RadioButton br = (RadioButton) findViewById(R.id.radio1);
+				br.setChecked(true);
+			}
+		}	
+
+
+		*/
+		super.onResume();
 	}
 
+	protected void onStop() {
+		super.onStop();
+		
+	}
 
 
 	@Override

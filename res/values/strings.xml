@@ -13,6 +13,9 @@
     <string name="paintstr">Paint</string>
     <string name="european_str">European</string>
     <string name="english_str">English</string>
+    <string name="site_intial_str">Help</string>
+        <string name="stats_intial_str">Statistics</string>
+    
     <string name="about_text">
  
     		Peg solitaire is a board game for one player involving
@@ -65,6 +68,9 @@
         <item>special</item>
     </string-array>
     
-
+    <string name="username">Username</string>
+        <string name="npieces">Pieces</string>
+        <string name="duration">Duration</string>
+        
 
 </resources>

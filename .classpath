@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="com/es/uam/eps/dadm/mario_pantoja/PegSolitaireButton.java" kind="src" path="src"/>
+	<classpathentry excluding="com/es/uam/eps/dadm/mario_pantoja/PegSolitaireButton.java|com/es/uam/eps/dadm/mario_pantoja/Position.java|com/es/uam/eps/dadm/mario_pantoja/Paint.java|com/es/uam/eps/dadm/mario_pantoja/Movement.java|com/es/uam/eps/dadm/mario_pantoja/Lienzo.java|com/es/uam/eps/dadm/mario_pantoja/Animation.java|com/es/uam/eps/dadm/mario_pantoja/AnimThread.java|com/es/uam/eps/dadm/mario_pantoja/AnimView.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>

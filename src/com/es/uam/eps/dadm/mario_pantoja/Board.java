@@ -2,6 +2,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 import android.view.View;
@@ -16,12 +17,15 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation;
 import android.widget.Toast;
+
 
 /**
  * @author marioandrei
@@ -38,7 +42,12 @@ public class Board extends View {
 	private Session session;
 	private int type = Game.ENGLISH;
     private Context context;
-    
+
+    int SOUNDON=1;
+    int SOUNDOFF=2;
+    int SOUNDMOVE=3;
+	Sound sound;
+
     /**
      * Constructor
      * @param context
@@ -48,12 +57,18 @@ public class Board extends View {
 		super(context, attributes);
 		setFocusable(true);
 		setFocusableInTouchMode(true);
-
+		sound=new Sound(context);
 		
+		
+		/*
+		 * sound init
+		 * 
+		 * */
 
 		/* you can set the type of board here, ENGLISH OR EUROPEAN*/		
 		SharedPreferences sharedPreferences = context.getSharedPreferences("type", Context.MODE_PRIVATE);
 		int type = sharedPreferences.getInt("type", Game.ENGLISH);
+		
 		setSession((Session) context);
 		
 		//set the desired figure from preferences
@@ -96,7 +111,6 @@ public class Board extends View {
 		return this.game;
 	}
 
-	//TODO optimize
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
@@ -280,7 +294,8 @@ public class Board extends View {
 					game.select(xIndex, yIndex);
 					game.setSelectionModeOn(true);
 					game.setPivot(xIndex,yIndex);
-						
+					
+					sound.playSound(SOUNDON, 1.0f);
 					if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE)
 						return super.onTouchEvent(event);
 					//Toast.makeText(this.getContext(), "x,y="+Integer.toString(game.getPivotX())+" "+Integer.toString(game.getPivotY()) , Toast.LENGTH_LONG).show();
@@ -300,7 +315,8 @@ public class Board extends View {
 						//invalidatePosition(game.getPivotX(), game.getPivotY());
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
 
-						
+						sound.playSound(SOUNDOFF, 1.0f);
+
 						return super.onTouchEvent(event);
 
 					}//if outside the positions reset
@@ -319,6 +335,8 @@ public class Board extends View {
 						game.select(xIndex, yIndex);
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
 						invalidatePosition(xIndex, yIndex);
+						sound.playSound(SOUNDON, 1.0f);
+
 						return super.onTouchEvent(event);
 
 
@@ -340,6 +358,8 @@ public class Board extends View {
 						invalidatePosibilities(game.getPivotX(), game.getPivotY());
 						invalidatePosition(xIndex, yIndex);
 						invalidatePegCount();
+						//OFF SOUND
+						sound.playSound(SOUNDMOVE, 1.0f);
 
 					}
 					else{

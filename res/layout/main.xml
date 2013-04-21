@@ -22,6 +22,15 @@
             android:text="@string/newgamestr"
             android:textColor="@color/textColor"
             android:width="@dimen/widthRedBtn" />
+        
+        <Button
+            android:id="@+id/figures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="Figures (Online)"
+            android:textColor="@color/textColor"
+            android:width="@dimen/widthRedBtn" />
 
         <Button
             android:id="@+id/loginbtn"
@@ -44,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@layout/button_style"
-            android:text="Site"
+            android:text="@string/site_intial_str"
             android:textColor="@color/textColor" />
         
                 <Button
@@ -52,11 +61,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@layout/button_style"
-            android:text="Statistics"
+            android:text="@string/stats_intial_str"
             android:textColor="@color/textColor" />
+                        <Button
+            android:id="@+id/preferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/button_style"
+            android:text="Preferences"
+            android:textColor="@color/textColor"
+            android:width="@dimen/widthRedBtn" />
                 
     </LinearLayout>
-
+<!--  
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
@@ -68,7 +85,7 @@
         android:maxWidth="100dip"
         android:onClick="onLaunchCamera"
         android:scaleType="fitXY"
-        android:src="@drawable/pic" />
+        android:src="@drawable/pic" /> -->
 
     <RadioGroup
         android:id="@+id/radioGroup1"

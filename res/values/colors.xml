@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background_color">#1FFF00F0</color>
     <color name="textColor">#FFFFFFFF</color>
+    <color name="header_top_scores_color">#DDDDDD</color>
+    <color name="top_scores_color">#FF00FF</color>
 </resources>

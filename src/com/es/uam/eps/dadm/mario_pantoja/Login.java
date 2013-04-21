@@ -2,6 +2,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -94,7 +95,7 @@ public class Login extends Activity implements OnClickListener {
 			SharedPreferences.Editor editor= settings.edit();
 			editor.putString("username",username);
 			editor.commit();
-			
+			Preferences.setIfUserIsLogged(getBaseContext(),true);
 			startActivity(new Intent(this, Session.class));
 			finish();
 		}
@@ -107,4 +108,6 @@ public class Login extends Activity implements OnClickListener {
 			}).show();
 		}
 	}
+
+
 }

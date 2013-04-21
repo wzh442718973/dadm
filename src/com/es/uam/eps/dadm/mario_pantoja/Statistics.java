@@ -13,7 +13,7 @@ public class Statistics extends ListActivity{
 
 	  public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    String[] values = new String[] { "Top 10", "All Players", "All Games", "Recent Games" };
+	    String[] values = new String[] { "Top 10", "All Players", "All Games", "Recent Games","Top Scores (online)" };
 	    
 	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 	        android.R.layout.simple_list_item_1, values);
@@ -42,6 +42,11 @@ public class Statistics extends ListActivity{
 			
 		}else 	    if (item.equals("Recent Games")) {
 		    Intent myIntent = new Intent(this, RecentGames.class);
+			/* retrieve type of board */
+			startActivity(myIntent);
+			
+		}else 	    if (item.equals("Top Scores (online)")) {
+		    Intent myIntent = new Intent(this, TopScores.class);
 			/* retrieve type of board */
 			startActivity(myIntent);
 			
