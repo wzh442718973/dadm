@@ -1,9 +1,14 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
  
 /**
  * Splash screen activity
@@ -13,7 +18,7 @@ import android.os.Handler;
 public class SplashScreen extends Activity {
  
     private boolean mIsBackButtonPressed;
-    private static final int SPLASH_DURATION = 2000; // 2 seconds
+    private static final int SPLASH_DURATION = 3000; // 2 seconds
    
  
    public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +26,17 @@ public class SplashScreen extends Activity {
  
         setContentView(R.layout.splash_screen);
  
+        View splash= (View) findViewById(R.id.splashsimage);
+        
+		/* SHAKE  if not valid ! */
+		Animation animation=AnimationUtils.loadAnimation(splash.getContext(),R.anim.alpha);
+		splash.startAnimation(animation);						
+		//Vibrator v = (Vibrator) splash.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+		// Vibrate for 300 milliseconds
+		//v.vibrate(200);
+		
         Handler handler = new Handler();
+
  
         // run a thread after 2 seconds to start the home screen
         handler.postDelayed(new Runnable() {

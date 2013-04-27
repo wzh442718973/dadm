@@ -71,14 +71,18 @@ public class Initial extends Activity implements OnClickListener{
 		
 		
 		//Preferences.setConnection(this, wifiConnected);
-		SharedPreferences settings = getSharedPreferences("wifi", MODE_PRIVATE);
+		SharedPreferences settings = getSharedPreferences(Preferences.WIFI_KEY, MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean("wifi", wifiConnected);
+		editor.putBoolean("Preferences.WIFI_KEY", isWifiConn);
 		editor.commit();
 				
 		networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		
 		boolean isMobileConn = networkInfo.isConnected();
+		
+		settings = getSharedPreferences("isMobileConn", MODE_PRIVATE);
+		editor = settings.edit();
+		editor.putBoolean("isMobileConn", isMobileConn);
 		
 		Log.d(DEBUG_TAG, "Wifi connected: " + isWifiConn);
 		Log.d(DEBUG_TAG, "Mobile connected: " + isMobileConn);
@@ -99,7 +103,10 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.preferences);
 		button.setOnClickListener( this);	
-		
+		button = (Button) findViewById(R.id.creationbtn);
+		button.setOnClickListener( this);		
+		button = (Button) findViewById(R.id.figurescreated);
+		button.setOnClickListener( this);		
 
 		
 		/* Set Profile Pic long listener 
@@ -194,9 +201,18 @@ public class Initial extends Activity implements OnClickListener{
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.FIGURES"); 
 			startActivity(intent);
 		}
+		else if (v.getId()==R.id.figurescreated) {
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.FIGURESCREATED"); 
+			startActivity(intent);
+		}
 		else if (v.getId()==R.id.preferences) {
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.PREFERENCES"); 
 			startActivity(intent);
+		}
+		else if (v.getId()==R.id.creationbtn) {
+
+			Intent myIntent = new Intent(this, SessionCreation.class);
+			startActivity(myIntent);
 		}
 	}
 	

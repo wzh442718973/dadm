@@ -8,5 +8,8 @@
     <dimen name="widthRedBtn">170px</dimen>
     
     <dimen name="header_top_scores_size">10dp</dimen>
- <dimen name="top_scores_size">20dp</dimen>
+ <dimen name="top_scores_size">10dp</dimen>
+  <dimen name="figures_name_text_size">18dp</dimen>
+  <dimen name="figures_values_text_size">7dp</dimen>
+  
 </resources>

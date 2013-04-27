@@ -9,9 +9,12 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Figures extends Activity implements OnClickListener{
+public class TopTenByFigure extends Activity implements OnClickListener{
 	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
 	final static String FIGURES_PAGE = SERVER_NAME + "figures.php" ;
 
@@ -42,6 +45,9 @@ public class Figures extends Activity implements OnClickListener{
 		//and put them on tableLayout Top Scores.
 		figuresDownloaderTask = new FiguresDownloaderTask();
 		figuresDownloaderTask.execute(FIGURES_PAGE, tableLayoutFigures);
+		
+
+
 	}
 
    
@@ -89,12 +95,7 @@ public class Figures extends Activity implements OnClickListener{
 	    textView.setText("Figure Name"); 
 	    header.addView(textView);
 	    
-	    
-	    textView = new TextView(this);
-	    textView.setTextSize(textSize);
-	    textView.setTextColor(textColor);
-	    textView.setText("Value"); 
-	    header.addView(textView);
+
 	    
     	//addTextView(header, "Figure Name", textColor, textSize); 
     	//addTextView(header, "Value", textColor, textSize); 
@@ -113,26 +114,27 @@ public class Figures extends Activity implements OnClickListener{
 		@Override
 		protected void onCancelled() {
 			Log.i(DEBUG_TAG, "onCancelled() inside TopScoreDownloader");
-			Figures.this.setProgressBarIndeterminateVisibility(false);
+			TopTenByFigure.this.setProgressBarIndeterminateVisibility(false);
 		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
 			Log.i(DEBUG_TAG, "onPostExecute() inside TopScoreDownloader");
-			Figures.this.setProgressBarIndeterminateVisibility(false);
+			TopTenByFigure.this.setProgressBarIndeterminateVisibility(false);
+
 		}
 
 		@Override
 		protected void onPreExecute() {
-			Figures.this.setProgressBarIndeterminateVisibility(true);
+			TopTenByFigure.this.setProgressBarIndeterminateVisibility(true);
+
 		}
 
 		@Override
 		protected void onProgressUpdate(String... values) {
 			if (values.length == 2) {
 				String nombre = values[0];
-				String valor = values[1];
-				insertRow(table, nombre, valor);
+				insertRow(table, nombre);
 				//then when the user selects one from the table, save that one as a string and pass it to game to grid
 				//convert the 0s to -1, the 1 to 1 and put the middle one to 0.
 			} else {
@@ -179,16 +181,14 @@ public class Figures extends Activity implements OnClickListener{
 			return result;
 		}
 
-		private void insertRow(final TableLayout table, String nombre,
-				String valor) {
-			final TableRow row = new TableRow(Figures.this);
+		private void insertRow(final TableLayout table, String nombre) {
+			final TableRow row = new TableRow(TopTenByFigure.this);
 			int textColor = getResources().getColor(R.color.top_scores_color);
 			float textSize = getResources().getDimension(R.dimen.figures_name_text_size);
 			
 			addTextView(row, nombre, textColor, textSize);
 			textSize = getResources().getDimension(R.dimen.figures_values_text_size);
 
-			addTextView(row, valor, textColor, textSize);
 			table.addView(row);
 		}
 
@@ -226,20 +226,23 @@ public class Figures extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		TableRow row= (TableRow) v;
-		TextView et=(TextView ) row.getChildAt(1);
+		TextView et=(TextView ) row.getChildAt(0);
 				
-		Integer n = row.getVirtualChildCount();//getChildAt(0);
 		String text=et.getText().toString();
 
-		Preferences.setOnlineFigure(this.getBaseContext(),text);
-		Preferences.setFigure(this.getBaseContext(),text);
 		
-		//save to preferences the name if the figure
-		 et=(TextView ) row.getChildAt(0);
-		 text=et.getText().toString();
-	    //Toast.makeText(getBaseContext(),"Figure Name: "+text,Toast.LENGTH_SHORT).show();	
-
-        Preferences.setFigureName(getBaseContext(),text );
+		
+		//TODO launch TopTen
+		//pasar text a db adaptaer
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences.Editor editor= settings.edit();
+		editor.putString("FIGUREQUERY",text);
+		editor.commit();
+		
+	    Intent myIntent = new Intent(this, TopTen.class);
+		/* retrieve type of board */
+		startActivity(myIntent);
+		
 
 		
 		finish();

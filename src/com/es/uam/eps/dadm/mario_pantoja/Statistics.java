@@ -3,10 +3,12 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Statistics extends ListActivity{
 		DatabaseAdapter db;
@@ -36,7 +38,7 @@ public class Statistics extends ListActivity{
 			startActivity(myIntent);
 			
 		}else 	    if (item.equals("Top 10")) {
-		    Intent myIntent = new Intent(this, TopTen.class);
+		    Intent myIntent = new Intent(this, TopTenByFigure.class);
 			/* retrieve type of board */
 			startActivity(myIntent);
 			
@@ -46,9 +48,13 @@ public class Statistics extends ListActivity{
 			startActivity(myIntent);
 			
 		}else 	    if (item.equals("Top Scores (online)")) {
-		    Intent myIntent = new Intent(this, TopScores.class);
-			/* retrieve type of board */
-			startActivity(myIntent);
+			
+		
+			    Intent myIntent = new Intent(this, TopScoresByFigure.class);
+				/* retrieve type of board */
+				startActivity(myIntent);
+	
+
 			
 		}
 	    

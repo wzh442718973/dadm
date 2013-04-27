@@ -6,17 +6,20 @@
     android:layout_gravity="center_horizontal" >
 
     
-    <com.es.uam.eps.dadm.mario_pantoja.Board
-            android:id="@+id/board"
+    <com.es.uam.eps.dadm.mario_pantoja.BoardCreation
+            android:id="@+id/boardcreation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="80dip" 
             />
-    <Chronometer android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/chrono"
-    />
 
+<Button android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/exitcreation"
+    android:text="EXIT"
+    android:background="@drawable/red_btn"
+    android:textColor="@color/textColor"
+    />
 
 
 </RelativeLayout>

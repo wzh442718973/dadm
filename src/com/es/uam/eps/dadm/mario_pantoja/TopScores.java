@@ -11,12 +11,12 @@ import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TopScores extends Activity {
 	
@@ -40,7 +40,11 @@ public class TopScores extends Activity {
 		//new service or task if you will, first create object then get from topten.php the scores
 		//and put them on tableLayout Top Scores.
 		topScoresDownloaderTask = new TopScoresDownloaderTask();
-		topScoresDownloaderTask.execute(TOP_TEN, tableLayoutTopScores);
+		String toptenbyfigure=TOP_TEN+"?figurename="+PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+				.getString("TOPSCOREFIGUREQUERY", "completo");
+		Log.i("HEY", "TOPSCORE QUERY ="+toptenbyfigure);
+
+		topScoresDownloaderTask.execute(toptenbyfigure, tableLayoutTopScores);
 	}
 
    
@@ -118,9 +122,8 @@ public class TopScores extends Activity {
 				String duration = values[2];
 				insertRow(table, username, npieces, duration);
 			} else {
-				Log.e(DEBUG_TAG,
-						"onProgressUpdate() inside TopScoreDownloader: Error downloading data.");
-				Toast.makeText(getBaseContext(),"Error downloading data.",Toast.LENGTH_SHORT).show();	
+				//Log.e(DEBUG_TAG,"onProgressUpdate() inside TopScoreDownloader: Error downloading data.");
+				//Toast.makeText(getBaseContext(),"Error downloading data.",Toast.LENGTH_SHORT).show();	
 			}
 		}
 

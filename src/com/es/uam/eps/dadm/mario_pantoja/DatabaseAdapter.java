@@ -22,6 +22,9 @@ public class DatabaseAdapter {
 	public static final String SECONDS = "seconds";
 	public static final String PEGCOUNT = "pegcount";
 	public static final String DATE = "date";
+	public static final String FIGURE = "figure";
+	public static final String UUID = "uuid";
+
 	
 	/* BOARDS */
 
@@ -29,12 +32,17 @@ public class DatabaseAdapter {
 	public static final String NUMBEROFPEGS = "pegcount";
 	
 	
+	/*FIGURE*/
+	public static final String FIGURECREATEDNAME = "figname";
+	public static final String FIGURECREATED = "figcreated";
+
 
 	private static final String DATABASE_NAME = "pegsolitaire.db";
 	
 	private static final String TABLE_NAME_USERS = "users";
 	private static final String TABLE_NAME_GAMES = "games";
 	private static final String TABLE_NAME_BOARDS = "boards";
+	private static final String TABLE_NAME_FIGURES = "figures";
 
 	private static final int DATABASE_VERSION = 1;
 	
@@ -67,6 +75,7 @@ public class DatabaseAdapter {
 			db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_USERS);
 			db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_GAMES);
 			db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_BOARDS);
+			db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_FIGURES);
 
 
 			createTable(db);
@@ -93,6 +102,8 @@ public class DatabaseAdapter {
 					SECONDS	+ " INTEGER NOT NULL, "+
 					DATE	+ " TEXT NOT NULL, "+
 					PEGCOUNT+ " INTEGER NOT NULL, "+
+					FIGURE	+ " TEXT NOT NULL, "+
+					UUID	+ " TEXT NOT NULL, "+
 					BOARD	+ " TEXT NOT NULL);";
 			
 			
@@ -119,6 +130,19 @@ public class DatabaseAdapter {
 				e.printStackTrace();
 			}
 			
+			String str4 = "CREATE TABLE "+TABLE_NAME_FIGURES+" ( "+
+					ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, "+
+					FIGURECREATEDNAME+ " TEXT NOT NULL, "+
+					FIGURECREATED	+ " TEXT NOT NULL);";
+			
+			
+            Log.v("DBLOG"," exexSQL :"+str4);
+
+			try {
+				db.execSQL(str4);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}	
 	public DatabaseAdapter open() throws SQLException{
@@ -164,28 +188,32 @@ public class DatabaseAdapter {
 			ContentValues values = new ContentValues();
 			values.put(NAME, username);
 			if (game.getType()==Game.ENGLISH) {
-				values.put(BOARD, "English Board");
+				values.put(BOARD, "English");
 
 			}else
-				values.put(BOARD, "European Board");
+				values.put(BOARD, "European");
 
-			//values.put(BOARD, game.getBoard());
+			values.put(FIGURE, Preferences.getFigureName(context));
+			values.put(UUID, Preferences.getUUID(context));
+
 			values.put(SECONDS, game.getSeconds());
 			values.put(PEGCOUNT, game.getPegCount());
 			values.put(DATE, game.getDate());
 			return db.insert(TABLE_NAME_GAMES, null, values);
 		}
 		
+		
+		
 		public boolean deleteGame(long id) {
 			return db.delete(TABLE_NAME_GAMES, ID+"="+id, null) >0 ;
 		}
 		public Cursor getAllGames(){
-			return db.query(TABLE_NAME_GAMES, new String []{ID,NAME,BOARD,SECONDS,PEGCOUNT,DATE},null, null, null,null, null);
+			return db.query(TABLE_NAME_GAMES, new String []{ID,NAME,FIGURE,BOARD,SECONDS,PEGCOUNT,DATE},null, null, null,null, null);
 		}
 
 		public boolean gamesByUser(String username) {
 			boolean in=false;
-			Cursor cursor = db.query(TABLE_NAME_GAMES, new String [] {NAME,BOARD,SECONDS,PEGCOUNT,DATE}, 
+			Cursor cursor = db.query(TABLE_NAME_GAMES, new String [] {NAME,FIGURE,BOARD,SECONDS,PEGCOUNT,DATE}, 
 									NAME + " = '"+ username+ "' ",
 									null, null, null, SECONDS+ " DESC");
 			if (cursor.moveToFirst()) {
@@ -198,15 +226,17 @@ public class DatabaseAdapter {
 		}
 		public Cursor gamesRecent() {
 
-			return db.query(TABLE_NAME_GAMES, new String [] {ID,NAME,BOARD,SECONDS,PEGCOUNT,DATE}, 
+			return db.query(TABLE_NAME_GAMES, new String [] {ID,NAME,FIGURE,BOARD,SECONDS,PEGCOUNT,DATE}, 
 									null,
-									null, null, null, ID+ " ASC","3");
+									null, null, null, ID+ " DESC","10");
 			}
 		
-		public Cursor gamesTopTen() {
+		public Cursor gamesTopTen(String figures) {
 
-			return db.query(TABLE_NAME_GAMES, new String [] {NAME,BOARD,SECONDS,DATE}, 
-									PEGCOUNT + " = '1' ",
+            Log.v("DEBUGDB"," top ten query :"+figures);
+
+			return db.query(TABLE_NAME_GAMES, new String [] {NAME,FIGURE,BOARD,SECONDS,DATE}, 
+									FIGURE + " = '"+figures+"' ",
 									null, null, null, SECONDS+ " ASC ","10");
 			}
 	public Context getContext() {
@@ -240,6 +270,20 @@ public class DatabaseAdapter {
 	void insertBoards(){
 		insertBoard("English", board_english_basic);
 		insertBoard("European", board_european_basic);
+	}
+	
+	public long insertFigure(String name, String figure) {
+		ContentValues values = new ContentValues();
+	
+        Log.v("DEBUGDB"," figure inserted :"+figure+".");
+
+		values.put(FIGURECREATEDNAME, name);
+		values.put(FIGURECREATED, figure);
+		
+		return db.insert(TABLE_NAME_FIGURES, null, values);
+	}
+	public Cursor getAllFigures(){
+		return db.query(TABLE_NAME_FIGURES, new String []{FIGURECREATEDNAME,FIGURECREATED},null, null, null,null, null);
 	}
 
 }

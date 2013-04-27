@@ -143,7 +143,27 @@
             </intent-filter>
 
         </activity>
+                <activity
+            android:name=".TopTenByFigure"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPTENBYFIGURE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         
+         <activity
+            android:name=".TopScoresByFigure"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPSCORESBYFIGURE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".TopScores"
             android:exported="false" >
@@ -154,7 +174,16 @@
             </intent-filter>
 
         </activity>
-        
+        <activity
+            android:name=".FiguresCreated"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.FIGURESCREATED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>        
         <activity
             android:name=".Figures"
             android:theme="@android:style/Theme.Dialog"
@@ -162,6 +191,18 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.es.uam.eps.dadm.mario_pantoja.FIGURES" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+         <activity
+            android:name=".SessionCreation"
+            android:exported="false"
+            android:label="Creation Mode"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SESSIONCREATION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -176,6 +217,16 @@
         <service android:name=".TopScoresDownloaderTask" >
 ￼
         </service>
+        
+        <service android:name=".NewAccountTask" >
+
+￼
+        </service>
+        
+        <service android:name="com.es.uam.eps.dadm.mario_pantoja.Session$UploaderService">
+   
+		</service>
+￼
     </application>
 
 </manifest>

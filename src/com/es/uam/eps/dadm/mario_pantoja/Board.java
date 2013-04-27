@@ -380,10 +380,13 @@ public class Board extends View {
 					
 					if (game.isWon()){
 						//Toast.makeText(this.getContext(),"You WON",Toast.LENGTH_LONG).show();
+						session.stopWatch();
 						session.restartGame();
 					}
 					else if (game.isLost()){
 						//Toast.makeText(this.getContext(), "GAME OVER - No moves Left", Toast.LENGTH_LONG).show();
+						session.stopWatch();
+
 						session.restartGameLoser();		
 					}
 					

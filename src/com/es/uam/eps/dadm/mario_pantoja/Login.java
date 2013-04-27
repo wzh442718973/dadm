@@ -95,6 +95,7 @@ public class Login extends Activity implements OnClickListener {
 			SharedPreferences.Editor editor= settings.edit();
 			editor.putString("username",username);
 			editor.commit();
+			Preferences.setPlayerName(this, username);
 			Preferences.setIfUserIsLogged(getBaseContext(),true);
 			startActivity(new Intent(this, Session.class));
 			finish();

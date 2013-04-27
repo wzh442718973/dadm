@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 
 
@@ -22,8 +23,8 @@ public class Game {
 	private Context context;
 	private DatabaseAdapter db;
 
-	public static final int EUROPEAN = 33;
-	public static final int ENGLISH = 37;
+	public static final int EUROPEAN = 37;
+	public static final int ENGLISH =33;
 
 	public static final int ON = 1;
 	public static final int OFF = 0;
@@ -89,8 +90,21 @@ public class Game {
 																"1,0,1,1,0,1,1,"+
 																"-1,0,0,1,1,1,-1,"+
 																"-1,-1,0,1,1,-1,-1";
-	//TODO get from INitial the figure that the user selected from the web												 
-	private HashMap<String, String> figures;
+		private static final String blank =		"-1,-1,0,0,0,-1,-1,"+
+												"-1,-1,0,0,0,-1,-1,"+
+												"0,0,0,0,0,0,0,"+
+												"0,0,0,0,0,0,0,"+
+												"0,0,0,0,0,0,0,"+
+												"-1,-1,0,0,0,-1,-1,"+
+												"-1,-1,0,0,0,-1,-1";
+		private static final String blankeuro =		"-1,-1,0,0,0,-1,-1,"+
+													"-1,0,0,0,0,0,-1,"+
+													"0,0,0,0,0,0,0,"+
+													"0,0,0,0,0,0,0,"+
+													"1,1,0,0,0,1,1,"+
+													"-1,0,0,0,0,0,-1,"+
+													"-1,-1,0,0,0,-1,-1";
+
 	
 	
 	private String figure;
@@ -105,7 +119,7 @@ public class Game {
 	private int[][] grid;
 	private int[] currentBoardStateArray = new int[49];
 
-	private String currentPlayer="Player 1";
+	private String currentPlayer="unknown";
 	private int pegCount;
 	private int moveCount;
 	
@@ -140,7 +154,21 @@ public class Game {
 		
 
 	}
-	
+	/**
+	 * Constructor for Creation Mode
+	 * @param context 
+	 * @param type 33 or 37
+	 */
+	public Game(Context context, int type){
+		setContext(context);
+		
+		String zero="zero";
+		this.figure=zero;
+		
+		initializeGrid(type);
+		
+
+	}
 
 	
 	
@@ -660,6 +688,7 @@ public class Game {
 	}
 	
 	public void initializeGrid(int type){
+
 		if (type==EUROPEAN){
 
 			this.type=EUROPEAN;
@@ -668,7 +697,7 @@ public class Game {
 			this.setGrid(new int[7][7]);
 			
 			
-			//TODO get figures from the Internet if a connection is available 
+			
 			if (figure.equals("basic")){
 				setCurrentBoardStateArray(stringToArray(board_european_basic));
 
@@ -679,10 +708,17 @@ public class Game {
 			else if (figure.equals("special")){
 				setCurrentBoardStateArray(stringToArray(board_european_special));
 
-			}
-			//else get figures from Map figures
-			
+			}else if (figure.equals("zero")){
+				//CREATION MODE
+				setCurrentBoardStateArray(stringToArray(blankeuro));
+				Toast.makeText(context,"Creation Mode="+figure+blank,Toast.LENGTH_SHORT).show();		
 
+
+
+			}else
+			{
+				setCurrentBoardStateArray(onlineStringToArray(figure));
+			}
 			int k=0;
 			for (int i = 0; i < 7; i++) {
 				for (int j = 0; j < 7; j++) {
@@ -706,11 +742,19 @@ public class Game {
 				setCurrentBoardStateArray(stringToArray(board_english_diamond));
 				//Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
 
+			}else if (figure.equals("zero")){
+				//CREATION MODE
+				setCurrentBoardStateArray(stringToArray(blank));
+
+
 			}
 			else if (figure.equals("special")){
 				setCurrentBoardStateArray(stringToArray(board_english_special));
 				//Toast.makeText(context,"Game/FIGURE="+figure,Toast.LENGTH_SHORT).show();		
 
+			}else
+			{
+				setCurrentBoardStateArray(onlineStringToArray(figure));
 			}
 			int k=0;
 			for (int i = 0; i < 7; i++) {
@@ -730,6 +774,11 @@ public class Game {
 	
 
 	
+
+
+
+
+
 	public void initializeGrid(){
 		
 			this.type=ENGLISH;
@@ -945,11 +994,66 @@ public class Game {
 		
 	}
 	
+	public int[] onlineStringToArray(String figure) {
+		int[] array=new int[figure.length()];
+		
+		for (int i = 0; i < figure.length(); i++) {
+			String s=""+figure.charAt(i);
+				array[i]=Integer.parseInt(s);
+
+		}
+		if (this.type==ENGLISH) {
+			array[0]=-1;
+			array[1]=-1;
+			array[5]=-1;
+			array[6]=-1;
+			array[7]=-1;
+			array[8]=-1;
+			array[12]=-1;
+			array[13]=-1;
+			array[35]=-1;
+			array[36]=-1;
+			array[40]=-1;
+			array[41]=-1;
+			array[42]=-1;
+			array[43]=-1;
+			array[47]=-1;
+			array[48]=-1;
+
+		}
+		else{
+			array[0]=-1;
+			array[1]=-1;
+			array[5]=-1;
+			array[6]=-1;
+			array[7]=-1;
+			array[13]=-1;
+			array[35]=-1;
+			array[41]=-1;
+			array[42]=-1;
+			array[43]=-1;
+			array[47]=-1;
+			array[48]=-1;
+			if (figure.equals("0011100001110011111111110111111111100111000011100")) {
+				array[8]=1;
+				array[12]=1;
+				array[36]=1;
+				array[40]=1;
+
+
+			}
+		}
+
+	//	array[24]=0;
+		return array;
+		
+	}
 	public void newGameEntry(){
 
 			db= new DatabaseAdapter(context);
 			db.open();
-			db.insertGame(this, currentPlayer);
+			
+			db.insertGame(this, Preferences.getPlayerName(context));
 			db.close();
 			
 			//Toast.makeText(context,"New game added to the database",Toast.LENGTH_SHORT).show();		
@@ -983,14 +1087,37 @@ public class Game {
 	}
 
 
-
-
-
 	/**
 	 * @param figure the figure to set
 	 */
 	public void setFigure(String figure) {
 		this.figure = figure;
 	}
+	
+	public void newFigureEntry(){
+int aux;
+		db= new DatabaseAdapter(context);
+		db.open();
+		String figurecreated=new String();
+		
+		for (int i = 0; i < 7; i++)
+	    	for (int j = 0; j < 7; j++) {
+	    		aux=grid[j][i];
+	    		if (aux==1) {
+		    		figurecreated=figurecreated+Integer.toString(aux);
+
+				}
+	    		else
+		    		figurecreated=figurecreated+"0";
+
+			}
+		
+		db.insertFigure("Custom Figure "+getPegCount(), figurecreated);
+		db.close();
+		
+		//Toast.makeText(context,"New game added to the database",Toast.LENGTH_SHORT).show();		
+	
+
+}
 	
 }

@@ -23,7 +23,7 @@ public class AllGames extends Activity {
 		db = new DatabaseAdapter(this);
 		db.open();
 		Cursor mCursor = db.getAllGames();
-		
+		//db.gamesTopTen();
 		
 		
 		
