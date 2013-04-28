@@ -2,7 +2,6 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 import android.view.View;
@@ -17,14 +16,11 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation;
-import android.widget.Toast;
 
 
 /**
@@ -38,7 +34,7 @@ public class Board extends View {
     private final int SIZE = 7;
     private float height_of_position;
     private float width_of_position;
-    private Bitmap bitmapON,bitmapOFF,bitmapSEL;
+    private Bitmap bitmapON,bitmapOFF,bitmapSEL,bitmapFUTURE,bitmapDEEP1,bitmapDEEP2;
 	private Session session;
 	private int type = Game.ENGLISH;
     private Context context;
@@ -86,8 +82,49 @@ public class Board extends View {
 		bitmapON = BitmapFactory.decodeResource(getResources(), R.drawable.on);
 		bitmapSEL = BitmapFactory.decodeResource(getResources(), R.drawable.selected);
 		bitmapOFF = BitmapFactory.decodeResource(getResources(), R.drawable.off);
+		bitmapDEEP1 = BitmapFactory.decodeResource(getResources(), R.drawable.deep1);
+		bitmapDEEP2 = BitmapFactory.decodeResource(getResources(), R.drawable.deep2);
 
 	}
+	
+	
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
+	/**
+	 * @return the session
+	 */
+	public Session getSession() {
+		return session;
+	}
+	/**
+	 * @param session the session to set
+	 */
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	
+	/**
+	 * @return the game created
+	 */
+	public Game getGame() {
+		return this.game;
+	}
+
+	
+	
+	
+	
+	
 	/**
 	 * updates width and height of the board positions
 	 */
@@ -107,10 +144,12 @@ public class Board extends View {
 		super.onSizeChanged(width, height, oldWidth, oldHeight);
 		
 	}
-	public Game getGame() {
-		return this.game;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.View#onDraw(android.graphics.Canvas)
+	 * 
+	 * calculates the size of the board and draws the board pegs and text
+	 */
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
@@ -134,8 +173,6 @@ public class Board extends View {
 		
 		
 		if (game.getSelectionModeOn()==true) {
-			//Toast.makeText(this.getContext(), "cadena "+game.posibilities(game.posibleDestinations(game.getPivotX(), game.getPivotY())) , Toast.LENGTH_LONG).show();
-
 			drawPossibleDestinations(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
 			drawPossibleDestinationsDeep(game.posibleDestinations(game.getPivotX(), game.getPivotY()), canvas);
 		}
@@ -155,14 +192,14 @@ public class Board extends View {
 			for (int j = 0; j < SIZE; j++) {
 				if (game.getGrid()[i][j]==1) {
 					/* paint ON */
-			        canvas.drawBitmap(bitmapON, i*width_of_position, j*width_of_position, paint);
+			        canvas.drawBitmap(bitmapON, i*width_of_position, j*height_of_position, paint);
 
 				} else if (game.getGrid()[i][j]==0) {
-			        canvas.drawBitmap(bitmapOFF, i*width_of_position, j*width_of_position, paint);
+			        canvas.drawBitmap(bitmapOFF, i*width_of_position, j*height_of_position, paint);
 					/* paint OFF*/
 
 				} else if (game.getGrid()[i][j]==2) {
-			        canvas.drawBitmap(bitmapSEL, i*width_of_position, j*width_of_position, paint);
+			        canvas.drawBitmap(bitmapSEL, i*width_of_position, j*height_of_position, paint);
 					/* paint SELECTED*/
 
 				}
@@ -180,34 +217,55 @@ public class Board extends View {
 			}*/
 
 	}
+	/**
+	 * @param destinations receives a list of possible moves: array of (x,y) 
+	 * @param canvas the board canvas
+	 */
 	private void drawPossibleDestinations(ArrayList<int[]> destinations, Canvas canvas){
 
 		for (int[] pos : destinations) {
-			int x=(int) (pos[0] * width_of_position)+2;
-			int y=(int) (pos[1] * width_of_position)+3;
+			//int x=(int) (pos[0] * width_of_position)+2;
+			//int y=(int) (pos[1] * width_of_position)+3;
+			float x= (pos[0] * (width_of_position));
+			float y= (pos[1] * (height_of_position));
 			//int x1=(int) ((pos[0] +1)* width_of_position);
 			//int y1=(int) ((pos[1] +1)* width_of_position);
 
 	        /* paint a cyan circle inside */
 		    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+			paint.setColor(Color.BLACK);
+			paint.setAlpha(185);
+		    canvas.drawBitmap(bitmapDEEP1, pos[0]*width_of_position, pos[1]*height_of_position, paint);
+/*
 			paint.setColor(Color.CYAN);
-			paint.setAlpha(125);
+			paint.setAlpha(105);
 			// Rect rect = new Rect(x,y,x1,y1);
 			//canvas.drawRect(rect, paint);
             
-			canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+			canvas.drawCircle((float) (x+(width_of_position*0.5)), (float) (y+(height_of_position*0.5)), (float) (width_of_position*0.55), paint);
 
 			
-			/*PAINT A RED DASHED CIRCLE*/
-			 paint.setColor(Color.RED);
-             DashPathEffect dashPath = new DashPathEffect(new float[]{5,5}, (float)1.0);
+			//PAINT A RED DASHED CIRCLE
+			 paint.setColor(Color.BLACK);
+             DashPathEffect dashPath = new DashPathEffect(new float[]{5,5}, (float)0.5);
 
              paint.setPathEffect(dashPath);
+ 			paint.setAlpha(125);
+
              paint.setStrokeWidth((float) (width_of_position*0.06));
+
              paint.setStyle(Style.STROKE);
-             canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+             //canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position), paint);
+
+             canvas.drawCircle((float) (x+(((float)width_of_position)*0.5)), (float) (y+(height_of_position*0.5)), (float) (width_of_position*0.5), paint);
+		*/
 		}
 	}
+	/**
+	 * recursive possible moves ()
+	 * @param destinations
+	 * @param canvas
+	 */
 	private void drawPossibleDestinationsDeep(ArrayList<int[]> destinations, Canvas canvas){
 
 		for (int[] position : destinations) {
@@ -216,35 +274,42 @@ public class Board extends View {
 			
 						
 			for (int[] pos : game.posibleDestinations(x0, y0)) {
-				int x=(int) (pos[0] * width_of_position)+2;
-				int y=(int) (pos[1] * width_of_position)+3;
-
+				float x=(pos[0] * width_of_position);
+				float y= (pos[1] * height_of_position);
+				
+			    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setColor(Color.BLACK);
+				paint.setAlpha(110);
+			    canvas.drawBitmap(bitmapDEEP2, pos[0]*width_of_position, pos[1]*height_of_position, paint);
 	
-		        /* paint a cyan circle inside */
+		        /* paint a cyan circle inside 
 			    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				paint.setColor(Color.YELLOW);
 				paint.setAlpha(125);
 				// Rect rect = new Rect(x,y,x1,y1);
 				//canvas.drawRect(rect, paint);
 	            
-				canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+				canvas.drawCircle((float) (x+(width_of_position*0.5)), y+height_of_position/2, (float) (width_of_position*0.4), paint);
 	
 				
-				/*PAINT A RED DASHED CIRCLE*/
 				 paint.setColor(Color.RED);
 	             DashPathEffect dashPath = new DashPathEffect(new float[]{5,5}, (float)1.0);
 	
 	             paint.setPathEffect(dashPath);
 	             paint.setStrokeWidth((float) (width_of_position*0.06));
 	             paint.setStyle(Style.STROKE);
-	             canvas.drawCircle(x+width_of_position/2, y+width_of_position/2, (float) (width_of_position*0.4), paint);
+	             canvas.drawCircle(x+width_of_position/2, y+height_of_position/2, (float) (width_of_position*0.4), paint);
 	             
-	             
+	             */
 	 			
 			}
 		}
 		invalidate();
 	}
+	/**
+	 * draws the current number of pegs on the board
+	 * @param canvas
+	 */
 	private void drawPegCount (Canvas canvas){
 		
 		/* PAINT */
@@ -398,6 +463,11 @@ public class Board extends View {
 	}
 	
 	
+	/**
+	 * invalidates a section of the board, just the possible moves
+	 * @param xIndex
+	 * @param yIndex
+	 */
 	private void invalidatePosibilities(int xIndex, int yIndex) {
 		int left = (int) ((xIndex-2)*width_of_position);
 		int top = (int) ((yIndex-2)*height_of_position);
@@ -408,6 +478,11 @@ public class Board extends View {
 		invalidate(position);
 		
 	}
+	/**
+	 * invalidates the size of a peg on the board
+	 * @param xIndex
+	 * @param yIndex
+	 */
 	private void invalidatePosition(int xIndex, int yIndex) {
 		int left = (int) (xIndex*width_of_position);
 		int top = (int) (yIndex*height_of_position);
@@ -418,6 +493,9 @@ public class Board extends View {
 		invalidate(position);
 	}
 	
+	/**
+	 * invalidates the section where the text is
+	 */
 	private void invalidatePegCount() {
 		int left = (int) (5*width_of_position);
 		int top = (int) (6*height_of_position);
@@ -427,31 +505,7 @@ public class Board extends View {
 		Rect position = new Rect(left, top, right, bottom);
 		invalidate(position);
 		}
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(int type) {
-		this.type = type;
-	}
-	/**
-	 * @return the session
-	 */
-	public Session getSession() {
-		return session;
-	}
-	/**
-	 * @param session the session to set
-	 */
-	public void setSession(Session session) {
-		this.session = session;
-	}
-	
+
 	
 
 	

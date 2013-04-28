@@ -1,8 +1,7 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 
 
 import android.view.View;
@@ -12,25 +11,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
+
+
 import android.graphics.Rect;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.Vibrator;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Animation;
-import android.widget.Toast;
+
 
 
 /**
  * @author marioandrei
  * VIEW
- * 
+ * the board used in creation mode
  */
 public class BoardCreation extends View {
     private Game game;
@@ -41,7 +35,6 @@ public class BoardCreation extends View {
     private Bitmap bitmapON,bitmapOFF,bitmapSEL;
 	private SessionCreation session;
 	private int type = Game.ENGLISH;
-    private Context context;
 
     int SOUNDON=1;
     int SOUNDOFF=2;
@@ -87,6 +80,41 @@ public class BoardCreation extends View {
 		bitmapOFF = BitmapFactory.decodeResource(getResources(), R.drawable.off);
 
 	}
+	
+	
+	/*sets and gets*/
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
+	/**
+	 * @return the session
+	 */
+	public SessionCreation getSession() {
+		return session;
+	}
+	/**
+	 * @param session the session to set
+	 */
+	public void setSession(SessionCreation session) {
+		this.session = session;
+	}
+	
+	/**
+	 * @return
+	 */
+	public Game getGame() {
+		return this.game;
+	}
+
 	/**
 	 * updates width and height of the board positions
 	 */
@@ -106,9 +134,7 @@ public class BoardCreation extends View {
 		super.onSizeChanged(width, height, oldWidth, oldHeight);
 		
 	}
-	public Game getGame() {
-		return this.game;
-	}
+
 
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -135,7 +161,10 @@ public class BoardCreation extends View {
 
 	}
 	
-	//TODO optimize even more
+	/**
+	 * paints the pegs on the board
+	 * @param canvas
+	 */
 	private void drawPegs (Canvas canvas){
 		
 	    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -195,10 +224,6 @@ public class BoardCreation extends View {
 					return super.onTouchEvent(event);
 				}else if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE) {
 					return super.onTouchEvent(event);
-				}
-				else if (game.getGrid()[xIndex][yIndex]==Game.INVISIBLE){
-
-					return super.onTouchEvent(event);
 				}else if (game.getGrid()[xIndex][yIndex]==Game.ON) {
 					game.getGrid()[xIndex][yIndex]=Game.OFF; 
 					invalidatePosition(xIndex, yIndex);
@@ -216,6 +241,11 @@ public class BoardCreation extends View {
 	
 	
 	
+	/**
+	 * invalidates the area of a peg on the board
+	 * @param xIndex
+	 * @param yIndex
+	 */
 	private void invalidatePosition(int xIndex, int yIndex) {
 		int left = (int) (xIndex*width_of_position);
 		int top = (int) (yIndex*height_of_position);
@@ -227,32 +257,6 @@ public class BoardCreation extends View {
 	}
 	
 
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(int type) {
-		this.type = type;
-	}
-	/**
-	 * @return the session
-	 */
-	public SessionCreation getSession() {
-		return session;
-	}
-	/**
-	 * @param session the session to set
-	 */
-	public void setSession(SessionCreation session) {
-		this.session = session;
-	}
-	
-	
 
 	
 }

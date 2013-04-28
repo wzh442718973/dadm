@@ -4,7 +4,6 @@ package com.es.uam.eps.dadm.mario_pantoja;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -17,6 +16,8 @@ import android.widget.Toast;
 /**
  * @author marioandrei
  * MODEL
+ * 
+ * Game is where the current board is and where the rules are.
  */
 public class Game {
 
@@ -172,7 +173,7 @@ public class Game {
 
 	
 	
-
+	/*sets and gets*/
 	/**
 	 * @return the context
 	 */
@@ -299,6 +300,39 @@ public class Game {
 	public String getBoard() {
 		return board;
 	}
+
+	/**
+	 * @return the date
+	 */
+	public String getDate() {
+		return date;
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+
+
+
+
+	/**
+	 * @return the figure
+	 */
+	public String getFigure() {
+		return figure;
+	}
+
+
+	/**
+	 * @param figure the figure to set
+	 */
+	public void setFigure(String figure) {
+		this.figure = figure;
+	}
+	
 
 	public void setBoard(String board) {
 		this.board = board;
@@ -869,17 +903,29 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * @return
+	 */
 	public Boolean isActive() {
 		return this.getGameState()==STATE.Active;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Boolean isLost() {
 		return gameState==STATE.Lost;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Boolean isWon() {
 		return this.getGameState()==STATE.Won;
 	}
+	/**
+	 * @return if there are moves left on the current board (grid)
+	 */
 	public boolean movesLeft() {
 		boolean bool=false;
 		for (int i = 0; i < grid.length; i++) {
@@ -894,6 +940,15 @@ public class Game {
 		
 		return bool;
 	}
+	
+	/**
+	 * @param x0
+	 * @param y0
+	 * @param x
+	 * @param y
+	 * @return
+	 * determines is a move is valid
+	 */
 	public boolean validMove(int x0, int y0, int x, int y) {
 		/*
 		 *  0 * *   
@@ -994,6 +1049,13 @@ public class Game {
 		
 	}
 	
+	/**
+	 * from an online array that defines a figure, this method creates an array compatoble with
+	 * the current implementation of the figures of the board
+	 * (online just has 0 and 1, the local figures have 1,-1 an 0)
+	 * @param figure
+	 * @return
+	 */
 	public int[] onlineStringToArray(String figure) {
 		int[] array=new int[figure.length()];
 		
@@ -1048,6 +1110,10 @@ public class Game {
 		return array;
 		
 	}
+	
+	/**
+	 * a new game on the local db
+	 */
 	public void newGameEntry(){
 
 			db= new DatabaseAdapter(context);
@@ -1063,39 +1129,10 @@ public class Game {
 	
 
 	/**
-	 * @return the date
+	 * a new entry on the local figure db
 	 */
-	public String getDate() {
-		return date;
-	}
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-
-
-
-
-	/**
-	 * @return the figure
-	 */
-	public String getFigure() {
-		return figure;
-	}
-
-
-	/**
-	 * @param figure the figure to set
-	 */
-	public void setFigure(String figure) {
-		this.figure = figure;
-	}
-	
-	public void newFigureEntry(){
-int aux;
+	public void newFigureEntry(String name){
+		int aux;
 		db= new DatabaseAdapter(context);
 		db.open();
 		String figurecreated=new String();
@@ -1112,7 +1149,7 @@ int aux;
 
 			}
 		
-		db.insertFigure("Custom Figure "+getPegCount(), figurecreated);
+		db.insertFigure(name, figurecreated);
 		db.close();
 		
 		//Toast.makeText(context,"New game added to the database",Toast.LENGTH_SHORT).show();		

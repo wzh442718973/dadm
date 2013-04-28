@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
+/**
+ * @author marioandrei
+ *
+ */
 public class AllGamesTable extends ListActivity {
 	DatabaseAdapter db;
 
@@ -35,9 +39,6 @@ public class AllGamesTable extends ListActivity {
             }
             games.add(gameString);
             
-			//board_type_list.add(mCursor.getString(mCursor.getColumnIndex(DatabaseAdapter.BOARD)));
-			//id_list.add(mCursor.getInt(mCursor.getColumnIndex(DatabaseAdapter.ID)));
-			//seconds.add(Integer.toString(mCursor.getInt(mCursor.getColumnIndex(DatabaseAdapter.SECONDS))));
 
 		}
 		db.close();

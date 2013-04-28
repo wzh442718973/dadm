@@ -70,10 +70,9 @@ public class Initial extends Activity implements OnClickListener{
 		}
 		
 		
-		//Preferences.setConnection(this, wifiConnected);
 		SharedPreferences settings = getSharedPreferences(Preferences.WIFI_KEY, MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean("Preferences.WIFI_KEY", isWifiConn);
+		editor.putBoolean("Preferences.WIFI_KEY", wifiConnected);
 		editor.commit();
 				
 		networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
@@ -218,6 +217,11 @@ public class Initial extends Activity implements OnClickListener{
 	
 
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 * when comming back from session, if the user wants to restart a game, this launches
+	 * a new sessiong
+	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode==Session.REQUEST_CODE) {
 			if (resultCode==RESULT_OK) {
@@ -335,6 +339,10 @@ public class Initial extends Activity implements OnClickListener{
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/**
+	 * exit the game dialog
+	 */
 	private void quitGame(){
 		new AlertDialog.Builder(this)
 		.setTitle("Exit")

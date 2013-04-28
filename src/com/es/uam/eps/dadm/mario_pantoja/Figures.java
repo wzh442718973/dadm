@@ -19,8 +19,11 @@ import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+/**
+ * @author marioandrei
+ * Figures gets the figures from the online server and lets the user choose one to play
+ */
 public class Figures extends Activity implements OnClickListener{
 	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
 	final static String FIGURES_PAGE = SERVER_NAME + "figures.php" ;
@@ -179,23 +182,36 @@ public class Figures extends Activity implements OnClickListener{
 			return result;
 		}
 
-		private void insertRow(final TableLayout table, String nombre,
-				String valor) {
+		/**
+		 * @param table
+		 * @param name
+		 * @param value
+		 * inserts row on a table, with the 
+		 */
+		private void insertRow(final TableLayout table, String name,
+				String value) {
 			final TableRow row = new TableRow(Figures.this);
 			int textColor = getResources().getColor(R.color.top_scores_color);
 			float textSize = getResources().getDimension(R.dimen.figures_name_text_size);
 			
-			addTextView(row, nombre, textColor, textSize);
+			addTextView(row, name, textColor, textSize);
 			textSize = getResources().getDimension(R.dimen.figures_values_text_size);
 
-			addTextView(row, valor, textColor, textSize);
+			addTextView(row, value, textColor, textSize);
 			table.addView(row);
 		}
 
+		/**
+		 * @param figures
+		 * @throws XmlPullParserException
+		 * @throws IOException
+		 * 
+		 * update the table from a Pull of a XML through onProgressUpdate (calling it with publish progress)
+		 */
 		private void processFigures(XmlPullParser figures) throws XmlPullParserException, IOException {
 			int eventType = -1;
 			boolean flag = false, read = false;
-			String str = null, nombre = null, valor = null;
+			String str = null, name = null, value = null;
 			
 			//detect the beginning of the xml element
 			// with 
@@ -204,14 +220,14 @@ public class Figures extends Activity implements OnClickListener{
 					str = figures.getName();
 				else if (eventType == XmlResourceParser.TEXT) {
 					if (str.equals("nombre"))
-						nombre = figures.getText();
+						name = figures.getText();
 					else if (str.equals("valor")){
-						valor = figures.getText();
+						value = figures.getText();
 						read = true;
 					}
 				}
 				if (read) {
-					publishProgress(nombre, valor);
+					publishProgress(name, value);
 					read = false;
 					flag = true;
 				}
@@ -228,7 +244,7 @@ public class Figures extends Activity implements OnClickListener{
 		TableRow row= (TableRow) v;
 		TextView et=(TextView ) row.getChildAt(1);
 				
-		Integer n = row.getVirtualChildCount();//getChildAt(0);
+		//Integer n = row.getVirtualChildCount();//getChildAt(0);
 		String text=et.getText().toString();
 
 		Preferences.setOnlineFigure(this.getBaseContext(),text);

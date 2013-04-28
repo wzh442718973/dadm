@@ -4,13 +4,11 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AllGames extends Activity {
 	private DatabaseAdapter db;
@@ -23,11 +21,7 @@ public class AllGames extends Activity {
 		db = new DatabaseAdapter(this);
 		db.open();
 		Cursor mCursor = db.getAllGames();
-		//db.gamesTopTen();
 		
-		
-		
-
 		TableLayout tl = (TableLayout) findViewById(R.id.TableLayoutGeneric);
 
 	

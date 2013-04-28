@@ -1,7 +1,6 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Vector;
 
 import org.apache.http.NameValuePair;
@@ -19,7 +18,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.res.XmlResourceParser;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.os.AsyncTask;
@@ -27,10 +25,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+
 import android.widget.Toast;
 
+/**
+ * @author marioandrei
+ *
+ */
 public class Account extends Activity implements OnClickListener{
 	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
 	final static String FIGURES_PAGE = SERVER_NAME + "figures.php" ;
@@ -40,10 +41,13 @@ public class Account extends Activity implements OnClickListener{
 	private EditText editTextUsername;
 	private EditText editTextPassword;
 	private EditText editTextPasswordAgain;
+	
 	NewAccountTask newAccountTask ;
 	ProgressDialog waitDialog;
-	private DatabaseAdapter db;
 	
+	private DatabaseAdapter db;
+
+	@Override
 	public void  onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account);
@@ -67,6 +71,7 @@ public class Account extends Activity implements OnClickListener{
 		 waitDialog = new ProgressDialog(this);
 
 	}
+	@Override
 	public void onStop() {
 		super.onStop();
 	    waitDialog = null;
@@ -75,6 +80,9 @@ public class Account extends Activity implements OnClickListener{
 	}
 
 	
+	/**
+	 * creates a new account (user,pass) on the local db
+	 */
 	private void newAccount(){
 		
 		//get From EditText fields the strings
@@ -106,6 +114,10 @@ public class Account extends Activity implements OnClickListener{
 	}
 
 	
+	/**
+	 * @author marioandrei
+	 *
+	 */
 	private class NewAccountTask extends AsyncTask<String, String, Boolean> {
 		private static final String DEBUG_TAG = "NewAccountTask";
 
@@ -120,7 +132,6 @@ public class Account extends Activity implements OnClickListener{
 		@Override
 		protected void onPreExecute() {
 			
-			//TODO error de wait dialog
 			waitDialog=ProgressDialog.show(Account.this,"Please, wait","Checking if username is avaible",true, true);
 			waitDialog.setOnCancelListener(new OnCancelListener() {
 				
@@ -148,6 +159,11 @@ public class Account extends Activity implements OnClickListener{
 			//}
 			return result;
 		}
+		/**
+		 * @param username String that is going to be uploaded to the web server
+		 * @param password
+		 * @return
+		 */
 		private boolean postSettingsToServer(String username, String password){
 			
 

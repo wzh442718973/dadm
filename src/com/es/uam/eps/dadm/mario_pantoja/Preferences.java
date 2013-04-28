@@ -8,7 +8,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 public class Preferences extends PreferenceActivity {
 	private final static String TYPE_KEY = "type";

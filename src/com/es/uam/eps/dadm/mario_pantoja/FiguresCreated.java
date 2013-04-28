@@ -1,20 +1,9 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
-import java.io.IOException;
-import java.net.URL;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 
 import android.app.Activity;
-import android.content.res.XmlResourceParser;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -22,7 +11,6 @@ import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FiguresCreated extends Activity implements OnClickListener{
 	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
@@ -46,7 +34,7 @@ public class FiguresCreated extends Activity implements OnClickListener{
 		headerRow(tableLayoutFigures);
 		
 
-		
+		/* connect to the db, make query, print table, close db.*/ 
 		db = new DatabaseAdapter(this);
 		db.open();
 		Cursor mCursor = db.getAllFigures();
@@ -120,11 +108,7 @@ public class FiguresCreated extends Activity implements OnClickListener{
     	scoreTable.addView(header); 
     }
 
-    /**
-     * class that creates that defines the asynchronous service
-     * @author marioandrei
-     *
-     */
+
 
 	@Override
 	public void onClick(View v) {

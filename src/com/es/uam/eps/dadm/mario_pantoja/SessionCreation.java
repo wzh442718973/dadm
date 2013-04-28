@@ -1,15 +1,15 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -44,7 +44,7 @@ public class SessionCreation extends Activity implements OnClickListener{
 	    new AlertDialog.Builder(this)
 	        .setIcon(android.R.drawable.ic_dialog_alert)
 	        .setTitle("Closing Creation Mode")
-	        .setMessage("Are you sure you want to leave?")
+	        .setMessage("Are you sure you want to leave without saving?")
 	        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
 	    {
 	        @Override
@@ -120,13 +120,6 @@ public class SessionCreation extends Activity implements OnClickListener{
 		
 		//retrieve the game from the created board
 		setGame(board.getGame());
-		String zero =		"-1,-1,1,1,1,-1,-1,"+
-				"-1,-1,1,1,1,-1,-1,"+
-				"1,1,1,1,1,1,1,"+
-				"1,1,1,0,1,1,1,"+
-				"1,1,1,1,1,1,1,"+
-				"-1,-1,1,1,1,-1,-1,"+
-				"-1,-1,1,1,1,-1,-1";
 		//game.setCurrentBoardStateArray(game.stringToArray(zero));
 		Button button = (Button) findViewById(R.id.exitcreation);
 		button.setOnClickListener(this);
@@ -180,11 +173,7 @@ public class SessionCreation extends Activity implements OnClickListener{
 		this.playerName = playerName;
 	}
 
-	private void setPlayerNameFromsetUPreferences(){
-		
-		
-		setPlayerName(Preferences.getPlayerName(this)); 
-	}
+
 
 	public void setType(int type) {
 		this.type = type;
@@ -236,15 +225,40 @@ public class SessionCreation extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		if (game.movesLeft()==false) {
 			Toast.makeText(this,"This is not a valid board ",Toast.LENGTH_SHORT).show();		
+    		finish();
 
 		}
 		else
 		{
-			Toast.makeText(this,"figura "+game.getPegCount(),Toast.LENGTH_SHORT).show();		
+			//Toast.makeText(this,"figura "+game.getPegCount(),Toast.LENGTH_SHORT).show();		
 
-			game.newFigureEntry();
+			final EditText input = new EditText(this);
+
+			/*
+			 * ask the user for a name for the figure, and add it to the db
+			 */
+			new AlertDialog.Builder(SessionCreation.this)
+		    .setTitle("Leaving Creation Mode")
+		    .setMessage("Name your figure")
+		    .setView(input)
+		    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		            Editable value = input.getText(); 
+		            String nameofthefigure=value.toString();
+					game.newFigureEntry(nameofthefigure);
+
+		    		finish();
+
+		        }
+		    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		            // Do nothing.		
+		        	finish();
+
+		        }
+		    }).show();
+
 		}
-		finish();
 
 	}
 

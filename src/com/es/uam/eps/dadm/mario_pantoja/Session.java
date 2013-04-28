@@ -24,8 +24,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Chronometer;
-import android.widget.Toast;
 import android.widget.Chronometer.OnChronometerTickListener;
 
 /**
@@ -145,7 +146,7 @@ public class Session extends Activity {
 		play();	
 		
 		
-	//	ActionBar actionbar=getActionBar(); SDK 11 Needed!
+		//ActionBar actionbar=getActionBar(); //SDK 11 Needed!
 		
 
          setStopWatch((Chronometer) findViewById(R.id.chrono));
@@ -378,6 +379,33 @@ public class Session extends Activity {
 	public void stopWatch() {
 		this.stopWatch.stop();
 	}
+	
+	
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_session, menu);
+		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_preferences:
+			startActivity(new Intent(this, Preferences.class));
+			return true;
+		case R.id.menu_about:
+			startActivity(new Intent(this, About.class));
+			return true;
+		case R.id.menu_exit:
+			quitGame();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 	public static class UploaderService extends Service {
 		private UploadTask uploader;
 		
