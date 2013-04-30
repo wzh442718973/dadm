@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@layout/button_style"
-                android:text="Figures Created"
+                android:text="Figures"
                 android:textColor="@color/textColor"
                 android:width="@dimen/widthRedBtn"
                 android:layout_weight="1"

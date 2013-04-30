@@ -3,4 +3,5 @@
     <color name="textColor">#FFFFFFFF</color>
     <color name="header_top_scores_color">#DDDDDD</color>
     <color name="top_scores_color">#77FFFE</color>
+    <color name="transparent">#80000000</color>
 </resources>

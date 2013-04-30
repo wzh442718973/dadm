@@ -51,6 +51,7 @@ public class FiguresCreated extends Activity implements OnClickListener{
             for(int i=0; i<mCursor.getColumnCount(); i++){      
     			TextView text = new TextView(this);
                	text.setTextAppearance(this, android.R.style.TextAppearance_Large);
+               	text.setTextSize(getResources().getDimension(R.dimen.figures_name_text_size));
 
                	text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
                	text.setText(mCursor.getString(i));

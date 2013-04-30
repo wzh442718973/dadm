@@ -1,11 +1,9 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,11 +24,13 @@ public class SplashScreen extends Activity {
  
         setContentView(R.layout.splash_screen);
  
-        View splash= (View) findViewById(R.id.splashsimage);
+        View splash= (View) findViewById(R.id.splashstitle);
         
-		/* SHAKE  if not valid ! */
 		Animation animation=AnimationUtils.loadAnimation(splash.getContext(),R.anim.alpha);
-		splash.startAnimation(animation);						
+		splash.startAnimation(animation);	
+		
+		
+	
 		//Vibrator v = (Vibrator) splash.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		// Vibrate for 300 milliseconds
 		//v.vibrate(200);

@@ -13,7 +13,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
@@ -55,6 +54,8 @@ public class Session extends Activity {
 	private boolean musicOn=false;
 	
 	private Chronometer stopWatch;
+	
+	String oldfigure;
 	
 	long startTime;
     long countUp;
@@ -138,12 +139,13 @@ public class Session extends Activity {
 		//SharedPreferences sharedPreferences = getSharedPreferences("figure_pref", MODE_PRIVATE);
 		//Toast.makeText(this,"SESSION FIGURE number="+sharedPreferences.getString("figure_pref","DESDE SESSION"),Toast.LENGTH_SHORT).show();				    
 		//Toast.makeText(this,"FIGURE ="+Preferences.getFigure(this),Toast.LENGTH_SHORT).show();		
-		
 	
 		getFigureFromPreferences();
 		getTypeFromPreferences();
 		musicOn();		
 		play();	
+		oldfigure=Preferences.getFigureName(this);
+
 		
 		
 		//ActionBar actionbar=getActionBar(); //SDK 11 Needed!
@@ -204,6 +206,12 @@ public class Session extends Activity {
 		if (musicOn==true) {
 			startService(new Intent(getBaseContext(), SimpleService.class));
 
+		}
+		
+		if (!oldfigure.equals(Preferences.getFigureName(this))) {
+            //send RESULT OK to initial in order to launch a new session
+			setResult(RESULT_OK);
+			finish();
 		}
 	}
 	
@@ -393,7 +401,10 @@ public class Session extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_preferences:
+			oldfigure=Preferences.getFigureName(getApplicationContext());
+			
 			startActivity(new Intent(this, Preferences.class));
+
 			return true;
 		case R.id.menu_about:
 			startActivity(new Intent(this, About.class));

@@ -60,6 +60,17 @@ public class Preferences extends PreferenceActivity {
 		    return true;
 	        }
 	     });
+	    
+	    Preference custom2 = (Preference) findPreference("figureoffline");
+	    custom2.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				
+	        @Override
+	        public boolean onPreferenceClick(Preference preference) {
+				Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.FIGURESCREATED"); 
+				startActivity(intent);
+		    return true;
+	        }
+	     });
 
 	}
 

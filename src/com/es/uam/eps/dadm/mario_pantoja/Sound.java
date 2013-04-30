@@ -3,7 +3,6 @@ package com.es.uam.eps.dadm.mario_pantoja;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 

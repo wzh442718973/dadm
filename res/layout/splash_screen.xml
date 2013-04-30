@@ -4,12 +4,13 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
              >
-              
+
     <ImageView
-        android:id="@+id/splashsimage"
+        android:id="@+id/splashstitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:contentDescription="@string/about_text"
-        android:src="@drawable/splash"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@string/about_text"
+        android:src="@drawable/title" />
     
 </LinearLayout>
 

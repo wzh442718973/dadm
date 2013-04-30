@@ -226,8 +226,8 @@ public class Board extends View {
 		for (int[] pos : destinations) {
 			//int x=(int) (pos[0] * width_of_position)+2;
 			//int y=(int) (pos[1] * width_of_position)+3;
-			float x= (pos[0] * (width_of_position));
-			float y= (pos[1] * (height_of_position));
+			//float x= (pos[0] * (width_of_position));
+			//float y= (pos[1] * (height_of_position));
 			//int x1=(int) ((pos[0] +1)* width_of_position);
 			//int y1=(int) ((pos[1] +1)* width_of_position);
 
@@ -274,8 +274,8 @@ public class Board extends View {
 			
 						
 			for (int[] pos : game.posibleDestinations(x0, y0)) {
-				float x=(pos[0] * width_of_position);
-				float y= (pos[1] * height_of_position);
+				//float x=(pos[0] * width_of_position);
+				//float y= (pos[1] * height_of_position);
 				
 			    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				paint.setColor(Color.BLACK);

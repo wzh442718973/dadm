@@ -22,7 +22,6 @@ import android.view.Window;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TopTenByFigure extends Activity implements OnClickListener{
 	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
