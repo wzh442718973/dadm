@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener; 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Login extends Activity implements OnClickListener {
 	public static final int REQUEST_CODE = 1;
@@ -96,6 +98,26 @@ public class Login extends Activity implements OnClickListener {
 			editor.commit();
 			Preferences.setPlayerName(this, username);
 			Preferences.setIfUserIsLogged(getBaseContext(),true);
+			
+			
+			
+			db = new DatabaseAdapter(this);
+    		db.open();
+    		Cursor mCursor = db.getUuidByName(username);
+
+    		for (mCursor.moveToFirst(); !mCursor.isAfterLast(); mCursor
+    				.moveToNext()) {
+
+    			Preferences.setUUID(this, mCursor.getString(0));
+    			Preferences.setId(this, mCursor.getString(0));
+			   // Toast.makeText(getBaseContext(),"UUID:\n  "+mCursor.getString(0),Toast.LENGTH_SHORT).show();	
+
+
+    		}
+            db.close();
+            
+			
+			
 			startActivity(new Intent(this, Session.class));
 			finish();
 		}

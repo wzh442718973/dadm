@@ -231,7 +231,6 @@ public class TopTenByFigure extends Activity implements OnClickListener{
 
 		
 		
-		//TODO launch TopTen
 		//pasar text a db adaptaer
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor= settings.edit();

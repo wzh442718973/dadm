@@ -2,6 +2,7 @@ package com.es.uam.eps.dadm.mario_pantoja;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -51,7 +52,7 @@ public class FiguresCreated extends Activity implements OnClickListener{
             for(int i=0; i<mCursor.getColumnCount(); i++){      
     			TextView text = new TextView(this);
                	text.setTextAppearance(this, android.R.style.TextAppearance_Large);
-               	text.setTextSize(getResources().getDimension(R.dimen.figures_name_text_size));
+               	//text.setTextSize(getResources().getDimension(R.dimen.figures_values_text_size));
 
                	text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
                	text.setText(mCursor.getString(i));
@@ -126,6 +127,7 @@ public class FiguresCreated extends Activity implements OnClickListener{
 		 text=et.getText().toString();
 
         Preferences.setFigureName(getBaseContext(),text );
+		startActivity(new Intent(this, Session.class));
 
 		
 		finish();

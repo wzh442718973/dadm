@@ -42,9 +42,6 @@ public class Initial extends Activity implements OnClickListener{
 
 		setContentView(R.layout.main);
 		
-		/* get tje type from preferences */
-		SharedPreferences sharedPreferences = getSharedPreferences("type",MODE_PRIVATE);
-
 		//int type_from_preferences = sharedPreferences.getInt("type", -2);
 		int type_from_preferences=Preferences.getType(this);
 		//Toast.makeText(this,"TYPE ="+type_from_preferences,Toast.LENGTH_SHORT).show();	
@@ -98,15 +95,26 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.statisticsbtn);
 		button.setOnClickListener( this);
-		button = (Button) findViewById(R.id.figures);
-		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.preferences);
 		button.setOnClickListener( this);	
 		button = (Button) findViewById(R.id.creationbtn);
 		button.setOnClickListener( this);		
 		button = (Button) findViewById(R.id.figurescreated);
 		button.setOnClickListener( this);		
-
+		
+		
+		if (isWifiConn || isMobileConn) {
+			button = (Button) findViewById(R.id.share);
+			button.setOnClickListener( this);	
+			button = (Button) findViewById(R.id.figures);
+			button.setOnClickListener( this);
+		}
+		else{
+			button = (Button) findViewById(R.id.share);
+			button.setBackgroundResource(R.drawable.offmenubtn);
+			button = (Button) findViewById(R.id.figures);
+			button.setBackgroundResource(R.drawable.offmenubtn);
+		}
 		
 		/* Set Profile Pic long listener 
 		ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -206,6 +214,10 @@ public class Initial extends Activity implements OnClickListener{
 		}
 		else if (v.getId()==R.id.preferences) {
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.PREFERENCES"); 
+			startActivity(intent);
+		}		
+		else if (v.getId()==R.id.share) {
+			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.SHARE"); 
 			startActivity(intent);
 		}
 		else if (v.getId()==R.id.creationbtn) {

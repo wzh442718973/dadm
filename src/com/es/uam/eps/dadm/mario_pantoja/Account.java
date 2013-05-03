@@ -46,6 +46,7 @@ public class Account extends Activity implements OnClickListener{
 	ProgressDialog waitDialog;
 	
 	private DatabaseAdapter db;
+	
 
 	@Override
 	public void  onCreate(Bundle savedInstanceState) {

@@ -286,4 +286,19 @@ public class DatabaseAdapter {
 		return db.query(TABLE_NAME_FIGURES, new String []{FIGURECREATEDNAME,FIGURECREATED},null, null, null,null, null);
 	}
 
+	public Cursor getFigureByName(String name) {
+        Log.v("DEBUGDB"," figure requested :"+name+".");
+
+		return db.query(TABLE_NAME_FIGURES, new String [] {FIGURECREATED}, 
+								FIGURECREATEDNAME + " = '"+ name+ "' ",
+								null, null, null, null);
+	}
+	
+	public Cursor getUuidByName(String name) {
+        Log.v("DEBUGDB"," figure requested :"+name+".");
+
+		return db.query(TABLE_NAME_GAMES, new String [] {UUID}, 
+								NAME + " = '"+ name+ "' ",
+								null, null, null, null);
+	}
 }

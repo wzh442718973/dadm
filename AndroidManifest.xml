@@ -195,6 +195,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        
+        <activity
+            android:name=".Share"
+            android:theme="@android:style/Theme.Dialog"
+            android:label="Share your Figures" 
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SHARE" />
+                
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+                
          <activity
             android:name=".SessionCreation"
             android:exported="false"
@@ -202,6 +217,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
             <intent-filter>
+                
                 <action android:name="com.es.uam.eps.dadm.mario_pantoja.SESSIONCREATION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -224,6 +240,10 @@
         </service>
         
         <service android:name="com.es.uam.eps.dadm.mario_pantoja.Session$UploaderService">
+   
+		</service>
+		
+             <service android:name="com.es.uam.eps.dadm.mario_pantoja.Share$UploaderService">
    
 		</service>
 ￼

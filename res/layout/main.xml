@@ -33,13 +33,37 @@
             android:text="Login"
             android:textColor="@color/textColor" />
 
+                
+                
+                        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
         <Button
             android:id="@+id/creationbtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@layout/button_style"
             android:text="Creation Mode"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+                android:layout_weight="1"
+                 />
+            
+           <Button
+                android:id="@+id/share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@layout/button_style"
+                android:text="Share"
+                android:textColor="@color/textColor"
+                android:width="@dimen/widthRedBtn"
+                android:layout_weight="1"
+                 />
+        </LinearLayout>
+        
+
         
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@layout/button_style"
-                android:text="Figures (Online)"
+                android:text="Figures Online"
                 android:textColor="@color/textColor"
                 android:width="@dimen/widthRedBtn"
                 android:layout_weight="1"
@@ -67,10 +91,10 @@
                 android:width="@dimen/widthRedBtn"
                 android:layout_weight="1"
                  />
+
         </LinearLayout>
 
-
-
+        
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

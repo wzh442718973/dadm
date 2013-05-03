@@ -136,9 +136,7 @@ public class Session extends Activity {
 
 		//TODO    Debes anadir iconos a la barra de acci—n y ligarlos a las acciones del menu inicial.
 
-		//SharedPreferences sharedPreferences = getSharedPreferences("figure_pref", MODE_PRIVATE);
-		//Toast.makeText(this,"SESSION FIGURE number="+sharedPreferences.getString("figure_pref","DESDE SESSION"),Toast.LENGTH_SHORT).show();				    
-		//Toast.makeText(this,"FIGURE ="+Preferences.getFigure(this),Toast.LENGTH_SHORT).show();		
+		
 	
 		getFigureFromPreferences();
 		getTypeFromPreferences();

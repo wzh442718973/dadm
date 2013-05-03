@@ -222,9 +222,9 @@ public class SessionCreation extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		/* if there are no possible moves left on the created board, dont let the user save it.*/
 		if (game.movesLeft()==false) {
-			Toast.makeText(this,"This is not a valid board ",Toast.LENGTH_SHORT).show();		
+			Toast.makeText(this,"That is not a valid board.",Toast.LENGTH_SHORT).show();		
     		finish();
 
 		}

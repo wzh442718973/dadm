@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -256,6 +257,7 @@ public class Figures extends Activity implements OnClickListener{
 	    //Toast.makeText(getBaseContext(),"Figure Name: "+text,Toast.LENGTH_SHORT).show();	
 
         Preferences.setFigureName(getBaseContext(),text );
+		startActivity(new Intent(this, Session.class));
 
 		
 		finish();
