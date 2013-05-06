@@ -134,8 +134,6 @@ public class Session extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//TODO    Debes anadir iconos a la barra de acci—n y ligarlos a las acciones del menu inicial.
-
 		
 	
 		getFigureFromPreferences();

@@ -17,7 +17,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.es.uam.eps.dadm.mario_pantoja.Session.UploaderService;
 
 
 
@@ -41,7 +40,6 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author marioandrei
@@ -155,6 +153,7 @@ public class Share extends Activity implements OnClickListener{
 			//name of the figure
     			TextView text = new TextView(this);
                	text.setTextAppearance(this, android.R.style.TextAppearance_Large);
+               	text.setTextColor(getResources().getColor(R.color.top_scores_color));
                	text.setTextSize(getResources().getDimension(R.dimen.figures_name_text_size));
                	
 
@@ -239,13 +238,13 @@ public class Share extends Activity implements OnClickListener{
     	
     	//add title
     	TableRow subheader = new TableRow(this);
-    	int textColor = getResources().getColor(R.color.header_top_scores_color); 
+    	int textColor = getResources().getColor(R.color.textColor); 
     	float textSize = getResources().getDimension(R.dimen.header_top_scores_size);
 	    TextView textView = new TextView(this);
 	    textView.setTextSize(textSize);
 	    textView.setTextColor(textColor);
-	    //textView.setText(Preferences.getUUID(getBaseContext())); 
-	    textView.setText("Inbox:");
+	    //textView.setText(Preferences.getUUID(getBaseContext())); recieved 
+	    textView.setText("\nFigures Received:");
 
 	    subheader.addView(textView);
     	scoreTable.addView(subheader); 
@@ -265,7 +264,7 @@ public class Share extends Activity implements OnClickListener{
     	textView = new TextView(this);
 	    textView.setTextSize(textSize);
 	    textView.setTextColor(textColor);
-	    textView.setText("Figure:");
+	    textView.setText("Figure Name:");
 	    subheader.addView(textView);
 	    
     	scoreTable.addView(subheader); 
@@ -288,7 +287,7 @@ public class Share extends Activity implements OnClickListener{
 	    textView.setTextSize(textSize);
 	    textView.setTextColor(textColor);
 	    //textView.setText(Preferences.getUUID(getBaseContext())); 
-	    textView.setText("Name");
+	    textView.setText("Pick Figure");
 
 	    header.addView(textView);
 	    
@@ -400,7 +399,7 @@ public class Share extends Activity implements OnClickListener{
 			float textSize = getResources().getDimension(R.dimen.figures_name_text_size);
 			
 			addTextView(row, name, textColor, textSize);
-			textSize = getResources().getDimension(R.dimen.figures_values_text_size);
+			//textSize = getResources().getDimension(R.dimen.figures_values_text_size);
 
 			String figure=value.substring(0, 49);
 			String figurename=value.substring(49);
@@ -587,7 +586,7 @@ public class Share extends Activity implements OnClickListener{
 			    }).show();
 
 				
-			    Toast.makeText(getBaseContext(),"sending the figure named:\n  "+text,Toast.LENGTH_SHORT).show();	
+			   // Toast.makeText(getBaseContext(),"sending the figure named:\n  "+text,Toast.LENGTH_SHORT).show();	
 
 		}
 		else{
@@ -599,7 +598,7 @@ public class Share extends Activity implements OnClickListener{
 			 text=et.getText().toString();
 			 et=(TextView ) row.getChildAt(2);
 			 String figure=et.getText().toString();
-			 Toast.makeText(getBaseContext(),"Save figure named:\n  "+text+"tag: "+n+"figure "+figure,Toast.LENGTH_SHORT).show();	
+			 //Toast.makeText(getBaseContext(),"Save figure named:\n  "+text+"tag: "+n+"figure "+figure,Toast.LENGTH_SHORT).show();	
 		
 	    		db = new DatabaseAdapter(Share.this);
 	    		db.open();

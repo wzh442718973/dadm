@@ -279,10 +279,10 @@ public class Initial extends Activity implements OnClickListener{
 				CAMERA_REQUEST);
 	}
 	
-	/**
+	/*
 	 * ImageBUtton listener (profile pic)
 	 * 
-	 * */
+	 *
 	private void setLongListener() {
 		ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
 		imageButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -295,7 +295,7 @@ public class Initial extends Activity implements OnClickListener{
 				return true;
 			}
 		});
-	}
+	} */
 
 	/**
 	 * saves a Bitmap to the disk
