@@ -18,3 +18,20 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep public class * extends android.preference.PreferenceFragment
+
+# We need line numbers in our stack traces otherwise they are pretty useless
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+
+-dontwarn com.android.installreferrer.*
+
+-keepattributes *Annotation*,InnerClasses
+#-keepattributes SourceFile,LineNumberTable
+#-keepattributes LineNumberTable
+
+-dontshrink
+-dontoptimize
+-dontpreverify

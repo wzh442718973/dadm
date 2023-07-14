@@ -37,7 +37,7 @@ public class Sound  {
 			/* 1st arg of play() is the selection of a sound, which in this case we get from a HashMap.get sound sound being an int.
 			 *   2nd and 3rd args are left and right volumes
 			 *   4th is priority, 1 the highest, 0  the lowest
-			 *   5th is the looping value which we’ve set to 0, meaning “don’t loop”. 
+
 			 *   6th is the playback speed */
 			boolean soundPref = Preferences.playSound(context);
 			if (soundPref) {
