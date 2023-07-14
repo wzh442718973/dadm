@@ -7,12 +7,12 @@
     tools:context=".MainActivity" >
 
     
-    <com.es.uam.eps.dadm.mario_pantoja.Board
+    <com.glaring.colourful.bully.Board
             android:id="@+id/board"
             android:layout_width="match_parent"
             android:layout_height="320dip" />
 
-    <com.es.uam.eps.dadm.mario_pantoja.ScoreBoard
+    <com.glaring.colourful.bully.ScoreBoard
             android:id="@+id/scoreboard"
             android:layout_width="match_parent"
             android:layout_height="100dip" />
@@ -27,7 +27,7 @@
 <!--         android:text="@string/tittle_num_pegs" -->
 <!--         android:textAppearance="?android:attr/textAppearanceSmall" /> -->
 
-<!--     <com.es.uam.eps.dadm.mario_pantoja.AnimView -->
+<!--     <com.glaring.colourful.bully.AnimView -->
 <!--         android:id="@+id/animation" -->
 <!--         android:layout_width="match_parent" -->
 <!--         android:layout_height="100dip" -->

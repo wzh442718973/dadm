@@ -6,7 +6,7 @@
     android:layout_gravity="center_horizontal" >
 
     
-    <com.es.uam.eps.dadm.mario_pantoja.BoardCreation
+    <com.glaring.colourful.bully.BoardCreation
             android:id="@+id/boardcreation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

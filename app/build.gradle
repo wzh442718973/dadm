@@ -7,11 +7,11 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.fluent.unimpeded.luckybomb"
+        applicationId "com.glaring.colourful.bully"
         minSdkVersion 22
         targetSdkVersion 31
-        versionCode 1750
-        versionName "1.5.1"
+        versionCode 3858
+        versionName "3.5.8"
 
         
     }
@@ -32,13 +32,13 @@ android {
 }
 
 stringfog {
-    key "unimpeded"
+    key "bully"
     // 开关
     enable true
     // 加解密库的实现类路径，需和上面配置的加解密算法库一致。
     implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
     // 指定需加密的代码包路径，可配置多个，未指定将默认全部加密。
-    fogPackages = ['com.fluent.unimpeded.luckybomb']
+    fogPackages = ['com.glaring.colourful.bully']
 }
 
 dependencies {

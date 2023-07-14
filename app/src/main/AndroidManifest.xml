@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.es.uam.eps.dadm.mario_pantoja"
+    package="com.glaring.colourful.bully"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -53,7 +53,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SESSION" />
+                <action android:name="com.glaring.colourful.bully.SESSION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -61,10 +61,10 @@
         <activity
             android:name=".About"
             android:theme="@android:style/Theme.Dialog"
-             android:label="About Peg Solitaire" 
+             android:label="About Bully Plub"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.ABOUT" />
+                <action android:name="com.glaring.colourful.bully.ABOUT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -73,7 +73,7 @@
             android:name=".Preferences"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.PREFERENCES" />
+                <action android:name="com.glaring.colourful.bully.PREFERENCES" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -82,7 +82,7 @@
             android:name=".Statistics"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.STATISTICS" />
+                <action android:name="com.glaring.colourful.bully.STATISTICS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -91,7 +91,7 @@
             android:name=".AllUsers"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.ALLUSERS" />
+                <action android:name="com.glaring.colourful.bully.ALLUSERS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -100,7 +100,7 @@
             android:name=".AllGames"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.ALLGAMES" />
+                <action android:name="com.glaring.colourful.bully.ALLGAMES" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -110,7 +110,7 @@
             android:name=".TopTen"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPTEN" />
+                <action android:name="com.glaring.colourful.bully.TOPTEN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -120,7 +120,7 @@
             android:name=".RecentGames"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.RECENTGAMES" />
+                <action android:name="com.glaring.colourful.bully.RECENTGAMES" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -130,7 +130,7 @@
             android:name=".TopTenByFigure"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPTENBYFIGURE" />
+                <action android:name="com.glaring.colourful.bully.TOPTENBYFIGURE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -141,7 +141,7 @@
             android:name=".TopScoresByFigure"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPSCORESBYFIGURE" />
+                <action android:name="com.glaring.colourful.bully.TOPSCORESBYFIGURE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -151,7 +151,7 @@
             android:name=".TopScores"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.TOPSCORES" />
+                <action android:name="com.glaring.colourful.bully.TOPSCORES" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -161,7 +161,7 @@
             android:name=".FiguresCreated"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.FIGURESCREATED" />
+                <action android:name="com.glaring.colourful.bully.FIGURESCREATED" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -173,7 +173,7 @@
              android:label="Choose your Figures" 
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.FIGURES" />
+                <action android:name="com.glaring.colourful.bully.FIGURES" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -186,7 +186,7 @@
             android:label="Share your Figures" 
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SHARE" />
+                <action android:name="com.glaring.colourful.bully.SHARE" />
                 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -201,7 +201,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SESSIONCREATION" />
+                <action android:name="com.glaring.colourful.bully.SESSIONCREATION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -209,7 +209,7 @@
         
         <service android:name=".SimpleService" android:exported="false">
             <intent-filter>
-                <action android:name="com.es.uam.eps.dadm.mario_pantoja.SimpleService" />
+                <action android:name="com.glaring.colourful.bully.SimpleService" />
             </intent-filter>
 ￼
         </service>
@@ -222,11 +222,11 @@
 ￼
         </service>
         
-        <service android:name="com.es.uam.eps.dadm.mario_pantoja.Session$UploaderService">
+        <service android:name="com.glaring.colourful.bully.Session$UploaderService">
    
 		</service>
 		
-             <service android:name="com.es.uam.eps.dadm.mario_pantoja.Share$UploaderService">
+             <service android:name="com.glaring.colourful.bully.Share$UploaderService">
    
 		</service>
 ￼

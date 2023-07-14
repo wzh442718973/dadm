@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Peg Solitaire</string>
+    <string name="app_name">Bully Plub</string>
     <string name="hello_world">RelativeLayout</string>
     <string name="menu_settings">Settings</string>
     <string name="piece_text"> </string>
@@ -18,7 +18,7 @@
     
     <string name="about_text">
  
-    		Peg solitaire is a board game for one player involving
+    		Bully Plub is a board game for one player involving
     		movement of pegs on a board with holes. Some sets use
     		marbles in a board with indentations. The game is known
     		simply as Solitaire in the United Kingdom where the card
@@ -26,7 +26,7 @@
     		Brainvita (especially in India). According to a popular
     		story, the game was invented by a French aristocrat in the
     		17th century, when incarcerated in the Bastille, explaining
-    		the games less common name Solo Noble. John D. Beasley ,author of The Ins and Outs of Peg Solitaire, has extensively
+    		the games less common name Solo Noble. John D. Beasley ,author of The Ins and Outs of Bully Plub, has extensively
     		searched for evidence to support this, and has found it
     		lacking. The first reference to this story appeared in 1810,
     		more than a hundred years after the alleged event. He
@@ -37,7 +37,7 @@
     		the court of Louis XIV, and the specific date of 1697, with
     		an engraving made that year by Claude Auguste Berey of Anne
     		de Rohan-Chabot, Princess of Soubise, with the puzzle by her
-    		side. Several works of art from that time show peg solitaire
+    		side. Several works of art from that time show Bully Plub
     		boards, demonstrating that the game was highly fashionable.
     		The standard game fills the entire board with pegs except
     		for the central hole. The objective is, making valid moves,

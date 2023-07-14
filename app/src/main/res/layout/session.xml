@@ -6,7 +6,7 @@
     android:layout_gravity="center_horizontal" >
 
     
-    <com.es.uam.eps.dadm.mario_pantoja.Board
+    <com.glaring.colourful.bully.Board
             android:id="@+id/board"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
