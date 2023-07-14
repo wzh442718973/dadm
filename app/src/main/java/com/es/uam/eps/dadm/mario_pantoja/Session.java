@@ -1,28 +1,11 @@
 package com.es.uam.eps.dadm.mario_pantoja;
 
-import java.io.IOException;
-import java.util.Vector;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Chronometer;
@@ -35,10 +18,7 @@ import android.widget.Chronometer.OnChronometerTickListener;
  * 
  */
 public class Session extends Activity {
-	final static String SERVER_NAME = "http://ptha.ii.uam.es/chachacha/"; 
-	final static String FIGURES_PAGE = SERVER_NAME + "figures.php" ;
-	final static String NEW_SCORE_PAGE = SERVER_NAME + "addscore.php" ;
-	
+
 	public static final int REQUEST_CODE = 1;
 	
 	private int type;
@@ -358,9 +338,6 @@ public class Session extends Activity {
         
 		//Toast.makeText(this," "+game.getDate(),Toast.LENGTH_SHORT).show();				    
 
-		Intent uploadService=new Intent(getApplicationContext(), UploaderService.class);
-		startService(uploadService);
-		
 	}
 
 	/**
@@ -411,86 +388,4 @@ public class Session extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
-	public static class UploaderService extends Service {
-		private UploadTask uploader;
-		
-		@Override
-		public IBinder onBind(Intent arg0) {
-			return null;
-		}
-		@Override
-		public int onStartCommand(Intent intent, int flags, int startId) {
-
-			uploader = new UploadTask();
-			String id= Preferences.getUUID(getApplicationContext());
-			uploader.execute(id);
-			Log.d("Debug", "inside on start command: score upload requested");
-			return START_REDELIVER_INTENT;
-			
-		}
-		private class UploadTask extends AsyncTask<String, String, Boolean>{
-
-			@Override
-			protected Boolean doInBackground(String... params) {
-
-				boolean result=postScoresToServer(params[0]);
-				Log.d("Debug", "post scores returned: "+result);
-
-				return result;
-			}
-			private boolean postScoresToServer(String userId){
-				boolean state = false;
-				
-
-				Vector<NameValuePair>vars = new Vector<NameValuePair>();
-				vars.add(new BasicNameValuePair("playerid",Preferences.getUUID(getApplicationContext())));
-				vars.add(new BasicNameValuePair("duration",Preferences.getDuration(getApplicationContext())));
-				vars.add(new BasicNameValuePair("numberoftiles",Preferences.getNumberoftiles(getApplicationContext())));
-				vars.add(new BasicNameValuePair("date",Preferences.getDate(getApplicationContext())));
-				vars.add(new BasicNameValuePair("board",Preferences.getFigureName(getApplicationContext())));
-
-				
-				String url = NEW_SCORE_PAGE+ "?"+ URLEncodedUtils.format(vars,null);
-				HttpGet request = new HttpGet(url);
-				Log.d("Debug", "httpget server: "+url);
-
-				
-				
-				try {
-					ResponseHandler<String> responseHandler = new BasicResponseHandler();
-					HttpClient client = new DefaultHttpClient();
-					String responseBody= client.execute(request,responseHandler);
-					
-					if (responseBody != null && responseBody.length()>0) {
-						if(!responseBody.equals("-1")){
-							Log.d("DEBUG", "Score uploaded to "+url);
-						}
-						else
-							Log.d("DEBUG", "that user doesnt exists.");
-
-					}						
-					else
-						Log.d("DEBUG", "Score upload failed.");
-					
-					state=true;
-					
-				} catch (ClientProtocolException e) {
-					Log.e("DEBUG","Failed to upload score (protocol):", e);
-							}
-				catch (IOException e) {
-					 Log.e("DEBUG",	"Failed to upload score (IO): ",e);
-				}
-				
-				
-				return state;
-			}
-			
-		}
-		
-		
-	}
-
-
 }

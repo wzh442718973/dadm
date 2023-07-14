@@ -89,8 +89,6 @@ public class Initial extends Activity implements OnClickListener{
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.about);
 		button.setOnClickListener( this);
-		button = (Button) findViewById(R.id.loginbtn);
-		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.sitebtn);
 		button.setOnClickListener( this);
 		button = (Button) findViewById(R.id.statisticsbtn);
@@ -190,12 +188,6 @@ public class Initial extends Activity implements OnClickListener{
 		else if (v.getId()==R.id.camera) {
 			onLaunchCamera( v);
 		}
-		
-		else if (v.getId()==R.id.loginbtn) {
-			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.LOGIN");
-			startActivityForResult(intent, Login.REQUEST_CODE);
-		}
-		
 		else if (v.getId()==R.id.about) {
 			Intent intent = new Intent("com.es.uam.eps.dadm.mario_pantoja.ABOUT"); 
 			startActivity(intent);

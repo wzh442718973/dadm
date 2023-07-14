@@ -31,9 +31,6 @@ public class Preferences extends PreferenceActivity {
 	public final static String WIFI_KEY = "wifi";
 	private final static boolean WIFI_DEFAULT = false;
 	
-	private final static String LOGGED_KEY = "logged";
-	private final static boolean LOGGED_DEFAULT = false;
-
 	private final static String SOUND_KEY = "sound";
 	private final static boolean SOUND_DEFAULT = false;
 	
@@ -120,8 +117,7 @@ public class Preferences extends PreferenceActivity {
 				.getBoolean(WIFI_KEY, WIFI_DEFAULT);
 	}
 	public static boolean isUserLogged(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getBoolean(LOGGED_KEY, LOGGED_DEFAULT);
+		return true;
 	}
 	public static void setIfUserIsLogged(Context context, boolean logged){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
