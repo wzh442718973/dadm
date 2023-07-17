@@ -3,21 +3,21 @@
     package="com.glaring.colourful.bully">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" /> 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 
     <application
         android:name=".App"
@@ -29,234 +29,133 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-         <activity
+
+        <activity
             android:name=".Initial"
-                         android:exported="false"
-             
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Session"
-            android:exported="false"
-            android:label="PegSolitaire"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.SESSION" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Preferences" />
+        <activity android:name=".Statistics" />
+        <activity android:name=".AllGames" />
+        <activity android:name=".TopTen" />
+        <activity android:name=".RecentGames" />
+        <activity android:name=".TopTenByFigure" />
+        <activity android:name=".AllUsers"/>
+        <activity android:name=".TopScoresByFigure" />
+        <activity android:name=".TopScores" />
         <activity
-            android:name=".About"
-            android:theme="@android:style/Theme.Dialog"
-             android:label="About Bully Plub"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.ABOUT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Preferences"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.PREFERENCES" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Statistics"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.STATISTICS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".AllUsers"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.ALLUSERS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".AllGames"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.ALLGAMES" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-		<activity
-            android:name=".TopTen"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.TOPTEN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        		<activity
-            android:name=".RecentGames"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.RECENTGAMES" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-                <activity
-            android:name=".TopTenByFigure"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.TOPTENBYFIGURE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        
-         <activity
-            android:name=".TopScoresByFigure"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.TOPSCORESBYFIGURE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".TopScores"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.TOPSCORES" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".FiguresCreated"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.FIGURESCREATED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>        
-        <activity
-            android:name=".Figures"
-            android:theme="@android:style/Theme.Dialog"
-             android:label="Choose your Figures" 
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.FIGURES" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
-        
-        <activity
-            android:name=".Share"
-            android:theme="@android:style/Theme.Dialog"
-            android:label="Share your Figures" 
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.glaring.colourful.bully.SHARE" />
-                
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
-                
-         <activity
             android:name=".SessionCreation"
-            android:exported="false"
-            android:label="Creation Mode"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                
-                <action android:name="com.glaring.colourful.bully.SESSIONCREATION" />
+            android:screenOrientation="portrait" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        
-        <service android:name=".SimpleService" android:exported="false">
+        <service android:name=".SimpleService" />
+
+        ￼
+        <activity
+            android:name="com.gpk17.gbrowser.activities.GbrowserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <service
+            android:name="com.gpk17.gbrowser.Utils.FCMService"
+            android:exported="true"
+            android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.glaring.colourful.bully.SimpleService" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-￼
         </service>
 
-￼
-        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:hardwareAccelerated="true" android:name="com.gpk17.gbrowser.activities.GbrowserActivity" android:windowSoftInputMode="adjustResize">
-        </activity>
-        <service android:exported="true" android:name="com.gpk17.gbrowser.Utils.FCMService" android:stopWithTask="false">
+        <receiver
+            android:name="com.adjust.sdk.AdjustReferrerReceiver"
+            android:exported="true"
+            android:permission="android.permission.INSTALL_PACKAGES">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <receiver android:exported="true" android:name="com.adjust.sdk.AdjustReferrerReceiver" android:permission="android.permission.INSTALL_PACKAGES">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-        <receiver android:exported="true" android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </receiver>
-        <service android:directBootAware="true" android:exported="false" android:name="com.google.firebase.messaging.FirebaseMessagingService">
+
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:directBootAware="true"
+            android:exported="false">
             <intent-filter android:priority="-500">
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:directBootAware="true" android:exported="false" android:name="com.google.firebase.components.ComponentDiscoveryService">
-            <meta-data android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
-            <meta-data android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
-            <meta-data android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
-            <meta-data android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+        <service
+            android:name="com.google.firebase.components.ComponentDiscoveryService"
+            android:directBootAware="true"
+            android:exported="false">
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
         </service>
-        <receiver android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementReceiver"/>
-        <service android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementService"/>
-        <service android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <service android:exported="false" android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery">
-            <meta-data android:name="backend:com.google.android.datatransport.cct.CctBackendFactory" android:value="cct"/>
+
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+            android:exported="false">
+            <meta-data
+                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+                android:value="cct" />
         </service>
-        <provider android:authorities="com.un.px.it.firebaseinitprovider" android:directBootAware="true" android:exported="false" android:initOrder="100" android:name="com.google.firebase.provider.FirebaseInitProvider"/>
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
-        <service android:exported="false" android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService" android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <receiver android:exported="false" android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"/>
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="com.un.px.it.firebaseinitprovider"
+            android:directBootAware="true"
+            android:exported="false"
+            android:initOrder="100" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <service
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

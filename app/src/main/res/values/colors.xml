@@ -4,4 +4,8 @@
     <color name="header_top_scores_color">#DDDDDD</color>
     <color name="top_scores_color">#77FFFE</color>
     <color name="transparent">#80000000</color>
+
+    <color name="colorAccent">#3B5950</color>
+    <color name="colorPrimaryDark">#707A69</color>
+    <color name="colorPrimary">#707A69</color>
 </resources>

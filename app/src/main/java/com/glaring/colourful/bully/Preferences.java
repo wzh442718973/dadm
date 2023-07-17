@@ -44,30 +44,6 @@ public class Preferences extends PreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
-		
-		/*create the preferences from */
-	    Preference custom = (Preference) findPreference("figure");
-	    custom.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-				
-	        @Override
-	        public boolean onPreferenceClick(Preference preference) {
-		 //   Toast.makeText(Preferences.this, "custom preference clicked", Toast.LENGTH_LONG).show();
-				Intent intent = new Intent("com.glaring.colourful.bully.FIGURES"); 
-				startActivity(intent);
-		    return true;
-	        }
-	     });
-	    
-	    Preference custom2 = (Preference) findPreference("figureoffline");
-	    custom2.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-				
-	        @Override
-	        public boolean onPreferenceClick(Preference preference) {
-				Intent intent = new Intent("com.glaring.colourful.bully.FIGURESCREATED"); 
-				startActivity(intent);
-		    return true;
-	        }
-	     });
 
 	}
 
@@ -116,9 +92,7 @@ public class Preferences extends PreferenceActivity {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getBoolean(WIFI_KEY, WIFI_DEFAULT);
 	}
-	public static boolean isUserLogged(Context context) {
-		return true;
-	}
+
 	public static void setIfUserIsLogged(Context context, boolean logged){
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor= settings.edit();

@@ -379,9 +379,6 @@ public class Session extends Activity {
 			startActivity(new Intent(this, Preferences.class));
 
 			return true;
-		case R.id.menu_about:
-			startActivity(new Intent(this, About.class));
-			return true;
 		case R.id.menu_exit:
 			quitGame();
 			return true;

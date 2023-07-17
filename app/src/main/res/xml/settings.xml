@@ -18,17 +18,5 @@
     <CheckBoxPreference
         android:key="sound"
         android:title="Play sounds" />
-    
-       <Preference 
-        android:key="figure"
-        android:title="Choose a figure (Online)"
-        android:summary="Click to choose a figure from the web"/>
-       
-       <Preference 
-        android:key="figureoffline"
-        android:title="Choose a figure (Offline)"
-        android:summary="Click to choose a figure from the web"/>
-
-
 
 </PreferenceScreen>

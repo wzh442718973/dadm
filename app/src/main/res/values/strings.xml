@@ -9,41 +9,11 @@
     <string name="off"></string>
     <string name="tittle_num_pegs">Pegs:</string>
     <string name="newgamestr">Quick Game</string>
-    <string name="aboutstr">About</string>
     <string name="paintstr">Paint</string>
     <string name="european_str">European</string>
     <string name="english_str">English</string>
-    <string name="site_intial_str">Help</string>
         <string name="stats_intial_str">Statistics</string>
-    
-    <string name="about_text">
- 
-    		Bully Plub is a board game for one player involving
-    		movement of pegs on a board with holes. Some sets use
-    		marbles in a board with indentations. The game is known
-    		simply as Solitaire in the United Kingdom where the card
-    		games are called Patience. It is also referred to as
-    		Brainvita (especially in India). According to a popular
-    		story, the game was invented by a French aristocrat in the
-    		17th century, when incarcerated in the Bastille, explaining
-    		the games less common name Solo Noble. John D. Beasley ,author of The Ins and Outs of Bully Plub, has extensively
-    		searched for evidence to support this, and has found it
-    		lacking. The first reference to this story appeared in 1810,
-    		more than a hundred years after the alleged event. He
-    		believes that the colorful tale is fiction, yet it persists.
-    		In other sources, the invention of the game is attributed to
-    		the Native Americans—there is also no evidence to support
-    		this. The first evidence of the game can be traced back to
-    		the court of Louis XIV, and the specific date of 1697, with
-    		an engraving made that year by Claude Auguste Berey of Anne
-    		de Rohan-Chabot, Princess of Soubise, with the puzzle by her
-    		side. Several works of art from that time show Bully Plub
-    		boards, demonstrating that the game was highly fashionable.
-    		The standard game fills the entire board with pegs except
-    		for the central hole. The objective is, making valid moves,
-    		to empty the entire board except for a solitary peg in the
-    		central hole.
-    	</string>
+
     <string name="camerastr">Profile Pic</string>
     
    

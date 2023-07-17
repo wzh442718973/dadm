@@ -1,16 +1,26 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <item name="colorAccent">#3B5950</item>
-        <item name="colorPrimaryDark">#707A69</item>
-        <item name="colorPrimary">#707A69</item>
-        <item name="android:colorAccent">#3B5950</item>
-        <item name="android:colorPrimaryDark">#707A69</item>
-        <item name="android:colorPrimary">#707A69</item>
+        <style name="actionBarWidgetTheme" parent="android:style/Theme.Holo">
+
+        </style>
+
+        <style name="actionBarStyle" parent="android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+            <item name="background">@color/colorPrimary</item>
+            <item name="backgroundStacked">@color/colorPrimary</item>
+            <item name="backgroundSplit">@color/colorPrimary</item>
+            <item name="progressBarPadding">32dip</item>
+            <item name="itemPadding">8dip</item>
+        </style>
+
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/actionBarStyle</item>
+        <item name="actionBarWidgetTheme">@style/actionBarWidgetTheme</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
     </style>
 
     <!-- Application theme. -->

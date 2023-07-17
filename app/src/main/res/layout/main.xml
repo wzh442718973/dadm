@@ -26,12 +26,7 @@
             android:width="@dimen/widthRedBtn" />
 
 
-                
-                        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
+
 
         <Button
             android:id="@+id/creationbtn"
@@ -43,75 +38,6 @@
                 android:layout_weight="1"
                  />
             
-           <Button
-                android:id="@+id/share"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@layout/button_style"
-                android:text="Share"
-                android:textColor="@color/textColor"
-                android:width="@dimen/widthRedBtn"
-                android:layout_weight="1"
-                 />
-        </LinearLayout>
-        
-
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/figures"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@layout/button_style"
-                android:text="Figures Online"
-                android:textColor="@color/textColor"
-                android:width="@dimen/widthRedBtn"
-                android:layout_weight="1"
-                 />
-            <Button
-                android:id="@+id/figurescreated"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@layout/button_style"
-                android:text="Figures"
-                android:textColor="@color/textColor"
-                android:width="@dimen/widthRedBtn"
-                android:layout_weight="1"
-                 />
-
-        </LinearLayout>
-
-        
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@layout/button_style"
-                android:text="@string/aboutstr"
-                android:textColor="@color/textColor" />
-
-            <Button
-                android:id="@+id/sitebtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@layout/button_style"
-                android:text="@string/site_intial_str"
-                android:textColor="@color/textColor" />
-        </LinearLayout>
-
         <Button
             android:id="@+id/statisticsbtn"
             android:layout_width="match_parent"
@@ -129,20 +55,7 @@
             android:textColor="@color/textColor"
             android:width="@dimen/widthRedBtn" />
     </LinearLayout>
-    <!--
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="120dip"
-        android:maxWidth="100dip"
-        android:onClick="onLaunchCamera"
-        android:scaleType="fitXY"
-        android:src="@drawable/pic" />
-    -->
+
 
     <RadioGroup
         android:id="@+id/radioGroup1"
@@ -154,6 +67,7 @@
         android:layout_marginRight="18dp" >
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/radio0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,6 +76,7 @@
             android:textColor="@color/textColor" />
 
         <RadioButton
+            android:checked="true"
             android:id="@+id/radio1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
