@@ -1,5 +1,6 @@
 package com.glaring.colourful.bully;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,13 +19,13 @@ import com.glaring.colourful.bully.games.ak.IAdInfo;
 import com.glaring.colourful.bully.games.ak.IAdInit;
 import com.glaring.colourful.bully.games.lib.AAAHelper;
 
-public abstract class EntryActivity extends AppCompatActivity implements IAdInit {
+public abstract class EntryActivity extends Activity implements IAdInit {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //显示等待界面
-        loadWaitView();
+//        loadWaitView();
         AAAHelper.mAdSelector.adInit(null, this);
     }
 
@@ -62,6 +63,17 @@ public abstract class EntryActivity extends AppCompatActivity implements IAdInit
         setContentView(layout);
     }
 
+    private boolean isGotoMain = false;
+
+    protected void gotoMain() {
+        synchronized (this) {
+            isGotoMain = true;
+            if (isRefOn != null) {
+                gotoMain(isRefOn);
+            }
+        }
+    }
+
     private void gotoMain(final boolean RefOn) {
         final String pkgName = getPackageName();
         final ComponentName entry = RefOn ? new ComponentName(pkgName, getEntryB()) : new ComponentName(pkgName, getEntryA());
@@ -70,10 +82,17 @@ public abstract class EntryActivity extends AppCompatActivity implements IAdInit
         finish();
     }
 
+
+    private Boolean isRefOn = null;
+
     @Override
     public void onAdInit(IAdInfo adInfo) {
-        boolean RefOn = AdSelectorImpl.getImpl(this).IsRefOn();
-        gotoMain(RefOn);
+        isRefOn = AdSelectorImpl.getImpl(this).IsRefOn();
+        synchronized (this) {
+            if (isGotoMain) {
+                gotoMain(isRefOn);
+            }
+        }
     }
 
 }
