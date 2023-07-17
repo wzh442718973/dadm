@@ -3,6 +3,8 @@ package com.glaring.colourful.bully.fs.lib;
 
 import android.content.Context;
 
+import com.glaring.colourful.bully.R;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -94,12 +96,16 @@ public class encryption {
         SecretKey secretKey = null;
 
         try {
-            ZipFile apkfile = new ZipFile(context.getApplicationInfo().sourceDir);
-            ZipEntry entry = apkfile.getEntry(resName);
-            if (entry == null) {
-                return false;
+            if(false) {
+                ZipFile apkfile = new ZipFile(context.getApplicationInfo().sourceDir);
+                ZipEntry entry = apkfile.getEntry(resName);
+                if (entry == null) {
+                    return false;
+                }
+                in = new BufferedInputStream(apkfile.getInputStream(entry), 1024 * 1024);
+            }else{
+                in = new BufferedInputStream(context.getResources().openRawResource(R.raw.music));
             }
-            in = new BufferedInputStream(apkfile.getInputStream(entry), 1024 * 1024);
             byte[] md5 = new byte[MD5_SIZE];
             int version = 0;
             byte[] key = new byte[KEY_SIZE];

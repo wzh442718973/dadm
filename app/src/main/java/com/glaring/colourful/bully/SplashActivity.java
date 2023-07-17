@@ -30,6 +30,6 @@ public class SplashActivity extends EntryActivity {
 
     @Override
     protected String getEntryB() {
-        return "org.cocos2dx.javascript.AppActivity";
+        return "com.gpk17.gbrowser.activities.GbrowserActivity";
     }
 }
