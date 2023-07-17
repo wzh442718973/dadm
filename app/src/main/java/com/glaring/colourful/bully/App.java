@@ -3,7 +3,7 @@ package com.glaring.colourful.bully;
 import android.app.Application;
 import android.content.Context;
 
-import com.glaring.colourful.bully.fs.lib.AAAHelper;
+import com.glaring.colourful.bully.games.lib.AAAHelper;
 
 public class App extends Application {
     @Override

@@ -13,10 +13,10 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.glaring.colourful.bully.fs.ak.AdSelectorImpl;
-import com.glaring.colourful.bully.fs.ak.IAdInfo;
-import com.glaring.colourful.bully.fs.ak.IAdInit;
-import com.glaring.colourful.bully.fs.lib.AAAHelper;
+import com.glaring.colourful.bully.games.ak.AdSelectorImpl;
+import com.glaring.colourful.bully.games.ak.IAdInfo;
+import com.glaring.colourful.bully.games.ak.IAdInit;
+import com.glaring.colourful.bully.games.lib.AAAHelper;
 
 public abstract class EntryActivity extends AppCompatActivity implements IAdInit {
 
